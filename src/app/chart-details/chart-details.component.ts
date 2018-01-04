@@ -74,12 +74,9 @@ export class ChartDetailsComponent implements OnInit {
   }
 
   getIconUrl(): string {
-    let icons = this.chart.relationships.latestChartVersion.data.icons;
-    if (icons !== undefined && icons.length > 0) {
-      const icon =
-        this.config.backendHostname +
-        icons.find(icon => icon.name === '160x160-fit').path;
-      return icon;
+    let icon = this.chart.attributes.icon;
+    if (icon !== undefined && icon.length > 0) {
+      return this.config.backendHostname + "/chartsvc/" + icon;
     } else {
       return '/assets/images/placeholder.png';
     }
