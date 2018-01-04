@@ -6,6 +6,6 @@ export class Repo {
 
 export class RepoAttributes {
   name: string = '';
-  URL: string = '';
+  url: string = '';
   source: string = '';
 }

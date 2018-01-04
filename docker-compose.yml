@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   ui:
@@ -22,7 +22,42 @@ services:
       - MONOCULAR_AUTH_GITHUB_CLIENT_ID=${MONOCULAR_AUTH_GITHUB_CLIENT_ID}
       - MONOCULAR_AUTH_GITHUB_CLIENT_SECRET=${MONOCULAR_AUTH_GITHUB_CLIENT_SECRET}
       - MONOCULAR_AUTH_SIGNING_KEY=${JWT_KEY}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+  chart-repo-sync:
+    image: kubeapps/chart-repo-sync
+    environment:
+    - MONGO_PASSWORD=password123
+    command:
+    - /chart-repo-sync
+    - --mongo-url=mongodb
+    - --mongo-user=root
+    - stable
+    - https://kubernetes-charts.storage.googleapis.com
+    depends_on:
+      mongodb:
+        condition: service_healthy
+  chartsvc:
+    image: kubeapps/chartsvc:latest
+    environment:
+    - MONGO_PASSWORD=password123
+    command:
+    - /chartsvc
+    - --mongo-url=mongodb
+    - --mongo-user=root
+    depends_on:
+      mongodb:
+        condition: service_healthy
   mongodb:
     image: bitnami/mongodb:3
+    environment:
+    - MONGODB_ROOT_PASSWORD=password123
+    healthcheck:
+      test:
+      - CMD
+      - mongo
+      - --eval
+      - "db.adminCommand('ping')"
 volumes:
   monocular-data:

@@ -9,16 +9,10 @@ export class ChartVersion {
 export class ChartVersionAttributes {
   created: Date;
   digest: string;
-  icons: ChartVersionIcon[];
   readme: string;
   version: string;
   app_version: string;
   urls: string[];
-}
-
-class ChartVersionIcon {
-  name: string;
-  path: string;
 }
 
 class ChartVersionRelationships {

@@ -20,7 +20,7 @@ export class ChartsService {
     private http: Http,
     private config: ConfigService
   ) {
-    this.hostname = config.backendHostname;
+    this.hostname = `${config.backendHostname}/chartsvc`;
     this.cacheCharts = {};
   }
 
