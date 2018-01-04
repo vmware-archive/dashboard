@@ -51,10 +51,16 @@ export class ChartDetailsInfoComponent implements OnInit {
 
   maintainerUrl(maintainer: Maintainer): string {
     let repoURL = this.chart.attributes.repo.url;
-    if (repoURL == "https://kubernetes-charts.storage.googleapis.com" || repoURL == "https://kubernetes-charts-incubator.storage.googleapis.com") {
+    if (this.isOfficialRepo()) {
       return `https://github.com/${maintainer.name}`;
     } else {
       return `mailto:${maintainer.email}`;
     }
+  }
+
+  isOfficialRepo(): boolean {
+    let url = document.createElement('a');
+    url.href = this.chart.attributes.repo.url;
+    return /kubernetes-charts(-incubator)?.storage.googleapis.com/.test(url.hostname);
   }
 }
