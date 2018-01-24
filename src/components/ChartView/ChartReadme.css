@@ -1,5 +1,11 @@
+.ChartReadme p {
+  margin: 0.625em 0;
+}
+
 .ChartReadme pre {
   overflow: auto;
+  margin: 0.625em 0;
+  border-radius: 5px;
 }
 
 .ChartReadme blockquote {
