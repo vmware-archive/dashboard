@@ -11,6 +11,7 @@ import { ServiceBrokerList } from "../components/ServiceBrokerList";
 import configureStore from "../store";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
+import { ServiceListContainer } from "./ServiceListContainer";
 
 import BrokerView from "./BrokerView";
 import RepoFormContainer from "./RepoFormContainer";
@@ -45,6 +46,7 @@ class Root extends React.Component {
                 path="/charts/:repo/:id/versions/:version"
                 component={ChartView}
               />
+              <Route exact={true} path="/services" component={ServiceListContainer} />
             </section>
           </Layout>
         </ConnectedRouter>
