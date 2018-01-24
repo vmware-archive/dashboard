@@ -19,6 +19,11 @@
   text-align: left;
 }
 
+.ChartReadme blockquote:before,
+.ChartReadme blockquote:after {
+  background-image: none;
+}
+
 .ChartReadme tr {
   border-bottom: 1px solid #eee;
 }
