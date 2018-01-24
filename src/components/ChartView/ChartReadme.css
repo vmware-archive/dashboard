@@ -1,3 +1,14 @@
 .ChartReadme pre {
   overflow: auto;
 }
+
+.ChartReadme blockquote {
+  max-width: 100%;
+  margin: 0;
+  padding: 0.1em 1em;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  text-align: left;
+}
