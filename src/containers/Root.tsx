@@ -9,6 +9,7 @@ import Layout from "../components/Layout";
 import configureStore from "../store";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
+import { ServiceListContainer } from "./ServiceListContainer";
 
 const history = createHistory();
 const store = configureStore(history);
@@ -24,6 +25,7 @@ class Root extends React.Component {
               <Route exact={true} path="/charts" component={ChartList} />
               <Route exact={true} path="/charts/:repo" component={ChartList} />
               <Route exact={true} path="/charts/:repo/:id" component={ChartView} />
+              <Route exact={true} path="/services" component={ServiceListContainer} />
             </section>
           </Layout>
         </ConnectedRouter>

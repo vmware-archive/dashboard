@@ -8,8 +8,11 @@ export const api = {
     listVersions: (id: string) => `${api.charts.get(id)}/versions`,
   },
 
+  // /api/kube exposes kubectl add ?watch=true
   helmreleases: {
     create: (namespace = "default") =>
       `/api/kube/apis/helm.bitnami.com/v1/namespaces/${namespace}/helmreleases`,
   },
+
+  apprepostories: {},
 };
