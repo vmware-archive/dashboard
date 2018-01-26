@@ -13,8 +13,25 @@ export class ServiceCatalog {
     return ServiceCatalog.getItems<IServicePlan>("/clusterserviceplans");
   }
 
-  public static async getServiceBindings() {
-    return ServiceCatalog.getBindingItems<IServiceBinding>("/servicebindings");
+  public static async getServiceBindings(): Promise<IServiceBinding[]> {
+    const bindings = await ServiceCatalog.getItems<IServiceBinding>("/servicebindings");
+    return Promise.all(
+      bindings.map(binding => {
+        const { secretName } = binding.spec;
+        return axios
+          .get<IK8sApiSecretResponse>(ServiceCatalog.secretEndpoint + secretName)
+          .then(response => {
+            const secretJson = response.data;
+            const { database, host, password, port, username } = secretJson.data;
+            binding.spec.secretDatabase = atob(database);
+            binding.spec.secretHost = atob(host);
+            binding.spec.secretPassword = atob(password);
+            binding.spec.secretPort = atob(port);
+            binding.spec.secretUsername = atob(username);
+            return binding;
+          });
+      }),
+    );
   }
 
   public static async getServiceInstances() {
@@ -26,33 +43,8 @@ export class ServiceCatalog {
   private static secretEndpoint: string = "/api/kube/api/v1/namespaces/default/secrets/";
 
   private static async getItems<T>(endpoint: string): Promise<T[]> {
-    // const response = await fetch(ServiceCatalog.endpoint + endpoint);
-    // const json: IK8sApiListResponse = await response.json();
-    const response = await axios.get<IK8sApiListResponse>(ServiceCatalog.endpoint + endpoint);
+    const response = await axios.get<IK8sApiListResponse<T>>(ServiceCatalog.endpoint + endpoint);
     const json = response.data;
-    return json.items;
-  }
-
-  private static async getBindingItems<T>(endpoint: string): Promise<T[]> {
-    // const response = await fetch(ServiceCatalog.endpoint + endpoint);
-    // const json: IK8sApiListResponse = await response.json();
-    const response = await axios.get<IK8sApiListResponse>(ServiceCatalog.endpoint + endpoint);
-    const json = response.data;
-    let index = 0;
-    for (const item of json.items) {
-      const name = item.spec.secretName;
-      const secretResp = await axios.get<IK8sApiSecretResponse>(
-        ServiceCatalog.secretEndpoint + name,
-      );
-      const secretJson = secretResp.data;
-      json.items[index].spec.secretDatabase = atob(secretJson.data.database);
-      json.items[index].spec.secretHost = atob(secretJson.data.host);
-      json.items[index].spec.secretPassword = atob(secretJson.data.password);
-      json.items[index].spec.secretPort = atob(secretJson.data.port);
-      json.items[index].spec.secretUsername = atob(secretJson.data.username);
-
-      index++;
-    }
     return json.items;
   }
 }
@@ -73,18 +65,14 @@ interface IK8sApiSecretResponse {
   };
 }
 
-interface IK8sApiListResponse {
+interface IK8sApiListResponse<T> {
   kind: string;
   apiVersion: string;
   metadata: {
     selfLink: string;
     resourceVersion: string;
   };
-  items: any[];
-}
-
-export interface IServiceBrokerList extends IK8sApiListResponse {
-  items: IServiceBroker[];
+  items: T[];
 }
 
 export interface IServiceClass {
@@ -108,10 +96,6 @@ export interface IServiceClass {
   status: {
     removedFromBrokerCatalog: boolean;
   };
-}
-
-export interface IServiceClassList extends IK8sApiListResponse {
-  items: IServiceClass[];
 }
 
 interface ICondition {
@@ -146,10 +130,6 @@ export interface IServiceBroker {
   };
 }
 
-export interface IServicePlanList extends IK8sApiListResponse {
-  items: IServicePlan[];
-}
-
 export interface IServicePlan {
   metadata: {
     name: string;
@@ -173,10 +153,6 @@ export interface IServicePlan {
   };
 }
 
-export interface IServiceInstanceList extends IK8sApiListResponse {
-  items: IServiceInstance[];
-}
-
 export interface IServiceInstance {
   metadata: {
     name: string;
@@ -198,10 +174,6 @@ export interface IServiceInstance {
       name: string;
     };
   };
-}
-
-export interface IServiceBindingList extends IK8sApiListResponse {
-  items: IServiceBinding[];
 }
 
 export interface IServiceBinding {
