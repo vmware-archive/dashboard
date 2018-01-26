@@ -40,6 +40,11 @@ class Root extends React.Component {
                 path="/brokers"
                 render={() => <ServiceBrokerList brokers={[]} />}
               />
+              <Route
+                exact={true}
+                path="/charts/:repo/:id/versions/:version"
+                component={ChartView}
+              />
             </section>
           </Layout>
         </ConnectedRouter>
