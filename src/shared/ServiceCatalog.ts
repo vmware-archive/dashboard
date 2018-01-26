@@ -21,14 +21,16 @@ export class ServiceCatalog {
         return axios
           .get<IK8sApiSecretResponse>(ServiceCatalog.secretEndpoint + secretName)
           .then(response => {
-            const secretJson = response.data;
-            const { database, host, password, port, username } = secretJson.data;
-            binding.spec.secretDatabase = atob(database);
-            binding.spec.secretHost = atob(host);
-            binding.spec.secretPassword = atob(password);
-            binding.spec.secretPort = atob(port);
-            binding.spec.secretUsername = atob(username);
-            return binding;
+            const { database, host, password, port, username } = response.data.data;
+            const spec = {
+              ...binding.spec,
+              secretDatabase: atob(database),
+              secretHost: atob(host),
+              secretPassword: atob(password),
+              secretPort: atob(port),
+              secretUsername: atob(username),
+            };
+            return { ...binding, spec };
           });
       }),
     );
