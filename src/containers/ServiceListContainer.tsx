@@ -1,7 +1,9 @@
 import * as React from "react";
 import {
+  IServiceBinding,
   IServiceBroker,
   IServiceClass,
+  IServiceInstance,
   IServicePlan,
   ServiceCatalog,
 } from "../shared/ServiceCatalog";
@@ -10,21 +12,31 @@ interface IServiceListContainerState {
   brokers: IServiceBroker[];
   classes: IServiceClass[];
   plans: IServicePlan[];
+  instances: IServiceInstance[];
+  bindings: IServiceBinding[];
 }
 
 export class ServiceListContainer extends React.Component {
   public state: IServiceListContainerState = {
+    bindings: [],
     brokers: [],
     classes: [],
+    instances: [],
     plans: [],
   };
 
   public async componentDidMount() {
+    ServiceCatalog.getServiceBindings()
+      .then(bindings => this.setState({ bindings }))
+      .catch(err => []);
     ServiceCatalog.getServiceBrokers()
       .then(brokers => this.setState({ brokers }))
       .catch(err => []);
     ServiceCatalog.getServiceClasses()
       .then(classes => this.setState({ classes }))
+      .catch(err => []);
+    ServiceCatalog.getServiceInstances()
+      .then(instances => this.setState({ instances }))
       .catch(err => []);
     ServiceCatalog.getServicePlans()
       .then(plans => this.setState({ plans }))
@@ -32,9 +44,20 @@ export class ServiceListContainer extends React.Component {
   }
 
   public render() {
-    const { brokers, classes, plans } = this.state;
+    const { bindings, brokers, classes, instances, plans } = this.state;
     return (
       <div className="service-list-container">
+        <h2>Bindings</h2>
+        <dl>
+          {bindings.length > 0 &&
+            bindings.map(binding => {
+              return [
+                <dt key={binding.metadata.name}>{binding.metadata.name}</dt>,
+                <dd key={binding.spec.instanceRef.name}>{binding.spec.instanceRef.name}</dd>,
+                <dd key={binding.spec.secretName}>{binding.spec.secretName}</dd>,
+              ];
+            })}
+        </dl>
         <h2>Brokers</h2>
         <dl>
           {brokers.length > 0 &&
@@ -52,6 +75,21 @@ export class ServiceListContainer extends React.Component {
               return [
                 <dt key={serviceClass.spec.externalName}>{serviceClass.spec.externalName}</dt>,
                 <dd key={serviceClass.spec.description}>{serviceClass.spec.description}</dd>,
+              ];
+            })}
+        </dl>
+        <h2>Instances</h2>
+        <dl>
+          {instances.length > 0 &&
+            instances.map(instance => {
+              return [
+                <dt key={instance.metadata.name}>{instance.metadata.name}</dt>,
+                <dd key={instance.spec.clusterServiceClassExternalName}>
+                  {instance.spec.clusterServiceClassExternalName}
+                </dd>,
+                <dd key={instance.spec.clusterServicePlanExternalName}>
+                  {instance.spec.clusterServicePlanExternalName}
+                </dd>,
               ];
             })}
         </dl>

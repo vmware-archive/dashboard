@@ -13,6 +13,14 @@ export class ServiceCatalog {
     return ServiceCatalog.getItems<IServicePlan>("/clusterserviceplans");
   }
 
+  public static async getServiceBindings() {
+    return ServiceCatalog.getItems<IServiceBinding>("/servicebindings");
+  }
+
+  public static async getServiceInstances() {
+    return ServiceCatalog.getItems<IServiceInstance>("/serviceinstances");
+  }
+
   private static endpoint: string = "/api/kube/apis/servicecatalog.k8s.io/v1beta1";
 
   private static async getItems<T>(endpoint: string): Promise<T[]> {
@@ -121,5 +129,55 @@ export interface IServicePlan {
   };
   status: {
     removedFromBrokerCatalog: boolean;
+  };
+}
+
+export interface IServiceInstanceList extends IK8sApiListResponse {
+  items: IServiceInstance[];
+}
+
+export interface IServiceInstance {
+  metadata: {
+    name: string;
+    selfLink: string;
+    uid: string;
+    resourceVersion: string;
+    creationTimestamp: string;
+    finalizers: string[];
+    generation: number;
+  };
+  spec: {
+    clusterServiceClassExternalName: string;
+    clusterServicePlanExternalName: string;
+    externalID: string;
+    clusterServicePlanRef: {
+      name: string;
+    };
+    clusterServiceClassRef: {
+      name: string;
+    };
+  };
+}
+
+export interface IServiceBindingList extends IK8sApiListResponse {
+  items: IServiceBinding[];
+}
+
+export interface IServiceBinding {
+  metadata: {
+    name: string;
+    selfLink: string;
+    uid: string;
+    resourceVersion: string;
+    creationTimestamp: string;
+    finalizers: string[];
+    generation: number;
+  };
+  spec: {
+    externalID: string;
+    instanceRef: {
+      name: string;
+    };
+    secretName: string;
   };
 }
