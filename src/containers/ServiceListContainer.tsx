@@ -55,6 +55,11 @@ export class ServiceListContainer extends React.Component {
                 <dt key={binding.metadata.name}>{binding.metadata.name}</dt>,
                 <dd key={binding.spec.instanceRef.name}>{binding.spec.instanceRef.name}</dd>,
                 <dd key={binding.spec.secretName}>{binding.spec.secretName}</dd>,
+                <dd key={binding.spec.secretDatabase}>Database: {binding.spec.secretDatabase}</dd>,
+                <dd key={binding.spec.secretHost}>Host: {binding.spec.secretHost}</dd>,
+                <dd key={binding.spec.secretPassword}>Password: {binding.spec.secretPassword}</dd>,
+                <dd key={binding.spec.secretPort}>Port: {binding.spec.secretPort}</dd>,
+                <dd key={binding.spec.secretUsername}>Username: {binding.spec.secretUsername}</dd>,
               ];
             })}
         </dl>

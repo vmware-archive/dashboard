@@ -14,7 +14,7 @@ export class ServiceCatalog {
   }
 
   public static async getServiceBindings() {
-    return ServiceCatalog.getItems<IServiceBinding>("/servicebindings");
+    return ServiceCatalog.getBindingItems<IServiceBinding>("/servicebindings");
   }
 
   public static async getServiceInstances() {
@@ -23,6 +23,8 @@ export class ServiceCatalog {
 
   private static endpoint: string = "/api/kube/apis/servicecatalog.k8s.io/v1beta1";
 
+  private static secretEndpoint: string = "/api/kube/api/v1/namespaces/default/secrets/";
+
   private static async getItems<T>(endpoint: string): Promise<T[]> {
     // const response = await fetch(ServiceCatalog.endpoint + endpoint);
     // const json: IK8sApiListResponse = await response.json();
@@ -30,6 +32,45 @@ export class ServiceCatalog {
     const json = response.data;
     return json.items;
   }
+
+  private static async getBindingItems<T>(endpoint: string): Promise<T[]> {
+    // const response = await fetch(ServiceCatalog.endpoint + endpoint);
+    // const json: IK8sApiListResponse = await response.json();
+    const response = await axios.get<IK8sApiListResponse>(ServiceCatalog.endpoint + endpoint);
+    const json = response.data;
+    let index = 0;
+    for (const item of json.items) {
+      const name = item.spec.secretName;
+      const secretResp = await axios.get<IK8sApiSecretResponse>(
+        ServiceCatalog.secretEndpoint + name,
+      );
+      const secretJson = secretResp.data;
+      json.items[index].spec.secretDatabase = atob(secretJson.data.database);
+      json.items[index].spec.secretHost = atob(secretJson.data.host);
+      json.items[index].spec.secretPassword = atob(secretJson.data.password);
+      json.items[index].spec.secretPort = atob(secretJson.data.port);
+      json.items[index].spec.secretUsername = atob(secretJson.data.username);
+
+      index++;
+    }
+    return json.items;
+  }
+}
+
+interface IK8sApiSecretResponse {
+  kind: string;
+  apiVersion: string;
+  metadata: {
+    selfLink: string;
+    resourceVersion: string;
+  };
+  data: {
+    database: string;
+    host: string;
+    password: string;
+    port: string;
+    username: string;
+  };
 }
 
 interface IK8sApiListResponse {
@@ -179,5 +220,10 @@ export interface IServiceBinding {
       name: string;
     };
     secretName: string;
+    secretDatabase: string;
+    secretHost: string;
+    secretPassword: string;
+    secretPort: string;
+    secretUsername: string;
   };
 }
