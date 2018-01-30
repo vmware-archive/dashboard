@@ -7,6 +7,7 @@ import { ConnectedRouter } from "react-router-redux";
 import Layout from "../components/Layout";
 import configureStore from "../store";
 import AppList from "./AppListContainer";
+import AppView from "./AppViewContainer";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 
@@ -24,6 +25,7 @@ class Root extends React.Component {
     [route: string]: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   } = {
     "/": AppList,
+    "/apps/:name": AppView,
     "/charts": ChartList,
     "/charts/:repo": ChartList,
     "/charts/:repo/:id": ChartView,
