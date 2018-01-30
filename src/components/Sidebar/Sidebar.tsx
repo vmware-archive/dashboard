@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 import placeholder from "../../placeholder.png";
 import "./Sidebar.css";
@@ -10,7 +11,9 @@ class Sidebar extends React.Component {
         <ul className="remove-style margin-reset padding-h-normal text-c">
           <li className="padding-v-normal">
             <img src={placeholder} height="48" />
-            <div className="type-small">Apps</div>
+            <Link to="/">
+              <div className="type-small">Apps</div>
+            </Link>
           </li>
           <li className="padding-v-normal">
             <img src={placeholder} height="48" />
