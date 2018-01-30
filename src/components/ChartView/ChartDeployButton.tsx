@@ -4,8 +4,8 @@ import * as Modal from "react-modal";
 import { RouterAction } from "react-router-redux";
 import { IChartVersion } from "../../shared/types";
 
-import "brace/mode/ruby";
-import "brace/theme/github";
+import "brace/mode/yaml";
+import "brace/theme/xcode";
 
 interface IChartDeployButtonProps {
   version: IChartVersion;
@@ -79,10 +79,11 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
             <div style={{ marginBottom: "1em" }}>
               <label htmlFor="values">Values</label>
               <AceEditor
-                mode="ruby"
-                theme="github"
+                mode="yaml"
+                theme="xcode"
                 name="values"
                 width="100%"
+                fontSize={14}
                 onChange={this.handleValuesChange}
                 setOptions={{ showPrintMargin: false }}
                 value={this.props.values}
