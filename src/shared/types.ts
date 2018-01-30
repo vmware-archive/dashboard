@@ -309,3 +309,30 @@ export interface IHelmReleaseConfigMap {
     release: string;
   };
 }
+
+// Representation of the HelmRelease CRD
+export interface IHelmRelease {
+  metadata: {
+    annotations: {
+      "apprepositories.kubeapps.com/repo-name"?: string;
+    };
+    name: string;
+    namespace: string;
+  };
+  spec: {
+    repoUrl: string;
+  };
+}
+
+// Representation of the ConfigMaps Helm uses to store releases
+export interface IHelmReleaseConfigMap {
+  metadata: {
+    labels: {
+      NAME: string;
+      VERSION: string;
+    };
+  };
+  data: {
+    release: string;
+  };
+}

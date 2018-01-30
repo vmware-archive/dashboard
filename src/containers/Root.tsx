@@ -7,7 +7,10 @@ import { ConnectedRouter } from "react-router-redux";
 import Layout from "../components/Layout";
 import configureStore from "../store";
 import AppList from "./AppListContainer";
+<<<<<<< fd53785949b3e1e43a030073cebdb4d2d2c4fdcb
 import AppView from "./AppViewContainer";
+=======
+>>>>>>> add application list
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 
