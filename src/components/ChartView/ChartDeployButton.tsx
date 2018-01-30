@@ -26,6 +26,7 @@ interface IChartDeployButtonState {
   releaseName: string;
   namespace: string;
   values: string;
+  valuesModified: boolean;
   error: string | null;
 }
 
@@ -37,7 +38,16 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
     namespace: "default",
     releaseName: "",
     values: "",
+    valuesModified: false,
   };
+
+  public componentWillReceiveProps(nextProps: IChartDeployButtonProps) {
+    if (!this.state.valuesModified) {
+      this.setState({
+        values: nextProps.values,
+      });
+    }
+  }
 
   public render() {
     return (
@@ -83,10 +93,9 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
                 theme="xcode"
                 name="values"
                 width="100%"
-                fontSize={14}
                 onChange={this.handleValuesChange}
                 setOptions={{ showPrintMargin: false }}
-                value={this.props.values}
+                value={this.state.values}
               />
             </div>
             <div>
@@ -132,7 +141,7 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
     this.setState({ namespace: e.currentTarget.value });
   };
   public handleValuesChange = (value: string) => {
-    this.setState({ values: value });
+    this.setState({ values: value, valuesModified: true });
   };
 }
 
