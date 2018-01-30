@@ -10,7 +10,12 @@ import "brace/theme/github";
 
 interface IChartDeployButtonProps {
   version: IChartVersion;
-  deployChart: (chartVersion: IChartVersion, releaseName: string, namespace: string, values: string) => Promise<{}>;
+  deployChart: (
+    chartVersion: IChartVersion,
+    releaseName: string,
+    namespace: string,
+    values: string,
+  ) => Promise<{}>;
   push: (location: string) => RouterAction;
 }
 
@@ -36,9 +41,10 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
 
   public async componentDidMount() {
     const { version } = this.props;
-    const response = await fetch(
-      api.charts.getValues(version.id, version.attributes.version),
-    );
+    const id = `${version.relationships.chart.data.repo.name}/${
+      version.relationships.chart.data.name
+    }`;
+    const response = await fetch(api.charts.getValues(id, version.attributes.version));
     const values = await response.text();
     this.setState({
       values,

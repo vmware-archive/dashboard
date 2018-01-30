@@ -27,6 +27,10 @@ export const selectReadme = createAction("SELECT_README", (readme: string) => ({
   readme,
   type: "SELECT_README",
 }));
+export const selectValues = createAction("SELECT_VALUES", (values: string) => ({
+  type: "SELECT_VALUES",
+  values,
+}));
 
 const allActions = [
   requestCharts,
@@ -34,6 +38,7 @@ const allActions = [
   receiveChartVersions,
   selectChartVersion,
   selectReadme,
+  selectValues,
 ].map(getReturnOfExpression);
 export type ChartsAction = typeof allActions[number];
 
@@ -68,6 +73,7 @@ export function fetchChartVersionsAndSelectVersion(id: string, version?: string)
         cv = found;
       }
       dispatch(getChartReadme(id, cv.attributes.version));
+      dispatch(getChartValues(id, cv.attributes.version));
       return dispatch(selectChartVersion(cv));
     });
   };
@@ -81,6 +87,14 @@ export function selectChartVersionAndGetReadme(cv: IChartVersion) {
   };
 }
 
+export function selectChartVersionAndGetValues(cv: IChartVersion) {
+  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
+    const id = `${cv.relationships.chart.data.repo.name}/${cv.relationships.chart.data.name}`;
+    dispatch(selectChartVersion(cv));
+    return dispatch(getChartValues(id, cv.attributes.version));
+  };
+}
+
 export function getChartReadme(id: string, version: string) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     return fetch(url.api.charts.getReadme(id, version))
@@ -89,7 +103,20 @@ export function getChartReadme(id: string, version: string) {
   };
 }
 
-export function deployChart(chartVersion: IChartVersion, releaseName: string, namespace: string, values: string) {
+export function getChartValues(id: string, version: string) {
+  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
+    return fetch(url.api.charts.getValues(id, version))
+      .then(response => response.text())
+      .then(text => dispatch(selectValues(text)));
+  };
+}
+
+export function deployChart(
+  chartVersion: IChartVersion,
+  releaseName: string,
+  namespace: string,
+  values: string,
+) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     const chartAttrs = chartVersion.relationships.chart.data;
     return fetch(url.api.helmreleases.create(namespace), {
