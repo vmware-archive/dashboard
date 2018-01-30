@@ -3,7 +3,6 @@ import AceEditor from "react-ace";
 import * as Modal from "react-modal";
 import { RouterAction } from "react-router-redux";
 import { IChartVersion } from "../../shared/types";
-import { api } from "./../../shared/url";
 
 import "brace/mode/ruby";
 import "brace/theme/github";
@@ -17,6 +16,7 @@ interface IChartDeployButtonProps {
     values: string,
   ) => Promise<{}>;
   push: (location: string) => RouterAction;
+  values: string;
 }
 
 interface IChartDeployButtonState {
@@ -38,18 +38,6 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
     releaseName: "",
     values: "",
   };
-
-  public async componentDidMount() {
-    const { version } = this.props;
-    const id = `${version.relationships.chart.data.repo.name}/${
-      version.relationships.chart.data.name
-    }`;
-    const response = await fetch(api.charts.getValues(id, version.attributes.version));
-    const values = await response.text();
-    this.setState({
-      values,
-    });
-  }
 
   public render() {
     return (
@@ -97,7 +85,7 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
                 width="100%"
                 onChange={this.handleValuesChange}
                 setOptions={{ showPrintMargin: false }}
-                value={this.state.values}
+                value={this.props.values}
               />
             </div>
             <div>
