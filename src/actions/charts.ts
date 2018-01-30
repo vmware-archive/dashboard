@@ -89,7 +89,7 @@ export function getChartReadme(id: string, version: string) {
   };
 }
 
-export function deployChart(chartVersion: IChartVersion, releaseName: string, namespace: string) {
+export function deployChart(chartVersion: IChartVersion, releaseName: string, namespace: string, values: string) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     const chartAttrs = chartVersion.relationships.chart.data;
     return fetch(url.api.helmreleases.create(namespace), {
@@ -105,6 +105,7 @@ export function deployChart(chartVersion: IChartVersion, releaseName: string, na
         spec: {
           chartName: chartAttrs.name,
           repoUrl: chartAttrs.repo.url,
+          values,
           version: chartVersion.attributes.version,
         },
       }),
