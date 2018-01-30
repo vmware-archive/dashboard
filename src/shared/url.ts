@@ -22,5 +22,13 @@ export const api = {
   helmreleases: {
     create: (namespace = "default") =>
       `/api/kube/apis/helm.bitnami.com/v1/namespaces/${namespace}/helmreleases`,
+    list: (namespace?: string) =>
+      `/api/kube/apis/helm.bitnami.com/v1/${
+        namespace ? `namespaces/${namespace}/` : ""
+      }/helmreleases`,
+    listDetails: (releaseNames: string[]) =>
+      `/api/kube/api/v1/namespaces/kubeapps/configmaps?labelSelector=NAME in (${releaseNames.join(
+        ",",
+      )})`,
   },
 };

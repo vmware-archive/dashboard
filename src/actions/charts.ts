@@ -100,6 +100,9 @@ export function deployChart(chartVersion: IChartVersion, releaseName: string, na
         apiVersion: "helm.bitnami.com/v1",
         kind: "HelmRelease",
         metadata: {
+          annotations: {
+            "apprepositories.kubeapps.com/repo-name": chartAttrs.repo.name,
+          },
           name: releaseName,
         },
         spec: {
