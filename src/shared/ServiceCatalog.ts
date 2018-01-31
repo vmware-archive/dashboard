@@ -1,6 +1,26 @@
 import axios from "axios";
+import { AppRepository } from "./AppRepository";
+import { IAppRepository, IK8sList } from "./types";
 
 export class ServiceCatalog {
+  public static async getCatalogRepo(): Promise<IAppRepository | undefined> {
+    const repos = await AppRepository.list();
+    const svcRepo = repos.items.find(repo => {
+      return !!(
+        repo.spec &&
+        repo.spec.url &&
+        repo.spec.url === "https://svc-catalog-charts.storage.googleapis.com"
+      );
+    });
+
+    return svcRepo;
+  }
+
+  public static async installCatalog(name: string, namespace: string) {
+    const url = "https://svc-catalog-charts.storage.googleapis.com";
+    await AppRepository.create(name, url, namespace);
+  }
+
   public static async getServiceClasses() {
     return ServiceCatalog.getItems<IServiceClass>("/clusterserviceplans");
   }
@@ -18,8 +38,9 @@ export class ServiceCatalog {
     return Promise.all(
       bindings.map(binding => {
         const { secretName } = binding.spec;
+        const { namespace } = binding.metadata;
         return axios
-          .get<IK8sApiSecretResponse>(ServiceCatalog.secretEndpoint + secretName)
+          .get<IK8sApiSecretResponse>(ServiceCatalog.secretEndpoint(namespace) + secretName)
           .then(response => {
             const { database, host, password, port, username } = response.data.data;
             const spec = {
@@ -40,12 +61,24 @@ export class ServiceCatalog {
     return ServiceCatalog.getItems<IServiceInstance>("/serviceinstances");
   }
 
+  public static async isCatalogInstalled(): Promise<boolean> {
+    try {
+      const { status } = await axios.get(ServiceCatalog.endpoint);
+      return status === 200;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
   private static endpoint: string = "/api/kube/apis/servicecatalog.k8s.io/v1beta1";
 
-  private static secretEndpoint: string = "/api/kube/api/v1/namespaces/default/secrets/";
+  private static secretEndpoint = (namespace: string = "default") =>
+    `/api/kube/api/v1/namespaces/${namespace}/secrets/`;
 
   private static async getItems<T>(endpoint: string): Promise<T[]> {
-    const response = await axios.get<IK8sApiListResponse<T>>(ServiceCatalog.endpoint + endpoint);
+    const response = await axios.get<IK8sList<T, {}>>(ServiceCatalog.endpoint + endpoint);
+    // const response = await axios.get<IK8sApiListResponse<T>>(ServiceCatalog.endpoint + endpoint);
     const json = response.data;
     return json.items;
   }
@@ -67,7 +100,7 @@ interface IK8sApiSecretResponse {
   };
 }
 
-interface IK8sApiListResponse<T> {
+export interface IK8sApiListResponse<T> {
   kind: string;
   apiVersion: string;
   metadata: {
@@ -187,6 +220,7 @@ export interface IServiceBinding {
     creationTimestamp: string;
     finalizers: string[];
     generation: number;
+    namespace: string;
   };
   spec: {
     externalID: string;

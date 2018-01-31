@@ -14,5 +14,9 @@ export const api = {
       `/api/kube/apis/helm.bitnami.com/v1/namespaces/${namespace}/helmreleases`,
   },
 
-  apprepostories: {},
+  apprepostories: {
+    base: `/api/kube/apis/kubeapps.com/v1alpha1`,
+    create: (namespace = "default") =>
+      `${api.apprepostories.base}/namespaces/${namespace}/apprepositories`,
+  },
 };
