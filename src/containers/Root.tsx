@@ -25,7 +25,7 @@ class Root extends React.Component {
     [route: string]: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   } = {
     "/": AppList,
-    "/apps/:name": AppView,
+    "/apps/:namespace/:releasename/:chartname": AppView,
     "/charts": ChartList,
     "/charts/:repo": ChartList,
     "/charts/:repo/:id": ChartView,

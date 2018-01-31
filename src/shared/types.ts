@@ -58,6 +58,13 @@ export interface IChartState {
   items: IChart[];
 }
 
+export interface IDeployment {
+  metadata: {
+    name: string;
+    namespace: string;
+  };
+}
+
 export interface IApp {
   type: string;
   data: hapi.release.Release;
@@ -75,6 +82,7 @@ export interface IStoreState {
   apps: IAppState;
   charts: IChartState;
   repos: IAppRepositoryState;
+  deployment: IDeployment;
 }
 
 interface IK8sResource {
