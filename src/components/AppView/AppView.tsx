@@ -1,33 +1,45 @@
 import * as React from "react";
 
-// import { IApp } from "../../shared/types";
+import { IDeployment } from "../../shared/types";
 import AppHeader from "./AppHeader";
 import "./AppView.css";
 
 interface IAppViewProps {
-  name: string;
-  isFetching: boolean;
+  namespace: string;
+  releasename: string;
+  chartname: string;
+  deployment: IDeployment;
+  getDeployment: (namespace: string, deployname: string) => Promise<{}>;
 }
 
 class AppView extends React.Component<IAppViewProps> {
   public componentDidMount() {
-    // const { name } = this.props;
-    // fetchApp(name);
+    const { namespace, releasename, chartname, getDeployment } = this.props;
+    const deployname = releasename + `-` + chartname;
+    getDeployment(namespace, deployname);
   }
 
   public componentWillReceiveProps(nextProps: IAppViewProps) {
-    // const { name } = this.props;
   }
 
   public render() {
-    const { name } = this.props;
+    const { releasename, deployment } = this.props;
+    console.log("render");
+    console.log(releasename);
+    console.log(deployment);
+
+    if (!deployment) {
+      console.log("loading...")
+      //return <div>Loading</div>;
+    }
+    
     return (
       <section className="AppView padding-b-big">
-        <AppHeader name={name} />
+        <AppHeader releasename={releasename} />
         <main>
           <div className="container container-fluid">
             <div className="row">
-              <div className="col-9 AppView__readme-container" />
+              <h5>Deployment: {deployment}</h5>
             </div>
           </div>
         </main>
