@@ -22,7 +22,7 @@ export class ServiceCatalog {
   }
 
   public static async getServiceClasses() {
-    return ServiceCatalog.getItems<IServiceClass>("/clusterserviceplans");
+    return ServiceCatalog.getItems<IServiceClass>("/clusterserviceclasses");
   }
 
   public static async getServiceBrokers() {

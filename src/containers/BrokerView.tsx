@@ -106,13 +106,23 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatc
 class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispatch> {
   public async componentDidMount() {
     this.props.getBindings();
+    this.props.getClasses();
     this.props.getBrokers();
     this.props.getInstances();
     this.props.getPlans();
   }
 
   public render() {
-    const { bindings, broker, plans, instances } = this.props;
+    const { bindings, broker, classes, plans, instances } = this.props;
+    const classesIndexedByName = classes.reduce<{ [key: string]: IServiceClass }>(
+      (carry, serviceClass) => {
+        const { name } = serviceClass.metadata;
+        carry[name] = serviceClass;
+        return carry;
+      },
+      {},
+    );
+
     return (
       <div className="broker">
         {broker && (
@@ -163,30 +173,52 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
               </tbody>
             </table>
             <h2>Plans</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Free</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {plans.map(plan => {
-                  return (
-                    <tr key={plan.spec.externalID}>
-                      <td>{plan.spec.externalName}</td>
-                      <td>{plan.spec.description}</td>
-                      <td>{plan.spec.free && <span style={{ color: "green" }}>✓</span>}</td>
-                      <td>
-                        <button>Provision</button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div>
+              <span style={{ color: "green" }}>✓</span> = free!
+            </div>
+            <div
+              className="plan-list"
+              style={{ display: "flex", flexWrap: "wrap", margin: "-1em", marginBottom: "2em" }}
+            >
+              {plans.map(plan => {
+                const serviceClass = classes.find(
+                  potential => potential.metadata.name === plan.spec.clusterServiceClassRef.name,
+                );
+                return (
+                  <div
+                    key={plan.spec.externalID}
+                    style={{
+                      borderBottom: "1px solid #f2f2f0",
+                      borderRadius: "2px",
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
+                      display: "flex",
+                      flex: "1 1 20em",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      margin: "1em",
+                      padding: "1em",
+                      width: "20em",
+                    }}
+                  >
+                    <h5 style={{ color: "#333", marginTop: 0 }}>
+                      {plan.spec.externalName}{" "}
+                      {plan.spec.free && <span style={{ color: "green" }}>✓</span>}
+                    </h5>
+                    <p style={{ color: "#666" }}>{plan.spec.description}</p>
+                    <div style={{ textAlign: "right" }}>
+                      <Link
+                        to={`/services/brokers/${broker.metadata.name}/classes/${serviceClass &&
+                          serviceClass.spec.externalName}/plans/${plan.spec.externalName}`}
+                      >
+                        <button className="button button-primary" style={{ width: "fit-content" }}>
+                          Provision
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
