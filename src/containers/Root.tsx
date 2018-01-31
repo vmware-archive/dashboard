@@ -50,7 +50,6 @@ class Root extends React.Component {
                 path="/charts/:repo/:id/versions/:version"
                 component={ChartView}
               />
-              <Route exact={true} path="/services" component={ServiceListContainer} />
               <Route exact={true} path="/services" component={ServiceCatalogContainer} />
               <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
               <Route exact={true} path="/repos" component={RepoListContainer} />

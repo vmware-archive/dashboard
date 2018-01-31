@@ -72,6 +72,7 @@ interface IBrokerViewDispatch {
   getInstances: () => Promise<IServiceInstance[]>;
   getPlans: () => Promise<IServicePlan[]>;
 }
+
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatch {
   return {
     getBindings: async () => {
@@ -129,6 +130,24 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
       {},
     );
 
+    const plansIndexedByClassName = plans.reduce<{ [key: string]: IServicePlan[] }>(
+      (carry, plan) => {
+        const className = plan.spec.clusterServiceClassRef.name;
+        const svcClass = classes.find(cls => cls.metadata.name === className);
+
+        // ServiceClasses may not have been retreived yet
+        if (svcClass) {
+          const svcClassExternalName = svcClass.spec.externalName;
+          if (!carry[svcClassExternalName]) {
+            carry[svcClassExternalName] = [];
+          }
+          carry[svcClassExternalName].push(plan);
+        }
+        return carry;
+      },
+      {},
+    );
+
     return (
       <div className="broker">
         {broker && (
@@ -178,6 +197,32 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                 ))}
               </tbody>
             </table>
+            <h3>Classes</h3>
+            <p>Classes of services available from this broker</p>
+            <table className="classes">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                {classes.map(svcClass => {
+                  const { externalName } = svcClass.spec;
+                  return (
+                    <tr key={svcClass.metadata.uid}>
+                      <td>{svcClass.spec.externalName}</td>
+                      <td>
+                        <Link to={`${window.location.pathname}/${externalName}`}>
+                          Available Plans
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
             <h2>Plans</h2>
             <div>
               <span style={{ color: "green" }}>✓</span> = free!
