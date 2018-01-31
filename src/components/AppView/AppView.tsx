@@ -19,27 +19,24 @@ class AppView extends React.Component<IAppViewProps> {
     getDeployment(namespace, deployname);
   }
 
-  public componentWillReceiveProps(nextProps: IAppViewProps) {
-  }
-
   public render() {
     const { releasename, deployment } = this.props;
-    console.log("render");
-    console.log(releasename);
-    console.log(deployment);
 
-    if (!deployment) {
-      console.log("loading...")
-      //return <div>Loading</div>;
+    if (!deployment.metadata.name) {
+      return <div>Loading</div>;
     }
-    
     return (
       <section className="AppView padding-b-big">
         <AppHeader releasename={releasename} />
         <main>
           <div className="container container-fluid">
             <div className="row">
-              <h5>Deployment: {deployment}</h5>
+              <dl>
+                <dt key={deployment.metadata.name}>Name: {deployment.metadata.name}</dt>
+                <dd key={deployment.metadata.namespace}>
+                  NameSpace: {deployment.metadata.namespace}
+                </dd>
+              </dl>
             </div>
           </div>
         </main>
