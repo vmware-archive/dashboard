@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 
 import { hapi } from "../shared/hapi/release";
-import { IApp, IHelmRelease, IHelmReleaseConfigMap, IStoreState } from "../shared/types";
+import { IApp, IDeployment, IHelmRelease, IHelmReleaseConfigMap, IStoreState } from "../shared/types";
 import * as url from "../shared/url";
 
 export const requestApps = createAction("REQUEST_APPS");
@@ -13,13 +13,30 @@ export const receiveApps = createAction("RECEIVE_APPS", (apps: IApp[]) => {
     type: "RECEIVE_APPS",
   };
 });
+export const requestDeployment = createAction("REQUEST_DEPLOYMENT");
+export const receiveDeployment = createAction(
+  "RECEIVE_DEPLOYMENT", 
+  (deployment: IDeployment) => ({
+    deployment,
+    type: "RECEIVE_DEPLOYMENT",
+}));
 
-const allActions = [requestApps, receiveApps].map(getReturnOfExpression);
+const allActions = [requestApps, receiveApps, requestDeployment, receiveDeployment].map(getReturnOfExpression);
 export type AppsAction = typeof allActions[number];
 
 export function getHelmReleaseInfo(releaseName: string) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     return Promise.resolve({});
+  };
+}
+
+export function getDeployment(namespace: string, name: string) {
+  console.log("getDeployment");
+  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
+    dispatch(requestDeployment());
+    return fetch(url.api.deployments.listDetail(namespace, name))
+      .then(response => response.json())
+      .then(json => dispatch(receiveDeployment(json)));
   };
 }
 
