@@ -22,7 +22,11 @@ class Root extends React.Component {
           <Layout>
             <section className="routes">
               <Route exact={true} path="/" component={AppList} />
-              <Route exact={true} path="/apps/:namespace/:releasename/:chartname" component={AppView} />
+              <Route
+                exact={true}
+                path="/apps/:namespace/:releasename/:chartname"
+                component={AppView}
+              />
               <Route exact={true} path="/charts" component={ChartList} />
               <Route exact={true} path="/charts/:repo" component={ChartList} />
               <Route exact={true} path="/charts/:repo/:id" component={ChartView} />
