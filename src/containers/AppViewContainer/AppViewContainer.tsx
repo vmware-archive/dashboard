@@ -16,18 +16,15 @@ interface IRouteProps {
 }
 
 function mapStateToProps({ deployment }: IStoreState, { match: { params } }: IRouteProps) {
-  console.log("mapStateToProps");
-  console.log(deployment);
   return {
+    chartname: params.chartname,
     deployment,
     namespace: params.namespace,
     releasename: params.releasename,
-    chartname: params.chartname,
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
-  console.log("mapDispatchToProps");
   return {
     getDeployment: (namespace: string, deployname: string) =>
       dispatch(actions.apps.getDeployment(namespace, deployname)),

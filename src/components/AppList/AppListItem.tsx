@@ -14,17 +14,16 @@ interface IAppListItemProps {
 class AppListItem extends React.Component<IAppListItemProps> {
   public render() {
     const { app } = this.props;
-    let release : hapi.release.Release | undefined;
+    let release: hapi.release.Release | undefined;
     release = app.data;
     let iconSrc: string | undefined;
     let chartName: string | undefined;
     let nameSpace: string | undefined;
     if (release && release.chart && release.chart.metadata) {
-      console.log(release.chart.metadata.name);
       chartName = `${release.chart.metadata.name}`;
       nameSpace = `${release.namespace}`;
     }
-    
+
     if (app.repo && release && release.chart && release.chart.metadata) {
       iconSrc = `assets/${app.repo.name}/${release.chart.metadata.name}`;
     }
