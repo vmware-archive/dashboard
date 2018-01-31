@@ -1,7 +1,10 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { Dispatch } from "redux";
+<<<<<<< HEAD
 import ProvisionButton from "./../components/ProvisionButton";
+=======
+>>>>>>> wip
 
 import { Link } from "react-router-dom";
 import { getType } from "typesafe-actions";

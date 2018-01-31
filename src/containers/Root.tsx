@@ -11,7 +11,11 @@ import { ServiceBrokerList } from "../components/ServiceBrokerList";
 import configureStore from "../store";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
-import { ServiceListContainer } from "./ServiceListContainer";
+
+import BrokerView from "./BrokerView";
+import RepoFormContainer from "./RepoFormContainer";
+import RepoListContainer from "./RepoListContainer";
+import ServiceCatalogContainer from "./ServiceCatalogContainer";
 
 import BrokerView from "./BrokerView";
 import RepoFormContainer from "./RepoFormContainer";
@@ -47,6 +51,15 @@ class Root extends React.Component {
                 component={ChartView}
               />
               <Route exact={true} path="/services" component={ServiceListContainer} />
+              <Route exact={true} path="/services" component={ServiceCatalogContainer} />
+              <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
+              <Route exact={true} path="/repos" component={RepoListContainer} />
+              <Route exact={true} path="/repos/add" component={RepoFormContainer} />
+              <Route
+                exact={true}
+                path="/brokers"
+                render={() => <ServiceBrokerList brokers={[]} />}
+              />
             </section>
           </Layout>
         </ConnectedRouter>
