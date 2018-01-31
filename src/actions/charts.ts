@@ -79,19 +79,12 @@ export function fetchChartVersionsAndSelectVersion(id: string, version?: string)
   };
 }
 
-export function selectChartVersionAndGetReadme(cv: IChartVersion) {
+export function selectChartVersionAndGetFiles(cv: IChartVersion) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     const id = `${cv.relationships.chart.data.repo.name}/${cv.relationships.chart.data.name}`;
     dispatch(selectChartVersion(cv));
+    dispatch(getChartValues(id, cv.attributes.version));
     return dispatch(getChartReadme(id, cv.attributes.version));
-  };
-}
-
-export function selectChartVersionAndGetValues(cv: IChartVersion) {
-  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
-    const id = `${cv.relationships.chart.data.repo.name}/${cv.relationships.chart.data.name}`;
-    dispatch(selectChartVersion(cv));
-    return dispatch(getChartValues(id, cv.attributes.version));
   };
 }
 

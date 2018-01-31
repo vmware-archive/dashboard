@@ -21,8 +21,7 @@ interface IChartViewProps {
   push: (location: string) => RouterAction;
   isFetching: boolean;
   selected: IChartState["selected"];
-  selectChartVersionAndGetReadme: (version: IChartVersion) => Promise<{}>;
-  selectChartVersionAndGetValues: (version: IChartVersion) => Promise<{}>;
+  selectChartVersionAndGetFiles: (version: IChartVersion) => Promise<{}>;
   version: string | undefined;
 }
 
@@ -33,13 +32,12 @@ class ChartView extends React.Component<IChartViewProps> {
   }
 
   public componentWillReceiveProps(nextProps: IChartViewProps) {
-    const { selectChartVersionAndGetReadme, selectChartVersionAndGetValues, version } = this.props;
+    const { selectChartVersionAndGetFiles, version } = this.props;
     const { versions } = this.props.selected;
     if (nextProps.version !== version) {
       const cv = versions.find(v => v.attributes.version === nextProps.version);
       if (cv) {
-        selectChartVersionAndGetReadme(cv);
-        selectChartVersionAndGetValues(cv);
+        selectChartVersionAndGetFiles(cv);
       } else {
         throw new Error("could not find chart");
       }
