@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { Dispatch } from "redux";
+import ProvisionButton from "./../components/ProvisionButton";
 
 import { Link } from "react-router-dom";
 import { getType } from "typesafe-actions";
@@ -100,6 +101,8 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatc
       dispatch(actions.catalog.receivePlans(plans));
       return plans;
     },
+    // provision: (releaseName: string, namespace: string) =>
+    // dispatch(actions.catalog.provision(releaseName, namespace)),
   };
 }
 
@@ -113,7 +116,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
   }
 
   public render() {
-    const { bindings, broker, classes, plans, instances } = this.props;
+    const { bindings, broker, plans, classes, instances, provision, push } = this.props;
     const classesIndexedByName = classes.reduce<{ [key: string]: IServiceClass }>(
       (carry, serviceClass) => {
         const { name } = serviceClass.metadata;
@@ -210,9 +213,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                         to={`/services/brokers/${broker.metadata.name}/classes/${serviceClass &&
                           serviceClass.spec.externalName}/plans/${plan.spec.externalName}`}
                       >
-                        <button className="button button-primary" style={{ width: "fit-content" }}>
-                          Provision
-                        </button>
+                        <ProvisionButton push={push} provision={provision} />
                       </Link>
                     </div>
                   </div>

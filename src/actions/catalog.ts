@@ -8,6 +8,8 @@ import {
   IServiceInstance,
   IServicePlan,
 } from "../shared/ServiceCatalog";
+import { IStoreState } from "../shared/types";
+import * as url from "../shared/url";
 
 export const checkCatalogInstall = createAction("CHECK_INSTALL");
 export const installed = createAction("INSTALLED");
@@ -53,5 +55,34 @@ const actions = [
   requestClasses,
   receiveClasses,
 ].map(getReturnOfExpression);
+
+export function provision(releaseName: string, namespace: string) {
+  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
+    return fetch(url.api.serviceinstances.create(namespace), {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+
+      body: JSON.stringify({
+        apiVersion: "servicecatalog.k8s.io/v1beta1",
+        kind: "ServiceInstance",
+        metadata: {
+          name: releaseName,
+        },
+        spec: {
+          clusterServiceClassExternalName: "azure-mysqldb",
+          clusterServicePlanExternalName: "standard100",
+          parameters: {},
+        },
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.status === "Failure") {
+          throw new Error(json.message);
+        }
+        return json;
+      });
+  };
+}
 
 export type ServiceCatalogAction = typeof actions[number];
