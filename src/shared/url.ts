@@ -53,4 +53,10 @@ export const api = {
     sync: (broker: IServiceBroker) =>
       `${api.clusterservicebrokers.base}/clusterservicebrokers/${broker.metadata.name}`,
   },
+  deployments: {
+    list: (namespace?: string) =>
+      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments`,
+    listDetail: (namespace?: string, name?: string) =>
+      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments/${name}`,
+  },
 };
