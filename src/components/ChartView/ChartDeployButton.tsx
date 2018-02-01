@@ -129,8 +129,8 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
     const { version, deployChart, push } = this.props;
     this.setState({ isDeploying: true });
     const { releaseName, namespace, values } = this.state;
-    deployChart(version, releaseName, namespace, values)
-      .then(() => push(`/apps/${releaseName}`))
+    deployChart(version, releaseName, namespace)
+      .then(() => push(`/apps/${namespace}/${namespace}-${releaseName}`))
       .catch(err => this.setState({ isDeploying: false, error: err.toString() }));
   };
 
