@@ -18,11 +18,6 @@ import RepoFormContainer from "./RepoFormContainer";
 import RepoListContainer from "./RepoListContainer";
 import ServiceCatalogContainer from "./ServiceCatalogContainer";
 
-import BrokerView from "./BrokerView";
-import RepoFormContainer from "./RepoFormContainer";
-import RepoListContainer from "./RepoListContainer";
-import ServiceCatalogContainer from "./ServiceCatalogContainer";
-
 const history = createHistory();
 const store = configureStore(history);
 
@@ -41,18 +36,14 @@ class Root extends React.Component {
               <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
               <Route exact={true} path="/repos" component={RepoListContainer} />
               <Route exact={true} path="/repos/add" component={RepoFormContainer} />
-              <Route
-                exact={true}
-                path="/brokers"
-                render={() => <ServiceBrokerList brokers={[]} />}
-              />
+              {/* <Route exact={true} path="/brokers" render={() => <ServiceBrokerList brokers={[]} />} />  */}
               <Route
                 exact={true}
                 path="/charts/:repo/:id/versions/:version"
                 component={ChartView}
               />
-              <Route exact={true} path="/services" component={ServiceCatalogContainer} />
-              <Route exact={true} path="/services/brokers/:brokerName" component={BrokerView} />
+              {/* <Route exact={true} path="/services" component={ServiceCatalogContainer} /> */}
+              {/* <Route exact={true} path="/services/brokers/:brokerName" component={BrokerView} /> */}
               <Route
                 exact={true}
                 path="/services/brokers/:brokerName/:className"

@@ -1,14 +1,12 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { Dispatch } from "redux";
-<<<<<<< HEAD
 import ProvisionButton from "./../components/ProvisionButton";
-=======
->>>>>>> wip
 
 import { Link } from "react-router-dom";
 import { getType } from "typesafe-actions";
 import actions from "../actions";
+import { installed } from "../actions/catalog";
 import { Card } from "../components/Card";
 import {
   IServiceBinding,
@@ -34,6 +32,8 @@ interface IBrokerViewProps {
   classes: IServiceClass[];
   instances: IServiceInstance[];
   plans: IServicePlan[];
+  provision: () => any;
+  push: () => any;
 }
 
 function mapStateToProps(
@@ -63,6 +63,8 @@ function mapStateToProps(
     classes,
     instances,
     plans,
+    provision: () => console.log("provision"),
+    push: () => console.log("push"),
   };
 }
 
@@ -119,6 +121,24 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
         {broker && (
           <div>
             <h1>{broker.metadata.name}</h1>
+            <h3>Instances</h3>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {instances.length > 0 &&
+                instances.map(instance => {
+                  const card = (
+                    <Card
+                      header={`${instance.metadata.namespace}/${instance.metadata.name}`}
+                      button={<div />}
+                      body={
+                        <pre style={{ overflowX: "scroll" }}>
+                          <code>{JSON.stringify(instance.status.conditions, null, 2)}</code>
+                        </pre>
+                      }
+                    />
+                  );
+                  return card;
+                })}
+            </div>
             <h3>Bindings</h3>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {bindings.length > 0 &&

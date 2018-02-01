@@ -191,6 +191,7 @@ export interface IServicePlan {
 export interface IServiceInstance {
   metadata: {
     name: string;
+    namespace: string;
     selfLink: string;
     uid: string;
     resourceVersion: string;
@@ -209,6 +210,7 @@ export interface IServiceInstance {
       name: string;
     };
   };
+  status: { conditions: ICondition[] };
 }
 
 export interface IServiceBinding {

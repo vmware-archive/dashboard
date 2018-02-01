@@ -10,7 +10,14 @@ import "brace/theme/xcode";
 interface IProvisionButtonProps {
   plans: IServicePlan[];
   classes: IServiceClass[];
-  provision: (releaseName: string, namespace: string) => Promise<{}>; // , svcPlan: IServicePlan, svcClass: IServiceClass, parameters: string
+  selectedClass?: IServiceClass;
+  selectedPlan?: IServicePlan;
+  provision: (
+    releaseName: string,
+    namespace: string,
+    className: string,
+    planName: string,
+  ) => Promise<{}>; // , svcPlan: IServicePlan, svcClass: IServiceClass, parameters: string
   push: (location: string) => RouterAction;
 }
 
@@ -20,8 +27,8 @@ interface IProvisionButtonState {
   // deployment options
   releaseName: string;
   namespace: string;
-  svcPlan: IServicePlan | null;
-  svcClass: IServiceClass | null;
+  selectedPlan: IServicePlan | null;
+  selectedClass: IServiceClass | null;
   parameters: string;
   error: string | null;
 }
@@ -34,12 +41,13 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
     namespace: "default",
     parameters: "",
     releaseName: "",
-    svcClass: null,
-    svcPlan: null,
+    selectedClass: this.props.selectedClass || null,
+    selectedPlan: this.props.selectedPlan || null,
   };
 
   public render() {
     const { plans, classes } = this.props;
+    const { selectedClass, selectedPlan } = this.state;
     return (
       <div className="ProvisionButton">
         {this.state.isProvisioning && <div>Provisioning...</div>}
@@ -78,16 +86,36 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
             </div>
             <div>
               <label htmlFor="classes">Classes</label>
-              <select>
-                <option>Test Class</option>
-                {classes.map(c => <option key={c.spec.externalName} />)}
+              <select onChange={this.onClassChange}>
+                {classes.map(c => (
+                  <option
+                    key={c.spec.externalName}
+                    selected={c.metadata.name === (selectedClass && selectedClass.metadata.name)}
+                    value={c.spec.externalName}
+                  >
+                    {c.spec.externalName}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
               <label htmlFor="plans">Plans</label>
-              <select>
-                <option>Test Plan</option>
-                {plans.map(p => <option key={p.spec.externalName} />)}
+              <select onChange={this.onPlanChange}>
+                {plans
+                  .filter(
+                    plan =>
+                      plan.spec.clusterServiceClassRef.name ===
+                      (selectedClass && selectedClass.metadata.name),
+                  )
+                  .map(p => (
+                    <option
+                      key={p.spec.externalName}
+                      value={p.spec.externalName}
+                      selected={p.metadata.name === (selectedPlan && selectedPlan.metadata.name)}
+                    >
+                      {p.spec.externalName}
+                    </option>
+                  ))}
               </select>
             </div>
             <div style={{ marginBottom: "1em" }}>
@@ -133,10 +161,18 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
     e.preventDefault();
     const { provision, push } = this.props;
     this.setState({ isProvisioning: true });
-    const { releaseName, namespace } = this.state;
-    provision(releaseName, namespace)
-      .then(() => push(`/services`))
-      .catch(err => this.setState({ isProvisioning: false, error: err.toString() }));
+    const { releaseName, namespace, selectedClass, selectedPlan } = this.state;
+    if (selectedClass && selectedPlan) {
+      console.log("PROVISON");
+      provision(
+        releaseName,
+        namespace,
+        selectedClass.spec.externalName,
+        selectedPlan.spec.externalName,
+      )
+        .then(() => push(`/services`))
+        .catch(err => this.setState({ isProvisioning: false, error: err.toString() }));
+    }
   };
 
   public handleReleaseNameChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -148,6 +184,17 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
   public handleParametersChange = (parameter: string) => {
     this.setState({ parameters: parameter });
   };
+
+  public onClassChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    this.setState({
+      selectedClass:
+        this.props.classes.find(svcClass => svcClass.spec.externalName === e.target.value) || null,
+    });
+  public onPlanChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    this.setState({
+      selectedPlan:
+        this.props.plans.find(plan => plan.spec.externalName === e.target.value) || null,
+    });
 }
 
 export default ProvisionButton;

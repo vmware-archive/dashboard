@@ -58,7 +58,12 @@ const actions = [
   receiveClasses,
 ].map(getReturnOfExpression);
 
-export function provision(releaseName: string, namespace: string) {
+export function provision(
+  releaseName: string,
+  namespace: string,
+  className: string,
+  planName: string,
+) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     return fetch(url.api.serviceinstances.create(namespace), {
       headers: { "Content-Type": "application/json" },
@@ -71,8 +76,11 @@ export function provision(releaseName: string, namespace: string) {
           name: releaseName,
         },
         spec: {
-          clusterServiceClassExternalName: "azure-mysqldb",
-          clusterServicePlanExternalName: "standard100",
+          // clusterServiceClassExternalName: "azure-mysqldb",
+          // clusterServicePlanExternalName: "standard100",
+
+          clusterServiceClassExternalName: className,
+          clusterServicePlanExternalName: planName,
           parameters: {},
         },
       }),

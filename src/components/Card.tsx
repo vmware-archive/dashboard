@@ -4,14 +4,17 @@ import { Link } from "react-router-dom";
 interface ICardProps {
   header: string;
   body: string | JSX.Element;
-  buttonText: string;
-  onClick?: () => Promise<any>;
+  button?: JSX.Element;
+  buttonText?: string | JSX.Element;
+  onClick?: () => (...args: any[]) => Promise<any>;
   linkTo?: string;
 }
 export const Card = (props: ICardProps) => {
   const { header, body, buttonText, onClick, linkTo } = props;
-  let button = (
-    <button className="button button-primary" style={{ width: "fit-content" }}>
+  let button = props.button ? (
+    props.button
+  ) : (
+    <button onClick={onClick} className="button button-primary" style={{ width: "fit-content" }}>
       {buttonText}
     </button>
   );

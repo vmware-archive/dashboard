@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { Link } from "react-router-dom";
+import { push, RouterAction } from "react-router-redux";
 import { Dispatch } from "redux";
 
 import { Card } from "../components/Card";
@@ -8,6 +9,7 @@ import { IServiceClass, IServicePlan, ServiceCatalog } from "../shared/ServiceCa
 import { IStoreState } from "../shared/types";
 
 import actions from "../actions";
+import ProvisionButton from "../components/ProvisionButton";
 
 interface IRouteProps {
   match: {
@@ -28,36 +30,60 @@ interface IClassViewProps {
 
 interface IClassViewDispatch {
   getCatalog: () => Promise<any>;
+  provision: (
+    instanceName: string,
+    namespace: string,
+    className: string,
+    planName: string,
+  ) => Promise<any>;
+  push: (location: string) => RouterAction;
 }
 
 class ClassView extends React.Component<IClassViewProps & IClassViewDispatch> {
+  public state = {
+    instanceName: "",
+    namespace: "",
+  };
+
   public componentDidMount() {
     this.props.getCatalog();
   }
 
   public render() {
-    const { classes, className, plans } = this.props;
+    const { classes, className, plans, svcClass } = this.props;
+    const classPlans = svcClass
+      ? plans.filter(plan => plan.spec.clusterServiceClassRef.name === svcClass.metadata.name)
+      : [];
 
     return (
       <div className="class-view">
         <h3>Plans: {className}</h3>
         <p>Service Plans available for provisioning under {className}</p>
         <div className="plans-list" style={{ display: "flex", flexWrap: "wrap" }}>
-          {plans.map(plan => {
-            const serviceClass = classes.find(
-              potential => potential.metadata.name === plan.spec.clusterServiceClassRef.name,
-            );
-            const card = (
-              <Card
-                key={plan.spec.externalID}
-                header={plan.spec.externalName}
-                body={plan.spec.description}
-                buttonText="Provision"
-                linkTo={`${window.location.pathname}/${plan.spec.externalName}`}
-              />
-            );
-            return card;
-          })}
+          {svcClass &&
+            classPlans.map(plan => {
+              const serviceClass = classes.find(
+                potential => potential.metadata.name === plan.spec.clusterServiceClassRef.name,
+              );
+              const card = (
+                <Card
+                  key={plan.spec.externalID}
+                  header={plan.spec.externalName}
+                  body={plan.spec.description}
+                  button={
+                    <ProvisionButton
+                      selectedClass={serviceClass}
+                      selectedPlan={plan}
+                      plans={plans}
+                      classes={classes}
+                      provision={this.props.provision}
+                      push={this.props.push}
+                    />
+                  }
+                />
+              );
+              return card;
+            })}
         </div>
       </div>
     );
@@ -68,22 +94,27 @@ export default connect(
     const svcClass = catalog.classes.find(
       potential => !!potential.spec.externalName.match(new RegExp(params.className, "i")),
     );
-    const plans = svcClass
-      ? catalog.plans.filter(
-          plan => plan.spec.clusterServiceClassRef.name === svcClass.metadata.name,
-        )
-      : [];
     return {
       brokerName: params.brokerName,
       className: params.className,
       classes: catalog.classes,
-      plans,
+      plans: catalog.plans,
       svcClass,
     };
   },
-  (dispatch: Dispatch<IStoreState>): IClassViewDispatch => {
+  (dispatch: Dispatch<IStoreState>) => {
     return {
       getCatalog: () => dispatch(actions.catalog.getCatalog()),
+      provision: async (
+        instanceName: string,
+        namespace: string,
+        className: string,
+        planName: string,
+      ) => {
+        // return async () =>
+        return dispatch(actions.catalog.provision(instanceName, namespace, className, planName));
+      },
+      push: (location: string) => dispatch(push(location)),
     };
   },
 )(ClassView);
