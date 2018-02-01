@@ -19,6 +19,7 @@
     "react-test-renderer": "^16.2.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "text-encoding": "^0.6.4",
     "ts-jest": "^22.0.1",
     "typesafe-actions": "^1.1.2"
   },

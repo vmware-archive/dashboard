@@ -62,6 +62,36 @@ export interface IDeployment {
   };
 }
 
+export interface IPort {
+  name: string;
+  port: number;
+  protocl: string;
+  targetPort: string;
+}
+
+export interface IResource {
+  type: string;
+  resourceType: string;
+  spec: {
+    clusterIP: string;
+    type: string;
+    ports: IPort[];
+  };
+  metadata: {
+    name: string;
+    namespace: string;
+    selfLink: string;
+    uid: string;
+    resourceVersion: string;
+    creationTimestamp: string;
+    annotations: string;
+  };
+}
+
+export interface IResourceState {
+  items: IResource[];
+}
+
 export interface IApp {
   type: string;
   data: hapi.release.Release;

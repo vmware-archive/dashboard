@@ -17,10 +17,8 @@ class AppListItem extends React.Component<IAppListItemProps> {
     let release: hapi.release.Release | undefined;
     release = app.data;
     let iconSrc: string | undefined;
-    let chartName: string | undefined;
     let nameSpace: string | undefined;
     if (release && release.chart && release.chart.metadata) {
-      chartName = `${release.chart.metadata.name}`;
       nameSpace = `${release.namespace}`;
     }
 
@@ -29,7 +27,7 @@ class AppListItem extends React.Component<IAppListItemProps> {
     }
     return (
       <div className="AppListItem padding-normal margin-big elevation-5">
-        <Link to={`/apps/` + nameSpace + `/` + release.name + `/` + chartName}>
+        <Link to={`/apps/` + nameSpace + `/` + release.name}>
           <div className="AppListList__details">
             <ChartIcon icon={iconSrc} />
             <h6>{release.name}</h6>

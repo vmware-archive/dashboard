@@ -31,11 +31,4 @@ export const api = {
         ",",
       )})`,
   },
-
-  deployments: {
-    list: (namespace?: string) =>
-      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments`,
-    listDetail: (namespace?: string, name?: string) =>
-      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments/${name}`,
-  },
 };
