@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 
 import { AppRepository } from "../shared/AppRepository";
-import { IAppRepository } from "../shared/types";
+import { IAppRepository, IStoreState } from "../shared/types";
 
 export const addRepo = createAction("ADD_REPO");
 export const addedRepo = createAction("ADDED_REPO", (added: IAppRepository) => ({

@@ -14,14 +14,11 @@ import {
 
 import { ServiceBrokerList } from "../components/ServiceBrokerList";
 import { IServiceCatalogState } from "../reducers/catalog";
+import { Card } from "./Card";
 
 export interface IServiceCatalogDispatch {
   checkCatalogInstalled: () => Promise<boolean>;
-  getBindings: () => Promise<IServiceBinding[]>;
-  getBrokers: () => Promise<IServiceBroker[]>;
-  getClasses: () => Promise<IServiceClass[]>;
-  getInstances: () => Promise<IServiceInstance[]>;
-  getPlans: () => Promise<IServicePlan[]>;
+  getCatalog: () => Promise<any>;
 }
 
 export class ServiceCatalogView extends React.Component<
@@ -29,11 +26,7 @@ export class ServiceCatalogView extends React.Component<
 > {
   public async componentDidMount() {
     this.props.checkCatalogInstalled();
-    this.props.getBindings();
-    this.props.getBrokers();
-    this.props.getClasses();
-    this.props.getInstances();
-    this.props.getPlans();
+    this.props.getCatalog();
   }
 
   public render() {
@@ -55,24 +48,6 @@ export class ServiceCatalogView extends React.Component<
             <ServiceBrokerList brokers={this.props.brokers} />
           </div>
         )}
-        <h2>Bindings</h2>
-        <dl>
-          {bindings.length > 0 &&
-            bindings.map(binding => {
-              return [
-                <dt key={binding.metadata.name}>{binding.metadata.name}</dt>,
-                <dd key={binding.spec.instanceRef.name}>
-                  Instance: {binding.spec.instanceRef.name}
-                </dd>,
-                <dd key={binding.spec.secretName}>Secret: {binding.spec.secretName}</dd>,
-                <dd key={binding.spec.secretDatabase}>Database: {binding.spec.secretDatabase}</dd>,
-                <dd key={binding.spec.secretHost}>Host: {binding.spec.secretHost}</dd>,
-                <dd key={binding.spec.secretPassword}>Password: {binding.spec.secretPassword}</dd>,
-                <dd key={binding.spec.secretPort}>Port: {binding.spec.secretPort}</dd>,
-                <dd key={binding.spec.secretUsername}>Username: {binding.spec.secretUsername}</dd>,
-              ];
-            })}
-        </dl>
       </div>
     );
   }

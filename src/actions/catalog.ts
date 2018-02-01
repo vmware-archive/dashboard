@@ -1,4 +1,5 @@
 import axios from "axios";
+import { disconnect } from "cluster";
 import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 import {
@@ -7,6 +8,7 @@ import {
   IServiceClass,
   IServiceInstance,
   IServicePlan,
+  ServiceCatalog,
 } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
 import * as url from "../shared/url";
@@ -86,3 +88,58 @@ export function provision(releaseName: string, namespace: string) {
 }
 
 export type ServiceCatalogAction = typeof actions[number];
+
+export function getBindings() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestBindings());
+    const bindings = await ServiceCatalog.getServiceBindings();
+    dispatch(receiveBindings(bindings));
+    return bindings;
+  };
+}
+
+export function getBrokers() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestBrokers());
+    const brokers = await ServiceCatalog.getServiceBrokers();
+    dispatch(receiveBrokers(brokers));
+    return brokers;
+  };
+}
+
+export function getClasses() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestClasses());
+    const classes = await ServiceCatalog.getServiceClasses();
+    dispatch(receiveClasses(classes));
+    return classes;
+  };
+}
+
+export function getInstances() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestInstances());
+    const instances = await ServiceCatalog.getServiceInstances();
+    dispatch(receiveInstances(instances));
+    return instances;
+  };
+}
+
+export function getPlans() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestPlans());
+    const plans = await ServiceCatalog.getServicePlans();
+    dispatch(receivePlans(plans));
+    return plans;
+  };
+}
+
+export function getCatalog() {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(getBindings());
+    dispatch(getBrokers());
+    dispatch(getClasses());
+    dispatch(getInstances());
+    dispatch(getPlans());
+  };
+}

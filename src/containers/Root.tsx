@@ -13,6 +13,7 @@ import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 
 import BrokerView from "./BrokerView";
+import ClassView from "./ClassView";
 import RepoFormContainer from "./RepoFormContainer";
 import RepoListContainer from "./RepoListContainer";
 import ServiceCatalogContainer from "./ServiceCatalogContainer";
@@ -51,7 +52,12 @@ class Root extends React.Component {
                 component={ChartView}
               />
               <Route exact={true} path="/services" component={ServiceCatalogContainer} />
-              <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
+              <Route exact={true} path="/services/brokers/:brokerName" component={BrokerView} />
+              <Route
+                exact={true}
+                path="/services/brokers/:brokerName/:className"
+                component={ClassView}
+              />
               <Route exact={true} path="/repos" component={RepoListContainer} />
               <Route exact={true} path="/repos/add" component={RepoFormContainer} />
               <Route
