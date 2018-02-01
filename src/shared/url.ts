@@ -11,6 +11,12 @@ export const app = {
 };
 
 export const api = {
+  apprepostories: {
+    base: `/api/kube/apis/kubeapps.com/v1alpha1`,
+    create: (namespace = "default") =>
+      `${api.apprepostories.base}/namespaces/${namespace}/apprepositories`,
+  },
+
   charts: {
     base: "/api/chartsvc/v1",
     get: (id: string) => `${api.charts.base}/charts/${id}`,
@@ -36,12 +42,6 @@ export const api = {
       )})`,
   },
 
-  apprepostories: {
-    base: `/api/kube/apis/kubeapps.com/v1alpha1`,
-    create: (namespace = "default") =>
-      `${api.apprepostories.base}/namespaces/${namespace}/apprepositories`,
-  },
-
   serviceinstances: {
     base: `/api/kube/apis/servicecatalog.k8s.io/v1beta1`,
     create: (namespace = "default") =>
@@ -52,11 +52,5 @@ export const api = {
     base: `/api/kube/apis/servicecatalog.k8s.io/v1beta1`,
     sync: (broker: IServiceBroker) =>
       `${api.clusterservicebrokers.base}/clusterservicebrokers/${broker.metadata.name}`,
-  },
-  deployments: {
-    list: (namespace?: string) =>
-      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments`,
-    listDetail: (namespace?: string, name?: string) =>
-      `/api/kube/apis/extensions/v1beta1/namespaces/${namespace}/deployments/${name}`,
   },
 };

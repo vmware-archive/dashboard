@@ -45,9 +45,16 @@ class AppList extends React.Component<IAppListProps> {
     } else {
       return (
         <div>
-          {items.map(r => {
-            return <AppListItem key={r.data.name} app={r} />;
-          })}
+          <div className="padding-normal">
+            <Link className="button button-primary" to="/charts">
+              deploy another one
+            </Link>
+          </div>
+          <div>
+            {items.map(r => {
+              return <AppListItem key={r.data.name} app={r} />;
+            })}
+          </div>
         </div>
       );
     }
