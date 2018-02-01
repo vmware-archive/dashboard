@@ -10,7 +10,7 @@ import "brace/theme/xcode";
 interface IProvisionButtonProps {
   plans: IServicePlan[];
   classes: IServiceClass[];
-  provision: (releaseName: string, namespace: string) => Promise<{}>; // , plans: IServicePlan, classes: IServiceClass, parameters: string
+  provision: (releaseName: string, namespace: string) => Promise<{}>; // , svcPlan: IServicePlan, svcClass: IServiceClass, parameters: string
   push: (location: string) => RouterAction;
 }
 
@@ -20,24 +20,23 @@ interface IProvisionButtonState {
   // deployment options
   releaseName: string;
   namespace: string;
-  plan: IServicePlan;
-  class: IServiceClass;
+  svcPlan: IServicePlan | null;
+  svcClass: IServiceClass | null;
   parameters: string;
   error: string | null;
 }
 
 class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionButtonState> {
-  public state: IProvisionButtonState;
-  //  = {
-  //   class: ,
-  //   error: null,
-  //   isProvisioning: false,
-  //   modalIsOpen: false,
-  //   namespace: "default",
-  //   parameters: "",
-  //   plan: null,
-  //   releaseName: "",
-  // };
+  public state: IProvisionButtonState = {
+    error: null,
+    isProvisioning: false,
+    modalIsOpen: false,
+    namespace: "default",
+    parameters: "",
+    releaseName: "",
+    svcClass: null,
+    svcPlan: null,
+  };
 
   public render() {
     const { plans, classes } = this.props;
