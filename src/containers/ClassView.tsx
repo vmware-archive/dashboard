@@ -35,6 +35,7 @@ interface IClassViewDispatch {
     namespace: string,
     className: string,
     planName: string,
+    parameters: {},
   ) => Promise<any>;
   push: (location: string) => RouterAction;
 }
@@ -110,10 +111,11 @@ export default connect(
         namespace: string,
         className: string,
         planName: string,
-      ) => {
-        // return async () =>
-        return dispatch(actions.catalog.provision(instanceName, namespace, className, planName));
-      },
+        parameters: {},
+      ) =>
+        dispatch(
+          actions.catalog.provision(instanceName, namespace, className, planName, parameters),
+        ),
       push: (location: string) => dispatch(push(location)),
     };
   },

@@ -63,6 +63,7 @@ export function provision(
   namespace: string,
   className: string,
   planName: string,
+  parameters: {},
 ) {
   return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
     return fetch(url.api.serviceinstances.create(namespace), {
@@ -81,7 +82,7 @@ export function provision(
 
           clusterServiceClassExternalName: className,
           clusterServicePlanExternalName: planName,
-          parameters: {},
+          parameters,
         },
       }),
     })

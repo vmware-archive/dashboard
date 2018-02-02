@@ -17,6 +17,7 @@ interface IProvisionButtonProps {
     namespace: string,
     className: string,
     planName: string,
+    parameters: {},
   ) => Promise<{}>; // , svcPlan: IServicePlan, svcClass: IServiceClass, parameters: string
   push: (location: string) => RouterAction;
 }
@@ -39,7 +40,7 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
     isProvisioning: false,
     modalIsOpen: false,
     namespace: "default",
-    parameters: "",
+    parameters: JSON.stringify({ resourceGroup: "default", location: "eastus" }, null, 2),
     releaseName: "",
     selectedClass: this.props.selectedClass || null,
     selectedPlan: this.props.selectedPlan || null,
@@ -119,7 +120,7 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
               </select>
             </div>
             <div style={{ marginBottom: "1em" }}>
-              <label htmlFor="values">Parameters</label>
+              <label htmlFor="values">Parameters (JSON)</label>
               <AceEditor
                 mode="json"
                 theme="xcode"
@@ -157,21 +158,26 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
     });
   };
 
-  public handleProvision = (e: React.FormEvent<HTMLFormElement>) => {
+  public handleProvision = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { provision, push } = this.props;
     this.setState({ isProvisioning: true });
-    const { releaseName, namespace, selectedClass, selectedPlan } = this.state;
-    if (selectedClass && selectedPlan) {
-      console.log("PROVISON");
-      provision(
-        releaseName,
-        namespace,
-        selectedClass.spec.externalName,
-        selectedPlan.spec.externalName,
-      )
-        .then(() => push(`/services`))
-        .catch(err => this.setState({ isProvisioning: false, error: err.toString() }));
+    const { releaseName, namespace, selectedClass, selectedPlan, parameters } = this.state;
+
+    try {
+      const parametersObject = JSON.parse(parameters);
+      if (selectedClass && selectedPlan) {
+        await provision(
+          releaseName,
+          namespace,
+          selectedClass.spec.externalName,
+          selectedPlan.spec.externalName,
+          parametersObject,
+        );
+        push(`/services`);
+      }
+    } catch (err) {
+      this.setState({ isProvisioning: false, error: err.toString() });
     }
   };
 

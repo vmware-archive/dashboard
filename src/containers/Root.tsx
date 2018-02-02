@@ -36,25 +36,15 @@ class Root extends React.Component {
               <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
               <Route exact={true} path="/repos" component={RepoListContainer} />
               <Route exact={true} path="/repos/add" component={RepoFormContainer} />
-              {/* <Route exact={true} path="/brokers" render={() => <ServiceBrokerList brokers={[]} />} />  */}
               <Route
                 exact={true}
                 path="/charts/:repo/:id/versions/:version"
                 component={ChartView}
               />
-              {/* <Route exact={true} path="/services" component={ServiceCatalogContainer} /> */}
-              {/* <Route exact={true} path="/services/brokers/:brokerName" component={BrokerView} /> */}
               <Route
                 exact={true}
                 path="/services/brokers/:brokerName/:className"
                 component={ClassView}
-              />
-              <Route exact={true} path="/repos" component={RepoListContainer} />
-              <Route exact={true} path="/repos/add" component={RepoFormContainer} />
-              <Route
-                exact={true}
-                path="/brokers"
-                render={() => <ServiceBrokerList brokers={[]} />}
               />
             </section>
           </Layout>
