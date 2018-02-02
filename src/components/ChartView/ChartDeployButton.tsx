@@ -87,7 +87,7 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
               />
             </div>
             <div style={{ marginBottom: "1em" }}>
-              <label htmlFor="values">Values</label>
+              <label htmlFor="values">Values (YAML)</label>
               <AceEditor
                 mode="yaml"
                 theme="xcode"
