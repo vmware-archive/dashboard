@@ -10,7 +10,7 @@ interface ICardProps {
   linkTo?: string;
 }
 
-const margin = "1em";
+const margin = "0.5em";
 
 export const CardContainer = (props: any) => {
   return (
@@ -46,8 +46,8 @@ export const Card = (props: ICardProps) => {
       }}
     >
       <h5 style={{ color: "#333", marginTop: 0 }}>{header}</h5>
-      <p style={{ color: "#666" }}>{body}</p>
-      <div style={{ textAlign: "right" }}>{button}</div>
+      <div style={{ color: "#666" }}>{body}</div>
+      <div style={{ textAlign: "right", marginTop: "0.5em" }}>{button}</div>
     </div>
   );
 };

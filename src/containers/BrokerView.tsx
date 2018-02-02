@@ -124,19 +124,36 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
             <Link to={window.location.pathname + "/classes"}>
               <button className="button button-primary">Provision New Service</button>
             </Link>
-            <h3>Instances</h3>
+            <h3>Service Instances</h3>
             <CardContainer>
               {instances.length > 0 &&
                 instances.map(instance => {
+                  const conditions = [...instance.status.conditions];
+                  const status = conditions.shift(); // first in list is most recent
+                  const statusMessage = status ? (
+                    <div>
+                      <p>
+                        <strong>{status.type}: </strong>
+                        <code>
+                          <span style={{ color: status.status.match(/true/i) ? "green" : "red" }}>
+                            {status.status}
+                          </span>
+                        </code>
+                      </p>
+                      <p>
+                        <strong>{status.reason}: </strong>
+                        <code>{status.message}</code>
+                      </p>
+                    </div>
+                  ) : (
+                    <div />
+                  );
+
                   const card = (
                     <Card
                       header={`${instance.metadata.namespace}/${instance.metadata.name}`}
                       button={<div />}
-                      body={
-                        <pre style={{ overflowX: "scroll" }}>
-                          <code>{JSON.stringify(instance.status.conditions, null, 2)}</code>
-                        </pre>
-                      }
+                      body={statusMessage}
                     />
                   );
                   return card;
@@ -146,23 +163,40 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
             <CardContainer>
               {bindings.length > 0 &&
                 bindings.map(binding => {
+                  const {
+                    instanceRef,
+                    secretName,
+                    secretDatabase,
+                    secretHost,
+                    secretPassword,
+                    secretPort,
+                    secretUsername,
+                  } = binding.spec;
+                  const statuses: Array<[string, string]> = [
+                    ["Instance", instanceRef.name],
+                    ["Secret", secretName],
+                    ["Database", secretDatabase],
+                    ["Host", secretHost],
+                    ["Password", secretPassword],
+                    ["Port", secretPort],
+                    ["Username", secretUsername],
+                  ];
                   const body = (
-                    <dl>
-                      <dt>Instance: </dt>
-                      <dd>{binding.spec.instanceRef.name}</dd>
-                      <dt>Secret: </dt>
-                      <dd>{binding.spec.secretName}</dd>
-                      <dt>Database:</dt>
-                      <dd>{binding.spec.secretDatabase}</dd>
-                      <dt>Host</dt>
-                      <dd>{binding.spec.secretHost}</dd>
-                      <dt>Password</dt>
-                      <dd>{binding.spec.secretPassword}</dd>
-                      <dt>Port</dt>
-                      <dd>{binding.spec.secretPort}</dd>
-                      <dt>Username</dt>
-                      <dd>{binding.spec.secretUsername}</dd>
-                    </dl>
+                    <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "column" }}>
+                      {statuses.map(statusPair => {
+                        const [key, value] = statusPair;
+                        return (
+                          <div key={key} style={{ display: "flex" }}>
+                            <strong key={key} style={{ flex: "0 0 5em" }}>
+                              {key}:
+                            </strong>
+                            <code key={value} style={{ flex: "1 1" }}>
+                              {value}
+                            </code>
+                          </div>
+                        );
+                      })}
+                    </div>
                   );
                   const card = (
                     <Card

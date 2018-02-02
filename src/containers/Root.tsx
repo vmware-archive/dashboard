@@ -1,7 +1,7 @@
 import createHistory from "history/createBrowserHistory";
 import * as React from "react";
 import { Provider } from "react-redux";
-import { Route } from "react-router";
+import { Route, RouteComponentProps } from "react-router";
 import { ConnectedRouter } from "react-router-redux";
 
 import { AppRepoForm } from "../components/AppRepoForm";
@@ -22,30 +22,30 @@ const history = createHistory();
 const store = configureStore(history);
 
 class Root extends React.Component {
+  public static routes: {
+    [route: string]: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+  } = {
+    "/": Dashboard,
+    "/charts": ChartList,
+    "/charts/:repo": ChartList,
+    "/charts/:repo/:id": ChartView,
+    "/charts/:repo/:id/versions/:version": ChartView,
+    "/repos": RepoListContainer,
+    "/repos/add": RepoFormContainer,
+    "/services": ServiceCatalogContainer,
+    "/services/brokers/:brokerName/classes/:className": ClassView,
+    "/services/brokers/:name": BrokerView,
+  };
+
   public render() {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <Layout>
             <section className="routes">
-              <Route exact={true} path="/" component={Dashboard} />
-              <Route exact={true} path="/charts" component={ChartList} />
-              <Route exact={true} path="/charts/:repo" component={ChartList} />
-              <Route exact={true} path="/charts/:repo/:id" component={ChartView} />
-              <Route exact={true} path="/services" component={ServiceCatalogContainer} />
-              <Route exact={true} path="/services/brokers/:name" component={BrokerView} />
-              <Route exact={true} path="/repos" component={RepoListContainer} />
-              <Route exact={true} path="/repos/add" component={RepoFormContainer} />
-              <Route
-                exact={true}
-                path="/charts/:repo/:id/versions/:version"
-                component={ChartView}
-              />
-              <Route
-                exact={true}
-                path="/services/brokers/:brokerName/classes/:className"
-                component={ClassView}
-              />
+              {Object.keys(Root.routes).map(route => (
+                <Route exact={true} path={route} component={Root.routes[route]} />
+              ))}
             </section>
           </Layout>
         </ConnectedRouter>
