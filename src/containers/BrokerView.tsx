@@ -213,6 +213,9 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
             <p>Classes of services available from this broker</p>
             <CardContainer style={{ marginBottom: "1em" }}>
               {classes.map(svcClass => {
+                const tags = svcClass.spec.tags.reduce<string>((joined, tag) => {
+                  return `${joined} ${tag},`;
+                }, "");
                 const card = (
                   <Card
                     key={svcClass.metadata.uid}
@@ -220,6 +223,11 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                     body={svcClass.spec.description}
                     buttonText="View Plans"
                     linkTo={`${window.location.pathname}/classes/${svcClass.spec.externalName}`}
+                    notes={
+                      <p style={{ fontSize: "small" }}>
+                        <strong>tags:</strong> {tags}
+                      </p>
+                    }
                   />
                 );
                 return card;

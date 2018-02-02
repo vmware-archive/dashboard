@@ -8,6 +8,7 @@ interface ICardProps {
   buttonText?: string | JSX.Element;
   onClick?: () => (...args: any[]) => Promise<any>;
   linkTo?: string;
+  notes?: JSX.Element;
 }
 
 const margin = "0.5em";
@@ -19,7 +20,7 @@ export const CardContainer = (props: any) => {
 };
 
 export const Card = (props: ICardProps) => {
-  const { header, body, buttonText, onClick, linkTo } = props;
+  const { header, body, buttonText, onClick, linkTo, notes } = props;
   let button = props.button ? (
     props.button
   ) : (
@@ -47,7 +48,10 @@ export const Card = (props: ICardProps) => {
     >
       <h5 style={{ color: "#333", marginTop: 0 }}>{header}</h5>
       <div style={{ color: "#666" }}>{body}</div>
-      <div style={{ textAlign: "right", marginTop: "0.5em" }}>{button}</div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>{notes && notes}</div>
+        <div>{button && button}</div>
+      </div>
     </div>
   );
 };
