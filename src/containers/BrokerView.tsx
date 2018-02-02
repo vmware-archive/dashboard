@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { getType } from "typesafe-actions";
 import actions from "../actions";
 import { installed } from "../actions/catalog";
-import { Card } from "../components/Card";
+import { Card, CardContainer } from "../components/Card";
 import {
   IServiceBinding,
   IServiceBroker,
@@ -121,8 +121,11 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
         {broker && (
           <div>
             <h1>{broker.metadata.name}</h1>
+            <Link to={window.location.pathname + "/classes"}>
+              <button className="button button-primary">Provision New Service</button>
+            </Link>
             <h3>Instances</h3>
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <CardContainer>
               {instances.length > 0 &&
                 instances.map(instance => {
                   const card = (
@@ -138,9 +141,9 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                   );
                   return card;
                 })}
-            </div>
+            </CardContainer>
             <h3>Bindings</h3>
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <CardContainer>
               {bindings.length > 0 &&
                 bindings.map(binding => {
                   const body = (
@@ -171,10 +174,10 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                   );
                   return card;
                 })}
-            </div>
+            </CardContainer>
             <h3>Classes</h3>
             <p>Classes of services available from this broker</p>
-            <div className="classes" style={{ display: "flex", flexWrap: "wrap" }}>
+            <CardContainer style={{ marginBottom: "1em" }}>
               {classes.map(svcClass => {
                 const card = (
                   <Card
@@ -187,7 +190,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                 );
                 return card;
               })}
-            </div>
+            </CardContainer>
           </div>
         )}
       </div>

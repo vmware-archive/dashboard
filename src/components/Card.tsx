@@ -9,6 +9,15 @@ interface ICardProps {
   onClick?: () => (...args: any[]) => Promise<any>;
   linkTo?: string;
 }
+
+const margin = "1em";
+
+export const CardContainer = (props: any) => {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", margin: `-${margin}` }}>{props.children}</div>
+  );
+};
+
 export const Card = (props: ICardProps) => {
   const { header, body, buttonText, onClick, linkTo } = props;
   let button = props.button ? (
@@ -31,7 +40,7 @@ export const Card = (props: ICardProps) => {
         flex: "1 1 25em",
         flexDirection: "column",
         justifyContent: "space-between",
-        margin: "1em",
+        margin,
         maxWidth: "30em",
         padding: "1em",
       }}

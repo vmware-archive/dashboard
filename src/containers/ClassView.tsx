@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { push, RouterAction } from "react-router-redux";
 import { Dispatch } from "redux";
 
-import { Card } from "../components/Card";
+import { Card, CardContainer } from "../components/Card";
 import { IServiceClass, IServicePlan, ServiceCatalog } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
 
@@ -60,7 +60,7 @@ class ClassView extends React.Component<IClassViewProps & IClassViewDispatch> {
       <div className="class-view">
         <h3>Plans: {className}</h3>
         <p>Service Plans available for provisioning under {className}</p>
-        <div className="plans-list" style={{ display: "flex", flexWrap: "wrap" }}>
+        <CardContainer>
           {svcClass &&
             classPlans.map(plan => {
               const serviceClass = classes.find(
@@ -85,7 +85,7 @@ class ClassView extends React.Component<IClassViewProps & IClassViewDispatch> {
               );
               return card;
             })}
-        </div>
+        </CardContainer>
       </div>
     );
   }
