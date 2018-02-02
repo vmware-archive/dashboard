@@ -182,7 +182,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                     header={svcClass.spec.externalName}
                     body={svcClass.spec.description}
                     buttonText="View Plans"
-                    linkTo={`${window.location.pathname}/${svcClass.spec.externalName}`}
+                    linkTo={`${window.location.pathname}/classes/${svcClass.spec.externalName}`}
                   />
                 );
                 return card;

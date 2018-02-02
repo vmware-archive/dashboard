@@ -34,7 +34,12 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
                   <td>{repo.metadata.name}</td>
                   <td>{repo.spec && repo.spec.url}</td>
                   <td>
-                    <button onClick={() => deleteRepo(repo.metadata.name)}>Delete</button>
+                    <button
+                      className="button button-secondary"
+                      onClick={this.handleDeleteClick(repo.metadata.name)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
@@ -42,9 +47,11 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
           </tbody>
         </table>
         <Link to={"repos/add"}>
-          <button>Add Repository</button>
+          <button className="button button-primary">Add Repository</button>
         </Link>
       </div>
     );
   }
+
+  private handleDeleteClick = (repoName: string) => () => this.props.deleteRepo(repoName);
 }

@@ -133,7 +133,7 @@ export interface IServiceClass {
   };
 }
 
-interface ICondition {
+export interface ICondition {
   type: string;
   status: string;
   lastTransitionTime: string;

@@ -15,18 +15,25 @@ interface IAppRepoFormProps {
 
 export const AppRepoForm = (props: IAppRepoFormProps) => {
   const { name, url, update, install } = props;
+  const handleInstallClick = () => install(name, url);
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    update({ name: e.target.value });
+  const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    update({ url: e.target.value });
   return (
     <div className="app-repo-form">
       <h1>Add an App Repository</h1>
       <label>
         Name:
-        <input type="text" value={name} onChange={e => update({ name: e.target.value })} />
+        <input type="text" value={name} onChange={handleNameChange} />
       </label>
       <label>
         URL:
-        <input type="text" value={url} onChange={e => update({ url: e.target.value })} />
+        <input type="text" value={url} onChange={handleURLChange} />
       </label>
-      <button onClick={() => install(name, url)}>Install Repo</button>
+      <button className="button button-primary" onClick={handleInstallClick}>
+        Install Repo
+      </button>
       {props.redirectTo && <Redirect to={props.redirectTo} />}
     </div>
   );

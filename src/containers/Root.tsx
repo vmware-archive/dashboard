@@ -43,7 +43,7 @@ class Root extends React.Component {
               />
               <Route
                 exact={true}
-                path="/services/brokers/:brokerName/:className"
+                path="/services/brokers/:brokerName/classes/:className"
                 component={ClassView}
               />
             </section>
