@@ -78,8 +78,6 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatc
     getCatalog: async () => {
       dispatch(actions.catalog.getCatalog());
     },
-    // provision: (releaseName: string, namespace: string) =>
-    // dispatch(actions.catalog.provision(releaseName, namespace)),
   };
 }
 
@@ -126,47 +124,47 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
               <button className="button button-primary">Provision New Service</button>
             </Link>
             <h3>Service Instances</h3>
-            <CardContainer>
-              {instances.length > 0 &&
-                instances.map(instance => {
+            <p>Most recent statuses for your brokers:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Instance</th>
+                  {/* <th>Status</th> */}
+                  <th>Reason</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                {instances.map(instance => {
                   const conditions = [...instance.status.conditions];
                   const status = conditions.shift(); // first in list is most recent
-                  const statusMessage = status ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <p>
-                        <strong>{status.type}: </strong>
-                        <code>
-                          <span style={{ color: status.status.match(/true/i) ? "green" : "red" }}>
-                            {status.status}
-                          </span>
-                        </code>
-                      </p>
-                      <p>
-                        <strong>{status.reason}: </strong>
-                        <code>{status.message}</code>
-                      </p>
-                    </div>
+                  const reason = status ? status.reason : "";
+                  const message = status ? status.message : "";
+                  const statusText = status ? (
+                    <code>{`${status.type} : ${status.status}`}</code>
                   ) : (
-                    <div />
+                    ""
                   );
-
-                  const card = (
-                    <Card
-                      key={`${instance.metadata.namespace}/${instance.metadata.name}`}
-                      header={`${instance.metadata.namespace}/${instance.metadata.name}`}
-                      button={<div />}
-                      body={statusMessage}
-                    />
+                  return (
+                    <tr key={instance.metadata.uid}>
+                      <td key={instance.metadata.name}>
+                        <strong>
+                          {instance.metadata.namespace}/{instance.metadata.name}
+                        </strong>
+                      </td>
+                      {/* <td>{statusText}</td> */}
+                      <td key={reason}>
+                        <code>{reason}</code>
+                      </td>
+                      <td key={message}>
+                        <code>{message}</code>
+                      </td>
+                    </tr>
                   );
-                  return card;
                 })}
-            </CardContainer>
+              </tbody>
+            </table>
+
             <h3>Bindings</h3>
             <CardContainer>
               {bindings.length > 0 &&

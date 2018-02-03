@@ -51,7 +51,8 @@ export class ClassList extends React.Component<IClassListProps> {
             const card = (
               <Card
                 key={svcClass.metadata.uid}
-                header={cardHeader}
+                header={name}
+                icon={imageUrl}
                 body={description}
                 buttonText="View Plans"
                 linkTo={`${window.location.pathname}/${svcClass.spec.externalName}`}

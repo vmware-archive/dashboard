@@ -9,6 +9,7 @@ interface ICardProps {
   onClick?: () => (...args: any[]) => Promise<any>;
   linkTo?: string;
   notes?: JSX.Element | null;
+  icon?: string;
 }
 
 const margin = "0.5em";
@@ -20,7 +21,7 @@ export const CardContainer = (props: any) => {
 };
 
 export const Card = (props: ICardProps) => {
-  const { header, body, buttonText, onClick, linkTo, notes } = props;
+  const { header, body, buttonText, onClick, linkTo, notes, icon } = props;
   let button = props.button ? (
     props.button
   ) : (
@@ -37,38 +38,27 @@ export const Card = (props: ICardProps) => {
         borderBottom: "1px solid #f2f2f0",
         borderRadius: "2px",
         boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-        display: "flex",
-        flex: "1 1 25em",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        display: "grid",
+        gridTemplateAreas: `
+          "title title title icon" 
+          "body body body body" 
+          "notes button button button`,
+        gridTemplateColumns: "5fr 1fr 2fr 1fr",
+        gridTemplateRows: "auto auto auto",
         margin,
         maxWidth: "30em",
+        minWidth: "24em",
         padding: "1em",
       }}
     >
-      {typeof header === "string" ? (
-        <h5 style={{ color: "#333", marginTop: 0 }}>{header}</h5>
-      ) : (
-        header
-      )}
-      <div
-        style={{
-          color: "#666",
-        }}
-      >
-        {body}
+      <h5 style={{ gridArea: "title", color: "#333", margin: 0 }}>{header}</h5>
+      <div style={{ gridArea: "body", color: "#666", margin: "1em 0" }}>{body}</div>
+      <div style={{ gridArea: "notes" }}>{notes}</div>
+      <div style={{ gridArea: "button", justifySelf: "flex-end", alignSelf: "flex-end" }}>
+        {button}
       </div>
-      <div
-        style={{
-          display: notes || button ? "flex" : "none",
-          justifyContent: "space-between",
-          marginTop: notes || button ? "0.5em" : 0,
-        }}
-      >
-        <div>{notes && notes}</div>
-        <div style={{ display: "flex" }}>
-          <div style={{ alignSelf: "flex-end" }}>{button && button}</div>
-        </div>
+      <div style={{ gridArea: "icon" }}>
+        <img src={icon} style={{ maxWidth: "100%" }} />
       </div>
     </div>
   );
