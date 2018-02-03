@@ -13,7 +13,7 @@ function mapStateToProps({ catalog }: IStoreState) {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IServiceCatalogDispatch {
+function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
   return {
     checkCatalogInstalled: async () => {
       const isInstalled = await ServiceCatalog.isCatalogInstalled();

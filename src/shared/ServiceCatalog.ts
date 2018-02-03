@@ -127,6 +127,13 @@ export interface IServiceClass {
     externalName: string;
     planUpdatable: boolean;
     tags: string[];
+    externalMetadata?: {
+      displayName: string;
+      documentationUrl: string;
+      imageUrl: string;
+      longDescription: string;
+      supportUrl: string;
+    };
   };
   status: {
     removedFromBrokerCatalog: boolean;

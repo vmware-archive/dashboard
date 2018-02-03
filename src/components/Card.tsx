@@ -2,13 +2,13 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 interface ICardProps {
-  header: string;
-  body: string | JSX.Element;
+  header: string | JSX.Element | JSX.Element[];
+  body: string | JSX.Element | JSX.Element[];
   button?: JSX.Element;
   buttonText?: string | JSX.Element;
   onClick?: () => (...args: any[]) => Promise<any>;
   linkTo?: string;
-  notes?: JSX.Element;
+  notes?: JSX.Element | null;
 }
 
 const margin = "0.5em";
@@ -46,11 +46,29 @@ export const Card = (props: ICardProps) => {
         padding: "1em",
       }}
     >
-      <h5 style={{ color: "#333", marginTop: 0 }}>{header}</h5>
-      <div style={{ color: "#666" }}>{body}</div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      {typeof header === "string" ? (
+        <h5 style={{ color: "#333", marginTop: 0 }}>{header}</h5>
+      ) : (
+        header
+      )}
+      <div
+        style={{
+          color: "#666",
+        }}
+      >
+        {body}
+      </div>
+      <div
+        style={{
+          display: notes || button ? "flex" : "none",
+          justifyContent: "space-between",
+          marginTop: notes || button ? "0.5em" : 0,
+        }}
+      >
         <div>{notes && notes}</div>
-        <div>{button && button}</div>
+        <div style={{ display: "flex" }}>
+          <div style={{ alignSelf: "flex-end" }}>{button && button}</div>
+        </div>
       </div>
     </div>
   );

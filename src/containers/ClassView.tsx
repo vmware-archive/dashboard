@@ -66,11 +66,14 @@ class ClassView extends React.Component<IClassViewProps & IClassViewDispatch> {
               const serviceClass = classes.find(
                 potential => potential.metadata.name === plan.spec.clusterServiceClassRef.name,
               );
+              const free = plan.spec.free ? <span>Free ✓</span> : null;
+              console.log(free);
               const card = (
                 <Card
                   key={plan.spec.externalID}
                   header={plan.spec.externalName}
                   body={plan.spec.description}
+                  notes={free}
                   button={
                     <ProvisionButton
                       selectedClass={serviceClass}

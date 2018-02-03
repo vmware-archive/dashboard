@@ -8,6 +8,7 @@ import { getType } from "typesafe-actions";
 import actions from "../actions";
 import { installed } from "../actions/catalog";
 import { Card, CardContainer } from "../components/Card";
+import { ClassList } from "../components/ClassList";
 import {
   IServiceBinding,
   IServiceBroker,
@@ -131,7 +132,13 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                   const conditions = [...instance.status.conditions];
                   const status = conditions.shift(); // first in list is most recent
                   const statusMessage = status ? (
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <p>
                         <strong>{status.type}: </strong>
                         <code>
@@ -151,6 +158,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
 
                   const card = (
                     <Card
+                      key={`${instance.metadata.namespace}/${instance.metadata.name}`}
                       header={`${instance.metadata.namespace}/${instance.metadata.name}`}
                       button={<div />}
                       body={statusMessage}
@@ -190,7 +198,7 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                             <strong key={key} style={{ flex: "0 0 5em" }}>
                               {key}:
                             </strong>
-                            <code key={value} style={{ flex: "1 1" }}>
+                            <code key={value} style={{ flex: "1 1", wordBreak: "break-all" }}>
                               {value}
                             </code>
                           </div>
@@ -208,30 +216,6 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
                   );
                   return card;
                 })}
-            </CardContainer>
-            <h3>Classes</h3>
-            <p>Classes of services available from this broker</p>
-            <CardContainer style={{ marginBottom: "1em" }}>
-              {classes.map(svcClass => {
-                const tags = svcClass.spec.tags.reduce<string>((joined, tag) => {
-                  return `${joined} ${tag},`;
-                }, "");
-                const card = (
-                  <Card
-                    key={svcClass.metadata.uid}
-                    header={svcClass.spec.externalName}
-                    body={svcClass.spec.description}
-                    buttonText="View Plans"
-                    linkTo={`${window.location.pathname}/classes/${svcClass.spec.externalName}`}
-                    notes={
-                      <p style={{ fontSize: "small" }}>
-                        <strong>tags:</strong> {tags}
-                      </p>
-                    }
-                  />
-                );
-                return card;
-              })}
             </CardContainer>
           </div>
         )}
