@@ -1,14 +1,13 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import { Dispatch } from "redux";
-import ProvisionButton from "./../components/ProvisionButton";
-
 import { Link } from "react-router-dom";
+import { Dispatch } from "redux";
 import { getType } from "typesafe-actions";
 import actions from "../actions";
 import { installed } from "../actions/catalog";
 import { Card, CardContainer } from "../components/Card";
 import { ClassList } from "../components/ClassList";
+import SyncButton from "../components/SyncButton";
 import {
   IServiceBinding,
   IServiceBroker,
@@ -71,6 +70,7 @@ function mapStateToProps(
 
 interface IBrokerViewDispatch {
   getCatalog: () => Promise<any>;
+  sync: (broker: IServiceBroker) => Promise<any>;
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatch {
@@ -78,8 +78,7 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>): IBrokerViewDispatc
     getCatalog: async () => {
       dispatch(actions.catalog.getCatalog());
     },
-    // provision: (releaseName: string, namespace: string) =>
-    // dispatch(actions.catalog.provision(releaseName, namespace)),
+    sync: async (broker: IServiceBroker) => dispatch(actions.catalog.sync(broker)),
   };
 }
 
@@ -122,9 +121,18 @@ class BrokerView extends React.PureComponent<IBrokerViewProps & IBrokerViewDispa
         {broker && (
           <div>
             <h1>{broker.metadata.name}</h1>
-            <Link to={window.location.pathname + "/classes"}>
-              <button className="button button-primary">Provision New Service</button>
-            </Link>
+            <div>Catalog last updated at {broker.status.lastCatalogRetrievalTime}</div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Link to={window.location.pathname + "/classes"}>
+                <button className="button button-primary">Provision New Service</button>
+              </Link>
+              <SyncButton sync={this.props.sync} broker={broker} />
+            </div>
             <h3>Service Instances</h3>
             <CardContainer>
               {instances.length > 0 &&

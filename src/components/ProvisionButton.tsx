@@ -18,7 +18,7 @@ interface IProvisionButtonProps {
     className: string,
     planName: string,
     parameters: {},
-  ) => Promise<{}>; // , svcPlan: IServicePlan, svcClass: IServiceClass, parameters: string
+  ) => Promise<{}>;
   push: (location: string) => RouterAction;
 }
 
