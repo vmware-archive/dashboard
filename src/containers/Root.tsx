@@ -14,7 +14,7 @@ import ChartView from "./ChartViewContainer";
 
 import BrokerView from "./BrokerView";
 import ClassListContainer from "./ClassListContainer";
-import ClassView from "./ClassView";
+import { ClassViewContainer } from "./ClassView";
 import RepoFormContainer from "./RepoFormContainer";
 import RepoListContainer from "./RepoListContainer";
 import ServiceCatalogContainer from "./ServiceCatalogContainer";
@@ -35,7 +35,7 @@ class Root extends React.Component {
     "/repos/add": RepoFormContainer,
     "/services": ServiceCatalogContainer,
     "/services/brokers/:brokerName/classes": ClassListContainer,
-    "/services/brokers/:brokerName/classes/:className": ClassView,
+    "/services/brokers/:brokerName/classes/:className": ClassViewContainer,
     "/services/brokers/:name": BrokerView,
   };
 

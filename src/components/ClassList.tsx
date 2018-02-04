@@ -55,7 +55,7 @@ export class ClassList extends React.Component<IClassListProps> {
                 icon={imageUrl}
                 body={description}
                 buttonText="View Plans"
-                linkTo={`${window.location.pathname}/${svcClass.spec.externalName}`}
+                linkTo={`${location.pathname}/${svcClass.spec.externalName}`}
                 notes={
                   <span style={{ fontSize: "small" }}>
                     <strong>Tags:</strong> {tags}

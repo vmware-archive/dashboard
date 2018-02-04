@@ -39,6 +39,7 @@ export const Card = (props: ICardProps) => {
         borderRadius: "2px",
         boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
         display: "grid",
+        flex: "1 1 0",
         gridTemplateAreas: `
           "title title title icon" 
           "body body body body" 
@@ -46,8 +47,7 @@ export const Card = (props: ICardProps) => {
         gridTemplateColumns: "5fr 1fr 2fr 1fr",
         gridTemplateRows: "auto auto auto",
         margin,
-        maxWidth: "30em",
-        minWidth: "24em",
+        minWidth: "25em",
         padding: "1em",
       }}
     >
