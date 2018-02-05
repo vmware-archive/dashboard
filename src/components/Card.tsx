@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface ICardProps {
   header: string | JSX.Element | JSX.Element[];
-  body: string | string[] | JSX.Element | JSX.Element[];
+  body: string | JSX.Element | JSX.Element[];
   button?: JSX.Element;
   buttonText?: string | JSX.Element;
   onClick?: () => (...args: any[]) => Promise<any>;
@@ -41,8 +41,8 @@ export const Card = (props: ICardProps) => {
         display: "grid",
         flex: "0 1 0",
         gridTemplateAreas: `
-          "title title title icon" 
-          "body body body body" 
+          "title title title icon"
+          "body body body body"
           "notes button button button"`,
         gridTemplateColumns: "5fr 1fr 2fr 1fr",
         gridTemplateRows: "auto auto auto",
