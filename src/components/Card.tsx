@@ -41,8 +41,8 @@ export const Card = (props: ICardProps) => {
         display: "grid",
         flex: "0 1 0",
         gridTemplateAreas: `
-          "title title title icon" 
-          "body body body body" 
+          "title title title icon"
+          "body body body body"
           "notes button button button"`,
         gridTemplateColumns: "5fr 1fr 2fr 1fr",
         gridTemplateRows: "auto auto auto",

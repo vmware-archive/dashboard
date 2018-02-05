@@ -185,6 +185,10 @@ export interface IServicePlan {
     externalName: string;
     externalID: string;
     description: string;
+    externalMetadata?: {
+      displayName: string;
+      bullets: string[];
+    };
     free: boolean;
     clusterServiceClassRef: {
       name: string;
