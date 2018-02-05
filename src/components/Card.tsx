@@ -39,11 +39,11 @@ export const Card = (props: ICardProps) => {
         borderRadius: "2px",
         boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
         display: "grid",
-        flex: "1 1 0",
+        flex: "0 1 0",
         gridTemplateAreas: `
           "title title title icon" 
           "body body body body" 
-          "notes button button button`,
+          "notes button button button"`,
         gridTemplateColumns: "5fr 1fr 2fr 1fr",
         gridTemplateRows: "auto auto auto",
         margin,

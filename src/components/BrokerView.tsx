@@ -80,7 +80,6 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                   <th>Instance</th>
                   <th>Status</th>
                   <th>Message</th>
-                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -101,17 +100,11 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                           {instance.metadata.namespace}/{instance.metadata.name}
                         </strong>
                       </td>
-                      {/* <td>{statusText}</td> */}
                       <td key={reason}>
                         <code>{reason}</code>
                       </td>
                       <td key={message}>
                         <code>{message}</code>
-                      </td>
-                      <td>
-                        <Link to={`${location.pathname}/instances/${instance.metadata.uid}`}>
-                          View
-                        </Link>
                       </td>
                     </tr>
                   );
@@ -163,7 +156,7 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                       key={binding.metadata.name}
                       header={binding.metadata.name}
                       body={body}
-                      buttonText={"View"}
+                      button={<span />}
                     />
                   );
                   return card;
