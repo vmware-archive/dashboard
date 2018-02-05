@@ -1,14 +1,15 @@
 import * as React from "react";
 import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import { Dispatch } from "redux";
-
 import { Link } from "react-router-dom";
+import { Dispatch } from "redux";
 import { getType } from "typesafe-actions";
+
 import actions from "../actions";
 import { installed } from "../actions/catalog";
 import { BrokerView } from "../components/BrokerView";
 import { Card, CardContainer } from "../components/Card";
 import { ClassList } from "../components/ClassList";
+import SyncButton from "../components/SyncButton";
 import {
   IServiceBinding,
   IServiceBroker,
@@ -60,6 +61,7 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
     getCatalog: async () => {
       dispatch(actions.catalog.getCatalog());
     },
+    sync: async (broker: IServiceBroker) => dispatch(actions.catalog.sync(broker)),
   };
 }
 

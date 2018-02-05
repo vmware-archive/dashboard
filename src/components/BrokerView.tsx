@@ -9,6 +9,7 @@ import {
   IServicePlan,
 } from "../shared/ServiceCatalog";
 import { Card, CardContainer } from "./Card";
+import SyncButton from "./SyncButton";
 
 interface IBrokerViewProps {
   bindings: IServiceBinding[];
@@ -17,6 +18,7 @@ interface IBrokerViewProps {
   getCatalog: () => Promise<any>;
   instances: IServiceInstance[];
   plans: IServicePlan[];
+  sync: (broker: IServiceBroker) => Promise<any>;
 }
 
 export class BrokerView extends React.PureComponent<IBrokerViewProps> {
@@ -58,9 +60,18 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
         {broker && (
           <div>
             <h1>{broker.metadata.name}</h1>
-            <Link to={location.pathname + "/classes"}>
-              <button className="button button-primary">Provision New Service</button>
-            </Link>
+            <div>Catalog last updated at {broker.status.lastCatalogRetrievalTime}</div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Link to={window.location.pathname + "/classes"}>
+                <button className="button button-primary">Provision New Service</button>
+              </Link>
+              <SyncButton sync={this.props.sync} broker={broker} />
+            </div>
             <h3>Service Instances</h3>
             <p>Most recent statuses for your brokers:</p>
             <table>

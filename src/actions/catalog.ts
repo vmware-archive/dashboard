@@ -77,12 +77,31 @@ export function provision(
           name: releaseName,
         },
         spec: {
-          // clusterServiceClassExternalName: "azure-mysqldb",
-          // clusterServicePlanExternalName: "standard100",
-
           clusterServiceClassExternalName: className,
           clusterServicePlanExternalName: planName,
           parameters,
+        },
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.status === "Failure") {
+          throw new Error(json.message);
+        }
+        return json;
+      });
+  };
+}
+
+export function sync(broker: IServiceBroker) {
+  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
+    return fetch(url.api.clusterservicebrokers.sync(broker), {
+      headers: { "Content-Type": "application/merge-patch+json" },
+      method: "PATCH",
+
+      body: JSON.stringify({
+        spec: {
+          relistRequests: broker.spec.relistRequests + 1,
         },
       }),
     })
