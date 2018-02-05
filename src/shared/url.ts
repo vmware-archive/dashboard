@@ -1,3 +1,4 @@
+import { IServiceBroker } from "./ServiceCatalog";
 import { IChartVersion } from "./types";
 
 export const app = {
@@ -35,5 +36,11 @@ export const api = {
     base: `/api/kube/apis/servicecatalog.k8s.io/v1beta1`,
     create: (namespace = "default") =>
       `${api.serviceinstances.base}/namespaces/${namespace}/serviceinstances`,
+  },
+
+  clusterservicebrokers: {
+    base: `/api/kube/apis/servicecatalog.k8s.io/v1beta1`,
+    sync: (broker: IServiceBroker) =>
+      `${api.clusterservicebrokers.base}/clusterservicebrokers/${broker.metadata.name}`,
   },
 };
