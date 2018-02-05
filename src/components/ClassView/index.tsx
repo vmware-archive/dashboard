@@ -1,9 +1,9 @@
 import * as React from "react";
 import { RouterAction } from "react-router-redux";
 
-import { IServiceClass, IServicePlan } from "../shared/ServiceCatalog";
-import { Card, CardContainer } from "./Card";
-import ProvisionButton from "./ProvisionButton";
+import { IServiceClass, IServicePlan } from "../../shared/ServiceCatalog";
+import { Card, CardContainer } from "../Card";
+import ProvisionButton from "../ProvisionButton";
 
 interface IClassViewProps {
   classes: IServiceClass[];

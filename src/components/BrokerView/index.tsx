@@ -7,9 +7,9 @@ import {
   IServiceClass,
   IServiceInstance,
   IServicePlan,
-} from "../shared/ServiceCatalog";
-import { Card, CardContainer } from "./Card";
-import SyncButton from "./SyncButton";
+} from "../../shared/ServiceCatalog";
+import { Card, CardContainer } from "../Card";
+import SyncButton from "../SyncButton";
 
 interface IBrokerViewProps {
   bindings: IServiceBinding[];

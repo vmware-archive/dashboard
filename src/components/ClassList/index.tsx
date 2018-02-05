@@ -1,6 +1,7 @@
 import * as React from "react";
-import { IServiceBroker, IServiceClass } from "../shared/ServiceCatalog";
-import { Card, CardContainer } from "./Card";
+
+import { IServiceBroker, IServiceClass } from "../../shared/ServiceCatalog";
+import { Card, CardContainer } from "../Card";
 
 export interface IClassListProps {
   broker: IServiceBroker | null;
@@ -20,7 +21,7 @@ export class ClassList extends React.Component<IClassListProps> {
     return (
       <div>
         <h2>Classes</h2>
-        <p>Classes of services available from this broker</p>
+        <p>Types of services available from this broker</p>
         <CardContainer>
           {classes.map(svcClass => {
             const tags = svcClass.spec.tags.reduce<string>((joined, tag) => {

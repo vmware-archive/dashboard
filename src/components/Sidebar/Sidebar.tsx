@@ -33,7 +33,6 @@ class Sidebar extends React.Component {
             <div className="type-small">Functions</div>
           </li>
           {sidebarItem({ to: "/charts", text: "Charts" })}
-          {sidebarItem({ to: "/charts", text: "Charts" })}
           {sidebarItem({ to: "/services", text: "Service Catalog" })}
           {sidebarItem({ to: "/repos", text: "App Repositories" })}
         </ul>

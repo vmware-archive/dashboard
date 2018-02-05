@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { AppRepoForm } from "../components/AppRepoForm";
-import { AppRepository } from "../shared/AppRepository";
-import { HelmRelease } from "../shared/HelmRelease";
+
+import { ServiceBrokerList } from "../../components/ServiceBrokerList";
+import { IServiceCatalogState } from "../../reducers/catalog";
+import { AppRepository } from "../../shared/AppRepository";
+import { HelmRelease } from "../../shared/HelmRelease";
 import {
   IServiceBinding,
   IServiceBroker,
@@ -10,11 +12,9 @@ import {
   IServiceInstance,
   IServicePlan,
   ServiceCatalog,
-} from "../shared/ServiceCatalog";
-
-import { ServiceBrokerList } from "../components/ServiceBrokerList";
-import { IServiceCatalogState } from "../reducers/catalog";
-import { Card } from "./Card";
+} from "../../shared/ServiceCatalog";
+import { AppRepoForm } from "../AppRepoForm";
+import { Card } from "../Card";
 
 export interface IServiceCatalogDispatch {
   checkCatalogInstalled: () => Promise<boolean>;

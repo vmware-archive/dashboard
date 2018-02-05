@@ -22,12 +22,8 @@ export class HelmRelease {
   }
 
   public static async delete(selfLink: string) {
-    try {
-      const { data } = await axios.delete(selfLink);
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
+    const { data } = await axios.delete(selfLink);
+    return data;
   }
 
   private static getSelfLink(name: string, namespace: string) {

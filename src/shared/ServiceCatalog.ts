@@ -66,7 +66,6 @@ export class ServiceCatalog {
       const { status } = await axios.get(ServiceCatalog.endpoint);
       return status === 200;
     } catch (err) {
-      console.error(err);
       return false;
     }
   }

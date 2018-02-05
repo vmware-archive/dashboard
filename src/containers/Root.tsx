@@ -23,7 +23,7 @@ const history = createHistory();
 const store = configureStore(history);
 
 class Root extends React.Component {
-  public static routes: {
+  public static exactRoutes: {
     [route: string]: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
   } = {
     "/": Dashboard,
@@ -45,8 +45,8 @@ class Root extends React.Component {
         <ConnectedRouter history={history}>
           <Layout>
             <section className="routes">
-              {Object.keys(Root.routes).map(route => (
-                <Route exact={true} path={route} component={Root.routes[route]} />
+              {Object.keys(Root.exactRoutes).map(route => (
+                <Route exact={true} path={route} component={Root.exactRoutes[route]} />
               ))}
             </section>
           </Layout>

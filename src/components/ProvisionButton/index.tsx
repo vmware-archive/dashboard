@@ -2,7 +2,8 @@ import * as React from "react";
 import AceEditor from "react-ace";
 import * as Modal from "react-modal";
 import { RouterAction } from "react-router-redux";
-import { IServiceClass, IServicePlan } from "../shared/ServiceCatalog";
+
+import { IServiceClass, IServicePlan } from "../../shared/ServiceCatalog";
 
 import "brace/mode/json";
 import "brace/theme/xcode";

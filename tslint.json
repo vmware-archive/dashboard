@@ -2,9 +2,6 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "jsRules": {},
-  "rules": {
-    "no-console": false,
-    "jsx-no-lambda": false
-  },
+  "rules": {},
   "rulesDirectory": []
 }

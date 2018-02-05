@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { IServiceBroker, ServiceCatalog } from "../shared/ServiceCatalog";
-import { Card } from "./Card";
+
+import { IServiceBroker, ServiceCatalog } from "../../shared/ServiceCatalog";
+import { Card } from "../Card";
 
 interface IServiceBrokerListProps {
   brokers: IServiceBroker[];

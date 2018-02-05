@@ -4,7 +4,7 @@ import {
   IServiceClass,
   IServicePlan,
   ServiceCatalog,
-} from "../shared/ServiceCatalog";
+} from "../../shared/ServiceCatalog";
 
 interface IServiceListProps {
   brokers: IServiceBroker[];

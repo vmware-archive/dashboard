@@ -16,7 +16,9 @@ const margin = "0.5em";
 
 export const CardContainer = (props: any) => {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", margin: `-${margin}` }}>{props.children}</div>
+    <div style={{ display: "flex", flexWrap: "wrap", margin: `-${margin}`, padding: "1em 0" }}>
+      {props.children}
+    </div>
   );
 };
 
