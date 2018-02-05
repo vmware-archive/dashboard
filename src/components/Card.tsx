@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface ICardProps {
   header: string | JSX.Element | JSX.Element[];
-  body: string | JSX.Element | JSX.Element[];
+  body: string | string[] | JSX.Element | JSX.Element[];
   button?: JSX.Element;
   buttonText?: string | JSX.Element;
   onClick?: () => (...args: any[]) => Promise<any>;

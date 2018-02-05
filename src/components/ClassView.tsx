@@ -42,12 +42,25 @@ export class ClassView extends React.Component<IClassViewProps> {
               const serviceClass = classes.find(
                 potential => potential.metadata.name === plan.spec.clusterServiceClassRef.name,
               );
+              const { spec } = plan;
+              const { externalMetadata } = spec;
+              const name = externalMetadata ? externalMetadata.displayName : spec.externalName;
+              const description =
+                externalMetadata && externalMetadata.bullets
+                  ? externalMetadata.bullets
+                  : [spec.description];
               const free = plan.spec.free ? <span>Free ✓</span> : null;
+              const bullets = (
+                <div>
+                  <ul>{description.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
+                </div>
+              );
+
               const card = (
                 <Card
                   key={plan.spec.externalID}
-                  header={plan.spec.externalName}
-                  body={plan.spec.description}
+                  header={name}
+                  body={bullets}
                   notes={free}
                   button={
                     <ProvisionButton
