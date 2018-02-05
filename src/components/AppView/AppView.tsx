@@ -110,7 +110,6 @@ class AppView extends React.Component<IAppViewProps> {
           // console.log("combined text");
           // console.log(bufferText);
           if (bufferText.includes('}\n{"type"')) {
-            // console.log("breakpoint");
             let bufferTextArray = "[" + bufferText + "]";
             bufferTextArray = bufferTextArray.replace('}\n{"type"', '},{"type"');
             bufferTextArray = bufferTextArray.replace("\n", "");
