@@ -61,7 +61,10 @@ function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
     getCatalog: async () => {
       dispatch(actions.catalog.getCatalog());
     },
-    sync: async (broker: IServiceBroker) => dispatch(actions.catalog.sync(broker)),
+    sync: async (broker: IServiceBroker) => {
+      await dispatch(actions.catalog.sync(broker));
+      await dispatch(actions.catalog.getCatalog());
+    },
   };
 }
 
