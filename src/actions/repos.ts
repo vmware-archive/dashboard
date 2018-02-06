@@ -1,9 +1,6 @@
-import axios from "axios";
-import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 
-import { AppRepository } from "../shared/AppRepository";
-import { IAppRepository, IStoreState } from "../shared/types";
+import { IAppRepository } from "../shared/types";
 
 export const addRepo = createAction("ADD_REPO");
 export const addedRepo = createAction("ADDED_REPO", (added: IAppRepository) => ({

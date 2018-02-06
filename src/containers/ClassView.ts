@@ -1,14 +1,9 @@
-import * as React from "react";
-import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import { Link } from "react-router-dom";
-import { push, RouterAction } from "react-router-redux";
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 
 import actions from "../actions";
-import { Card, CardContainer } from "../components/Card";
 import { ClassView } from "../components/ClassView";
-import ProvisionButton from "../components/ProvisionButton";
-import { IServiceClass, IServicePlan, ServiceCatalog } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
 
 interface IRouteProps {

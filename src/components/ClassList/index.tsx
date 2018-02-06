@@ -34,21 +34,7 @@ export class ClassList extends React.Component<IClassListProps> {
               ? externalMetadata.longDescription
               : spec.description;
             const imageUrl = externalMetadata && externalMetadata.imageUrl;
-            const cardHeader = (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <h5 style={{ margin: 0 }}>{name}</h5>
-                {imageUrl && (
-                  <div style={{ maxWidth: "3em" }}>
-                    <img src={imageUrl} style={{ maxWidth: "100%" }} />
-                  </div>
-                )}
-              </div>
-            );
+
             const card = (
               <Card
                 key={svcClass.metadata.uid}

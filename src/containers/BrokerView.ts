@@ -1,25 +1,10 @@
-import * as React from "react";
-import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getType } from "typesafe-actions";
 
 import actions from "../actions";
-import { installed } from "../actions/catalog";
 import { BrokerView } from "../components/BrokerView";
-import { Card, CardContainer } from "../components/Card";
-import { ClassList } from "../components/ClassList";
-import SyncButton from "../components/SyncButton";
-import {
-  IServiceBinding,
-  IServiceBroker,
-  IServiceClass,
-  IServiceInstance,
-  IServicePlan,
-  ServiceCatalog,
-} from "../shared/ServiceCatalog";
+import { IServiceBroker } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
-import ProvisionButton from "./../components/ProvisionButton";
 
 interface IRouteProps {
   match: {

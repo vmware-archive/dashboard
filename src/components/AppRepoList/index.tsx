@@ -15,7 +15,7 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
   }
 
   public render() {
-    const { deleteRepo, repos } = this.props;
+    const { repos } = this.props;
     return (
       <div className="app-repo-list">
         <h1>App Repositories</h1>

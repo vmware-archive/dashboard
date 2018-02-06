@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter, AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 
 import { IAppRepository, IAppRepositoryList } from "./types";
 
@@ -31,7 +31,7 @@ export class AppRepository {
     return data;
   }
 
-  private static serviceCatalogURL: string = "https://svc-catalog-charts.storage.googleapis.com";
+  // private static serviceCatalogURL: string = "https://svc-catalog-charts.storage.googleapis.com";
   private static APIEndpoint: string = "/api/kube/apis/kubeapps.com/v1alpha1";
   private static getSelfLink(name: string, namespace: string = "default"): string {
     return `${AppRepository.APIEndpoint}/namespaces/${namespace}/apprepositories/${name}`;

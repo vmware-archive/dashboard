@@ -1,9 +1,8 @@
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 
 import actions from "../actions";
-import { IServiceCatalogDispatch, ServiceCatalogView } from "../components/ServiceCatalog";
+import { ServiceCatalogView } from "../components/ServiceCatalog";
 import { ServiceCatalog } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
 

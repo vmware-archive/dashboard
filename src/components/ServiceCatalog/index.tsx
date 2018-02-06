@@ -3,18 +3,6 @@ import { Link } from "react-router-dom";
 
 import { ServiceBrokerList } from "../../components/ServiceBrokerList";
 import { IServiceCatalogState } from "../../reducers/catalog";
-import { AppRepository } from "../../shared/AppRepository";
-import { HelmRelease } from "../../shared/HelmRelease";
-import {
-  IServiceBinding,
-  IServiceBroker,
-  IServiceClass,
-  IServiceInstance,
-  IServicePlan,
-  ServiceCatalog,
-} from "../../shared/ServiceCatalog";
-import { AppRepoForm } from "../AppRepoForm";
-import { Card } from "../Card";
 
 export interface IServiceCatalogDispatch {
   checkCatalogInstalled: () => Promise<boolean>;
@@ -30,7 +18,8 @@ export class ServiceCatalogView extends React.Component<
   }
 
   public render() {
-    const { bindings, brokers, classes, instances, plans, isInstalled } = this.props;
+    const { brokers, isInstalled } = this.props;
+
     return (
       <div className="service-list-container">
         <h1>Service Catalog</h1>
@@ -45,7 +34,7 @@ export class ServiceCatalogView extends React.Component<
           </div>
         ) : (
           <div>
-            <ServiceBrokerList brokers={this.props.brokers} />
+            <ServiceBrokerList brokers={brokers} />
           </div>
         )}
       </div>

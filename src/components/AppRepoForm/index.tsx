@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Redirect } from "react-router";
 
-import { AppRepository } from "../../shared/AppRepository";
-
 interface IAppRepoFormProps {
   name: string;
   namespace: string;

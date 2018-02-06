@@ -27,33 +27,7 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
   }
 
   public render() {
-    const { bindings, broker, plans, classes, instances } = this.props;
-    const classesIndexedByName = classes.reduce<{ [key: string]: IServiceClass }>(
-      (carry, serviceClass) => {
-        const { name } = serviceClass.metadata;
-        carry[name] = serviceClass;
-        return carry;
-      },
-      {},
-    );
-
-    const plansIndexedByClassName = plans.reduce<{ [key: string]: IServicePlan[] }>(
-      (carry, plan) => {
-        const className = plan.spec.clusterServiceClassRef.name;
-        const svcClass = classes.find(cls => cls.metadata.name === className);
-
-        // ServiceClasses may not have been retreived yet
-        if (svcClass) {
-          const svcClassExternalName = svcClass.spec.externalName;
-          if (!carry[svcClassExternalName]) {
-            carry[svcClassExternalName] = [];
-          }
-          carry[svcClassExternalName].push(plan);
-        }
-        return carry;
-      },
-      {},
-    );
+    const { bindings, broker, instances } = this.props;
 
     return (
       <div className="broker">
@@ -88,11 +62,7 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                   const status = conditions.shift(); // first in list is most recent
                   const reason = status ? status.reason : "";
                   const message = status ? status.message : "";
-                  const statusText = status ? (
-                    <code>{`${status.type} : ${status.status}`}</code>
-                  ) : (
-                    ""
-                  );
+
                   return (
                     <tr key={instance.metadata.uid}>
                       <td key={instance.metadata.name}>

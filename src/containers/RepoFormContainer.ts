@@ -3,7 +3,6 @@ import { Dispatch } from "redux";
 
 import actions from "../actions";
 import { AppRepoForm } from "../components/AppRepoForm";
-import { AppRepoList } from "../components/AppRepoList";
 import { AppRepository } from "../shared/AppRepository";
 import { IStoreState } from "../shared/types";
 

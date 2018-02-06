@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  IServiceBroker,
-  IServiceClass,
-  IServicePlan,
-  ServiceCatalog,
-} from "../../shared/ServiceCatalog";
+import { IServiceBroker, IServiceClass, IServicePlan } from "../../shared/ServiceCatalog";
 
 interface IServiceListProps {
   brokers: IServiceBroker[];

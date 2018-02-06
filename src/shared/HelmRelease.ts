@@ -26,9 +26,9 @@ export class HelmRelease {
     return data;
   }
 
-  private static getSelfLink(name: string, namespace: string) {
-    return `/api/kube/apis/helm.bitnami.com/v1/namespaces/${namespace}/helmreleases/${name}`;
-  }
+  // private static getSelfLink(name: string, namespace: string) {
+  //   return `/api/kube/apis/helm.bitnami.com/v1/namespaces/${namespace}/helmreleases/${name}`;
+  // }
 
   private static getResourceLink(namespace?: string) {
     if (namespace) {

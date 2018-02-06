@@ -4,10 +4,8 @@ import { Provider } from "react-redux";
 import { Route, RouteComponentProps } from "react-router";
 import { ConnectedRouter } from "react-router-redux";
 
-import { AppRepoForm } from "../components/AppRepoForm";
 import Dashboard from "../components/Dashboard";
 import Layout from "../components/Layout";
-import { ServiceBrokerList } from "../components/ServiceBrokerList";
 import configureStore from "../store";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";

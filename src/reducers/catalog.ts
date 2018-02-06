@@ -9,7 +9,6 @@ import {
   IServiceInstance,
   IServicePlan,
 } from "../shared/ServiceCatalog";
-import { IAppRepository } from "../shared/types";
 
 export interface IServiceCatalogState {
   bindings: IServiceBinding[];

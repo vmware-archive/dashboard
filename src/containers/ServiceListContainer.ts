@@ -2,9 +2,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import actions from "../actions";
-import { AppRepoList } from "../components/AppRepoList";
 import { ServiceList } from "../components/ServiceList";
-import { AppRepository } from "../shared/AppRepository";
 import { IStoreState } from "../shared/types";
 
 function mapStateToProps({ catalog }: IStoreState) {
