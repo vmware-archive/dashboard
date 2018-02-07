@@ -1,22 +1,24 @@
 // tslint:disable
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-import * as $protobuf from "protobufjs/minimal";
+"use strict";
+
+var $protobuf = require("protobufjs/minimal");
 
 // Common aliases
-const $Reader = $protobuf.Reader,
+var $Reader = $protobuf.Reader,
   $Writer = $protobuf.Writer,
   $util = $protobuf.util;
 
 // Exported root namespace
-const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const hapi = ($root.hapi = (() => {
+$root.hapi = (function() {
   /**
    * Namespace hapi.
    * @exports hapi
    * @namespace
    */
-  const hapi = {};
+  var hapi = {};
 
   hapi.release = (function() {
     /**
@@ -24,7 +26,7 @@ export const hapi = ($root.hapi = (() => {
      * @memberof hapi
      * @namespace
      */
-    const release = {};
+    var release = {};
 
     release.Release = (function() {
       /**
@@ -52,7 +54,7 @@ export const hapi = ($root.hapi = (() => {
       function Release(properties) {
         this.hooks = [];
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -163,7 +165,7 @@ export const hapi = ($root.hapi = (() => {
         if (message.manifest != null && message.hasOwnProperty("manifest"))
           writer.uint32(/* id 5, wireType 2 =*/ 42).string(message.manifest);
         if (message.hooks != null && message.hooks.length)
-          for (let i = 0; i < message.hooks.length; ++i)
+          for (var i = 0; i < message.hooks.length; ++i)
             $root.hapi.release.Hook.encode(
               message.hooks[i],
               writer.uint32(/* id 6, wireType 2 =*/ 50).fork(),
@@ -201,10 +203,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Release.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.Release();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -267,23 +269,23 @@ export const hapi = ($root.hapi = (() => {
         if (message.name != null && message.hasOwnProperty("name"))
           if (!$util.isString(message.name)) return "name: string expected";
         if (message.info != null && message.hasOwnProperty("info")) {
-          let error = $root.hapi.release.Info.verify(message.info);
+          var error = $root.hapi.release.Info.verify(message.info);
           if (error) return "info." + error;
         }
         if (message.chart != null && message.hasOwnProperty("chart")) {
-          let error = $root.hapi.chart.Chart.verify(message.chart);
+          var error = $root.hapi.chart.Chart.verify(message.chart);
           if (error) return "chart." + error;
         }
         if (message.config != null && message.hasOwnProperty("config")) {
-          let error = $root.hapi.chart.Config.verify(message.config);
+          var error = $root.hapi.chart.Config.verify(message.config);
           if (error) return "config." + error;
         }
         if (message.manifest != null && message.hasOwnProperty("manifest"))
           if (!$util.isString(message.manifest)) return "manifest: string expected";
         if (message.hooks != null && message.hasOwnProperty("hooks")) {
           if (!Array.isArray(message.hooks)) return "hooks: array expected";
-          for (let i = 0; i < message.hooks.length; ++i) {
-            let error = $root.hapi.release.Hook.verify(message.hooks[i]);
+          for (var i = 0; i < message.hooks.length; ++i) {
+            var error = $root.hapi.release.Hook.verify(message.hooks[i]);
             if (error) return "hooks." + error;
           }
         }
@@ -304,7 +306,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Release.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.Release) return object;
-        let message = new $root.hapi.release.Release();
+        var message = new $root.hapi.release.Release();
         if (object.name != null) message.name = String(object.name);
         if (object.info != null) {
           if (typeof object.info !== "object")
@@ -326,7 +328,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.hooks))
             throw TypeError(".hapi.release.Release.hooks: array expected");
           message.hooks = [];
-          for (let i = 0; i < object.hooks.length; ++i) {
+          for (var i = 0; i < object.hooks.length; ++i) {
             if (typeof object.hooks[i] !== "object")
               throw TypeError(".hapi.release.Release.hooks: object expected");
             message.hooks[i] = $root.hapi.release.Hook.fromObject(object.hooks[i]);
@@ -348,7 +350,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Release.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.arrays || options.defaults) object.hooks = [];
         if (options.defaults) {
           object.name = "";
@@ -370,7 +372,7 @@ export const hapi = ($root.hapi = (() => {
           object.manifest = message.manifest;
         if (message.hooks && message.hooks.length) {
           object.hooks = [];
-          for (let j = 0; j < message.hooks.length; ++j)
+          for (var j = 0; j < message.hooks.length; ++j)
             object.hooks[j] = $root.hapi.release.Hook.toObject(message.hooks[j], options);
         }
         if (message.version != null && message.hasOwnProperty("version"))
@@ -421,7 +423,7 @@ export const hapi = ($root.hapi = (() => {
         this.events = [];
         this.deletePolicies = [];
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -522,7 +524,7 @@ export const hapi = ($root.hapi = (() => {
           writer.uint32(/* id 4, wireType 2 =*/ 34).string(message.manifest);
         if (message.events != null && message.events.length) {
           writer.uint32(/* id 5, wireType 2 =*/ 42).fork();
-          for (let i = 0; i < message.events.length; ++i) writer.int32(message.events[i]);
+          for (var i = 0; i < message.events.length; ++i) writer.int32(message.events[i]);
           writer.ldelim();
         }
         if (message.lastRun != null && message.hasOwnProperty("lastRun"))
@@ -534,7 +536,7 @@ export const hapi = ($root.hapi = (() => {
           writer.uint32(/* id 7, wireType 0 =*/ 56).int32(message.weight);
         if (message.deletePolicies != null && message.deletePolicies.length) {
           writer.uint32(/* id 8, wireType 2 =*/ 66).fork();
-          for (let i = 0; i < message.deletePolicies.length; ++i)
+          for (var i = 0; i < message.deletePolicies.length; ++i)
             writer.int32(message.deletePolicies[i]);
           writer.ldelim();
         }
@@ -567,10 +569,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Hook.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.Hook();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -587,7 +589,7 @@ export const hapi = ($root.hapi = (() => {
             case 5:
               if (!(message.events && message.events.length)) message.events = [];
               if ((tag & 7) === 2) {
-                let end2 = reader.uint32() + reader.pos;
+                var end2 = reader.uint32() + reader.pos;
                 while (reader.pos < end2) message.events.push(reader.int32());
               } else message.events.push(reader.int32());
               break;
@@ -601,7 +603,7 @@ export const hapi = ($root.hapi = (() => {
               if (!(message.deletePolicies && message.deletePolicies.length))
                 message.deletePolicies = [];
               if ((tag & 7) === 2) {
-                let end2 = reader.uint32() + reader.pos;
+                var end2 = reader.uint32() + reader.pos;
                 while (reader.pos < end2) message.deletePolicies.push(reader.int32());
               } else message.deletePolicies.push(reader.int32());
               break;
@@ -648,7 +650,7 @@ export const hapi = ($root.hapi = (() => {
           if (!$util.isString(message.manifest)) return "manifest: string expected";
         if (message.events != null && message.hasOwnProperty("events")) {
           if (!Array.isArray(message.events)) return "events: array expected";
-          for (let i = 0; i < message.events.length; ++i)
+          for (var i = 0; i < message.events.length; ++i)
             switch (message.events[i]) {
               default:
                 return "events: enum value[] expected";
@@ -667,14 +669,14 @@ export const hapi = ($root.hapi = (() => {
             }
         }
         if (message.lastRun != null && message.hasOwnProperty("lastRun")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.lastRun);
+          var error = $root.google.protobuf.Timestamp.verify(message.lastRun);
           if (error) return "lastRun." + error;
         }
         if (message.weight != null && message.hasOwnProperty("weight"))
           if (!$util.isInteger(message.weight)) return "weight: integer expected";
         if (message.deletePolicies != null && message.hasOwnProperty("deletePolicies")) {
           if (!Array.isArray(message.deletePolicies)) return "deletePolicies: array expected";
-          for (let i = 0; i < message.deletePolicies.length; ++i)
+          for (var i = 0; i < message.deletePolicies.length; ++i)
             switch (message.deletePolicies[i]) {
               default:
                 return "deletePolicies: enum value[] expected";
@@ -696,7 +698,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Hook.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.Hook) return object;
-        let message = new $root.hapi.release.Hook();
+        var message = new $root.hapi.release.Hook();
         if (object.name != null) message.name = String(object.name);
         if (object.kind != null) message.kind = String(object.kind);
         if (object.path != null) message.path = String(object.path);
@@ -705,7 +707,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.events))
             throw TypeError(".hapi.release.Hook.events: array expected");
           message.events = [];
-          for (let i = 0; i < object.events.length; ++i)
+          for (var i = 0; i < object.events.length; ++i)
             switch (object.events[i]) {
               default:
               case "UNKNOWN":
@@ -764,7 +766,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.deletePolicies))
             throw TypeError(".hapi.release.Hook.deletePolicies: array expected");
           message.deletePolicies = [];
-          for (let i = 0; i < object.deletePolicies.length; ++i)
+          for (var i = 0; i < object.deletePolicies.length; ++i)
             switch (object.deletePolicies[i]) {
               default:
               case "SUCCEEDED":
@@ -791,7 +793,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Hook.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.arrays || options.defaults) {
           object.events = [];
           object.deletePolicies = [];
@@ -811,7 +813,7 @@ export const hapi = ($root.hapi = (() => {
           object.manifest = message.manifest;
         if (message.events && message.events.length) {
           object.events = [];
-          for (let j = 0; j < message.events.length; ++j)
+          for (var j = 0; j < message.events.length; ++j)
             object.events[j] =
               options.enums === String
                 ? $root.hapi.release.Hook.Event[message.events[j]]
@@ -823,7 +825,7 @@ export const hapi = ($root.hapi = (() => {
           object.weight = message.weight;
         if (message.deletePolicies && message.deletePolicies.length) {
           object.deletePolicies = [];
-          for (let j = 0; j < message.deletePolicies.length; ++j)
+          for (var j = 0; j < message.deletePolicies.length; ++j)
             object.deletePolicies[j] =
               options.enums === String
                 ? $root.hapi.release.Hook.DeletePolicy[message.deletePolicies[j]]
@@ -860,7 +862,7 @@ export const hapi = ($root.hapi = (() => {
        * @property {number} RELEASE_TEST_FAILURE=10 RELEASE_TEST_FAILURE value
        */
       Hook.Event = (function() {
-        const valuesById = {},
+        var valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = "UNKNOWN")] = 0;
         values[(valuesById[1] = "PRE_INSTALL")] = 1;
@@ -884,7 +886,7 @@ export const hapi = ($root.hapi = (() => {
        * @property {number} FAILED=1 FAILED value
        */
       Hook.DeletePolicy = (function() {
-        const valuesById = {},
+        var valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = "SUCCEEDED")] = 0;
         values[(valuesById[1] = "FAILED")] = 1;
@@ -916,7 +918,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function Info(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -1034,10 +1036,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Info.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.Info();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.status = $root.hapi.release.Status.decode(reader, reader.uint32());
@@ -1094,19 +1096,19 @@ export const hapi = ($root.hapi = (() => {
       Info.verify = function verify(message) {
         if (typeof message !== "object" || message === null) return "object expected";
         if (message.status != null && message.hasOwnProperty("status")) {
-          let error = $root.hapi.release.Status.verify(message.status);
+          var error = $root.hapi.release.Status.verify(message.status);
           if (error) return "status." + error;
         }
         if (message.firstDeployed != null && message.hasOwnProperty("firstDeployed")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.firstDeployed);
+          var error = $root.google.protobuf.Timestamp.verify(message.firstDeployed);
           if (error) return "firstDeployed." + error;
         }
         if (message.lastDeployed != null && message.hasOwnProperty("lastDeployed")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.lastDeployed);
+          var error = $root.google.protobuf.Timestamp.verify(message.lastDeployed);
           if (error) return "lastDeployed." + error;
         }
         if (message.deleted != null && message.hasOwnProperty("deleted")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.deleted);
+          var error = $root.google.protobuf.Timestamp.verify(message.deleted);
           if (error) return "deleted." + error;
         }
         if (message.Description != null && message.hasOwnProperty("Description"))
@@ -1124,7 +1126,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Info.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.Info) return object;
-        let message = new $root.hapi.release.Info();
+        var message = new $root.hapi.release.Info();
         if (object.status != null) {
           if (typeof object.status !== "object")
             throw TypeError(".hapi.release.Info.status: object expected");
@@ -1160,7 +1162,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Info.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.status = null;
           object.firstDeployed = null;
@@ -1222,7 +1224,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function Status(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -1321,10 +1323,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Status.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.Status();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.code = reader.int32();
@@ -1394,7 +1396,7 @@ export const hapi = ($root.hapi = (() => {
         if (message.notes != null && message.hasOwnProperty("notes"))
           if (!$util.isString(message.notes)) return "notes: string expected";
         if (message.lastTestSuiteRun != null && message.hasOwnProperty("lastTestSuiteRun")) {
-          let error = $root.hapi.release.TestSuite.verify(message.lastTestSuiteRun);
+          var error = $root.hapi.release.TestSuite.verify(message.lastTestSuiteRun);
           if (error) return "lastTestSuiteRun." + error;
         }
         return null;
@@ -1410,7 +1412,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Status.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.Status) return object;
-        let message = new $root.hapi.release.Status();
+        var message = new $root.hapi.release.Status();
         switch (object.code) {
           case "UNKNOWN":
           case 0:
@@ -1472,7 +1474,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Status.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.code = options.enums === String ? "UNKNOWN" : 0;
           object.resources = "";
@@ -1519,7 +1521,7 @@ export const hapi = ($root.hapi = (() => {
        * @property {number} PENDING_ROLLBACK=8 PENDING_ROLLBACK value
        */
       Status.Code = (function() {
-        const valuesById = {},
+        var valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = "UNKNOWN")] = 0;
         values[(valuesById[1] = "DEPLOYED")] = 1;
@@ -1557,7 +1559,7 @@ export const hapi = ($root.hapi = (() => {
       function TestSuite(properties) {
         this.results = [];
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -1619,7 +1621,7 @@ export const hapi = ($root.hapi = (() => {
             writer.uint32(/* id 2, wireType 2 =*/ 18).fork(),
           ).ldelim();
         if (message.results != null && message.results.length)
-          for (let i = 0; i < message.results.length; ++i)
+          for (var i = 0; i < message.results.length; ++i)
             $root.hapi.release.TestRun.encode(
               message.results[i],
               writer.uint32(/* id 3, wireType 2 =*/ 26).fork(),
@@ -1653,10 +1655,10 @@ export const hapi = ($root.hapi = (() => {
        */
       TestSuite.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.TestSuite();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.startedAt = $root.google.protobuf.Timestamp.decode(reader, reader.uint32());
@@ -1702,17 +1704,17 @@ export const hapi = ($root.hapi = (() => {
       TestSuite.verify = function verify(message) {
         if (typeof message !== "object" || message === null) return "object expected";
         if (message.startedAt != null && message.hasOwnProperty("startedAt")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.startedAt);
+          var error = $root.google.protobuf.Timestamp.verify(message.startedAt);
           if (error) return "startedAt." + error;
         }
         if (message.completedAt != null && message.hasOwnProperty("completedAt")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.completedAt);
+          var error = $root.google.protobuf.Timestamp.verify(message.completedAt);
           if (error) return "completedAt." + error;
         }
         if (message.results != null && message.hasOwnProperty("results")) {
           if (!Array.isArray(message.results)) return "results: array expected";
-          for (let i = 0; i < message.results.length; ++i) {
-            let error = $root.hapi.release.TestRun.verify(message.results[i]);
+          for (var i = 0; i < message.results.length; ++i) {
+            var error = $root.hapi.release.TestRun.verify(message.results[i]);
             if (error) return "results." + error;
           }
         }
@@ -1729,7 +1731,7 @@ export const hapi = ($root.hapi = (() => {
        */
       TestSuite.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.TestSuite) return object;
-        let message = new $root.hapi.release.TestSuite();
+        var message = new $root.hapi.release.TestSuite();
         if (object.startedAt != null) {
           if (typeof object.startedAt !== "object")
             throw TypeError(".hapi.release.TestSuite.startedAt: object expected");
@@ -1744,7 +1746,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.results))
             throw TypeError(".hapi.release.TestSuite.results: array expected");
           message.results = [];
-          for (let i = 0; i < object.results.length; ++i) {
+          for (var i = 0; i < object.results.length; ++i) {
             if (typeof object.results[i] !== "object")
               throw TypeError(".hapi.release.TestSuite.results: object expected");
             message.results[i] = $root.hapi.release.TestRun.fromObject(object.results[i]);
@@ -1764,7 +1766,7 @@ export const hapi = ($root.hapi = (() => {
        */
       TestSuite.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.arrays || options.defaults) object.results = [];
         if (options.defaults) {
           object.startedAt = null;
@@ -1779,7 +1781,7 @@ export const hapi = ($root.hapi = (() => {
           );
         if (message.results && message.results.length) {
           object.results = [];
-          for (let j = 0; j < message.results.length; ++j)
+          for (var j = 0; j < message.results.length; ++j)
             object.results[j] = $root.hapi.release.TestRun.toObject(message.results[j], options);
         }
         return object;
@@ -1821,7 +1823,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function TestRun(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -1933,10 +1935,10 @@ export const hapi = ($root.hapi = (() => {
        */
       TestRun.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.release.TestRun();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -2001,11 +2003,11 @@ export const hapi = ($root.hapi = (() => {
         if (message.info != null && message.hasOwnProperty("info"))
           if (!$util.isString(message.info)) return "info: string expected";
         if (message.startedAt != null && message.hasOwnProperty("startedAt")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.startedAt);
+          var error = $root.google.protobuf.Timestamp.verify(message.startedAt);
           if (error) return "startedAt." + error;
         }
         if (message.completedAt != null && message.hasOwnProperty("completedAt")) {
-          let error = $root.google.protobuf.Timestamp.verify(message.completedAt);
+          var error = $root.google.protobuf.Timestamp.verify(message.completedAt);
           if (error) return "completedAt." + error;
         }
         return null;
@@ -2021,7 +2023,7 @@ export const hapi = ($root.hapi = (() => {
        */
       TestRun.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.release.TestRun) return object;
-        let message = new $root.hapi.release.TestRun();
+        var message = new $root.hapi.release.TestRun();
         if (object.name != null) message.name = String(object.name);
         switch (object.status) {
           case "UNKNOWN":
@@ -2066,7 +2068,7 @@ export const hapi = ($root.hapi = (() => {
        */
       TestRun.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.name = "";
           object.status = options.enums === String ? "UNKNOWN" : 0;
@@ -2112,7 +2114,7 @@ export const hapi = ($root.hapi = (() => {
        * @property {number} RUNNING=3 RUNNING value
        */
       TestRun.Status = (function() {
-        const valuesById = {},
+        var valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = "UNKNOWN")] = 0;
         values[(valuesById[1] = "SUCCESS")] = 1;
@@ -2133,7 +2135,7 @@ export const hapi = ($root.hapi = (() => {
      * @memberof hapi
      * @namespace
      */
-    const chart = {};
+    var chart = {};
 
     chart.Config = (function() {
       /**
@@ -2155,7 +2157,7 @@ export const hapi = ($root.hapi = (() => {
       function Config(properties) {
         this.values = {};
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -2201,7 +2203,7 @@ export const hapi = ($root.hapi = (() => {
         if (message.raw != null && message.hasOwnProperty("raw"))
           writer.uint32(/* id 1, wireType 2 =*/ 10).string(message.raw);
         if (message.values != null && message.hasOwnProperty("values"))
-          for (let keys = Object.keys(message.values), i = 0; i < keys.length; ++i) {
+          for (var keys = Object.keys(message.values), i = 0; i < keys.length; ++i) {
             writer
               .uint32(/* id 2, wireType 2 =*/ 18)
               .fork()
@@ -2243,11 +2245,11 @@ export const hapi = ($root.hapi = (() => {
        */
       Config.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Config(),
           key;
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.raw = reader.string();
@@ -2296,9 +2298,9 @@ export const hapi = ($root.hapi = (() => {
           if (!$util.isString(message.raw)) return "raw: string expected";
         if (message.values != null && message.hasOwnProperty("values")) {
           if (!$util.isObject(message.values)) return "values: object expected";
-          let key = Object.keys(message.values);
-          for (let i = 0; i < key.length; ++i) {
-            let error = $root.hapi.chart.Value.verify(message.values[key[i]]);
+          var key = Object.keys(message.values);
+          for (var i = 0; i < key.length; ++i) {
+            var error = $root.hapi.chart.Value.verify(message.values[key[i]]);
             if (error) return "values." + error;
           }
         }
@@ -2315,13 +2317,13 @@ export const hapi = ($root.hapi = (() => {
        */
       Config.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Config) return object;
-        let message = new $root.hapi.chart.Config();
+        var message = new $root.hapi.chart.Config();
         if (object.raw != null) message.raw = String(object.raw);
         if (object.values) {
           if (typeof object.values !== "object")
             throw TypeError(".hapi.chart.Config.values: object expected");
           message.values = {};
-          for (let keys = Object.keys(object.values), i = 0; i < keys.length; ++i) {
+          for (var keys = Object.keys(object.values), i = 0; i < keys.length; ++i) {
             if (typeof object.values[keys[i]] !== "object")
               throw TypeError(".hapi.chart.Config.values: object expected");
             message.values[keys[i]] = $root.hapi.chart.Value.fromObject(object.values[keys[i]]);
@@ -2341,14 +2343,14 @@ export const hapi = ($root.hapi = (() => {
        */
       Config.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.objects || options.defaults) object.values = {};
         if (options.defaults) object.raw = "";
         if (message.raw != null && message.hasOwnProperty("raw")) object.raw = message.raw;
-        let keys2;
+        var keys2;
         if (message.values && (keys2 = Object.keys(message.values)).length) {
           object.values = {};
-          for (let j = 0; j < keys2.length; ++j)
+          for (var j = 0; j < keys2.length; ++j)
             object.values[keys2[j]] = $root.hapi.chart.Value.toObject(
               message.values[keys2[j]],
               options,
@@ -2389,7 +2391,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function Value(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -2455,10 +2457,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Value.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Value();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.value = reader.string();
@@ -2511,7 +2513,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Value.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Value) return object;
-        let message = new $root.hapi.chart.Value();
+        var message = new $root.hapi.chart.Value();
         if (object.value != null) message.value = String(object.value);
         return message;
       };
@@ -2527,7 +2529,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Value.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) object.value = "";
         if (message.value != null && message.hasOwnProperty("value")) object.value = message.value;
         return object;
@@ -2572,7 +2574,7 @@ export const hapi = ($root.hapi = (() => {
         this.dependencies = [];
         this.files = [];
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -2645,13 +2647,13 @@ export const hapi = ($root.hapi = (() => {
             writer.uint32(/* id 1, wireType 2 =*/ 10).fork(),
           ).ldelim();
         if (message.templates != null && message.templates.length)
-          for (let i = 0; i < message.templates.length; ++i)
+          for (var i = 0; i < message.templates.length; ++i)
             $root.hapi.chart.Template.encode(
               message.templates[i],
               writer.uint32(/* id 2, wireType 2 =*/ 18).fork(),
             ).ldelim();
         if (message.dependencies != null && message.dependencies.length)
-          for (let i = 0; i < message.dependencies.length; ++i)
+          for (var i = 0; i < message.dependencies.length; ++i)
             $root.hapi.chart.Chart.encode(
               message.dependencies[i],
               writer.uint32(/* id 3, wireType 2 =*/ 26).fork(),
@@ -2662,7 +2664,7 @@ export const hapi = ($root.hapi = (() => {
             writer.uint32(/* id 4, wireType 2 =*/ 34).fork(),
           ).ldelim();
         if (message.files != null && message.files.length)
-          for (let i = 0; i < message.files.length; ++i)
+          for (var i = 0; i < message.files.length; ++i)
             $root.google.protobuf.Any.encode(
               message.files[i],
               writer.uint32(/* id 5, wireType 2 =*/ 42).fork(),
@@ -2696,10 +2698,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Chart.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Chart();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.metadata = $root.hapi.chart.Metadata.decode(reader, reader.uint32());
@@ -2753,31 +2755,31 @@ export const hapi = ($root.hapi = (() => {
       Chart.verify = function verify(message) {
         if (typeof message !== "object" || message === null) return "object expected";
         if (message.metadata != null && message.hasOwnProperty("metadata")) {
-          let error = $root.hapi.chart.Metadata.verify(message.metadata);
+          var error = $root.hapi.chart.Metadata.verify(message.metadata);
           if (error) return "metadata." + error;
         }
         if (message.templates != null && message.hasOwnProperty("templates")) {
           if (!Array.isArray(message.templates)) return "templates: array expected";
-          for (let i = 0; i < message.templates.length; ++i) {
-            let error = $root.hapi.chart.Template.verify(message.templates[i]);
+          for (var i = 0; i < message.templates.length; ++i) {
+            var error = $root.hapi.chart.Template.verify(message.templates[i]);
             if (error) return "templates." + error;
           }
         }
         if (message.dependencies != null && message.hasOwnProperty("dependencies")) {
           if (!Array.isArray(message.dependencies)) return "dependencies: array expected";
-          for (let i = 0; i < message.dependencies.length; ++i) {
-            let error = $root.hapi.chart.Chart.verify(message.dependencies[i]);
+          for (var i = 0; i < message.dependencies.length; ++i) {
+            var error = $root.hapi.chart.Chart.verify(message.dependencies[i]);
             if (error) return "dependencies." + error;
           }
         }
         if (message.values != null && message.hasOwnProperty("values")) {
-          let error = $root.hapi.chart.Config.verify(message.values);
+          var error = $root.hapi.chart.Config.verify(message.values);
           if (error) return "values." + error;
         }
         if (message.files != null && message.hasOwnProperty("files")) {
           if (!Array.isArray(message.files)) return "files: array expected";
-          for (let i = 0; i < message.files.length; ++i) {
-            let error = $root.google.protobuf.Any.verify(message.files[i]);
+          for (var i = 0; i < message.files.length; ++i) {
+            var error = $root.google.protobuf.Any.verify(message.files[i]);
             if (error) return "files." + error;
           }
         }
@@ -2794,7 +2796,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Chart.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Chart) return object;
-        let message = new $root.hapi.chart.Chart();
+        var message = new $root.hapi.chart.Chart();
         if (object.metadata != null) {
           if (typeof object.metadata !== "object")
             throw TypeError(".hapi.chart.Chart.metadata: object expected");
@@ -2804,7 +2806,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.templates))
             throw TypeError(".hapi.chart.Chart.templates: array expected");
           message.templates = [];
-          for (let i = 0; i < object.templates.length; ++i) {
+          for (var i = 0; i < object.templates.length; ++i) {
             if (typeof object.templates[i] !== "object")
               throw TypeError(".hapi.chart.Chart.templates: object expected");
             message.templates[i] = $root.hapi.chart.Template.fromObject(object.templates[i]);
@@ -2814,7 +2816,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.dependencies))
             throw TypeError(".hapi.chart.Chart.dependencies: array expected");
           message.dependencies = [];
-          for (let i = 0; i < object.dependencies.length; ++i) {
+          for (var i = 0; i < object.dependencies.length; ++i) {
             if (typeof object.dependencies[i] !== "object")
               throw TypeError(".hapi.chart.Chart.dependencies: object expected");
             message.dependencies[i] = $root.hapi.chart.Chart.fromObject(object.dependencies[i]);
@@ -2829,7 +2831,7 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.files))
             throw TypeError(".hapi.chart.Chart.files: array expected");
           message.files = [];
-          for (let i = 0; i < object.files.length; ++i) {
+          for (var i = 0; i < object.files.length; ++i) {
             if (typeof object.files[i] !== "object")
               throw TypeError(".hapi.chart.Chart.files: object expected");
             message.files[i] = $root.google.protobuf.Any.fromObject(object.files[i]);
@@ -2849,7 +2851,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Chart.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.arrays || options.defaults) {
           object.templates = [];
           object.dependencies = [];
@@ -2863,12 +2865,12 @@ export const hapi = ($root.hapi = (() => {
           object.metadata = $root.hapi.chart.Metadata.toObject(message.metadata, options);
         if (message.templates && message.templates.length) {
           object.templates = [];
-          for (let j = 0; j < message.templates.length; ++j)
+          for (var j = 0; j < message.templates.length; ++j)
             object.templates[j] = $root.hapi.chart.Template.toObject(message.templates[j], options);
         }
         if (message.dependencies && message.dependencies.length) {
           object.dependencies = [];
-          for (let j = 0; j < message.dependencies.length; ++j)
+          for (var j = 0; j < message.dependencies.length; ++j)
             object.dependencies[j] = $root.hapi.chart.Chart.toObject(
               message.dependencies[j],
               options,
@@ -2878,7 +2880,7 @@ export const hapi = ($root.hapi = (() => {
           object.values = $root.hapi.chart.Config.toObject(message.values, options);
         if (message.files && message.files.length) {
           object.files = [];
-          for (let j = 0; j < message.files.length; ++j)
+          for (var j = 0; j < message.files.length; ++j)
             object.files[j] = $root.google.protobuf.Any.toObject(message.files[j], options);
         }
         return object;
@@ -2918,7 +2920,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function Maintainer(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -3004,10 +3006,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Maintainer.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Maintainer();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -3070,7 +3072,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Maintainer.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Maintainer) return object;
-        let message = new $root.hapi.chart.Maintainer();
+        var message = new $root.hapi.chart.Maintainer();
         if (object.name != null) message.name = String(object.name);
         if (object.email != null) message.email = String(object.email);
         if (object.url != null) message.url = String(object.url);
@@ -3088,7 +3090,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Maintainer.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.name = "";
           object.email = "";
@@ -3152,7 +3154,7 @@ export const hapi = ($root.hapi = (() => {
         this.maintainers = [];
         this.annotations = {};
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -3320,17 +3322,17 @@ export const hapi = ($root.hapi = (() => {
         if (message.home != null && message.hasOwnProperty("home"))
           writer.uint32(/* id 2, wireType 2 =*/ 18).string(message.home);
         if (message.sources != null && message.sources.length)
-          for (let i = 0; i < message.sources.length; ++i)
+          for (var i = 0; i < message.sources.length; ++i)
             writer.uint32(/* id 3, wireType 2 =*/ 26).string(message.sources[i]);
         if (message.version != null && message.hasOwnProperty("version"))
           writer.uint32(/* id 4, wireType 2 =*/ 34).string(message.version);
         if (message.description != null && message.hasOwnProperty("description"))
           writer.uint32(/* id 5, wireType 2 =*/ 42).string(message.description);
         if (message.keywords != null && message.keywords.length)
-          for (let i = 0; i < message.keywords.length; ++i)
+          for (var i = 0; i < message.keywords.length; ++i)
             writer.uint32(/* id 6, wireType 2 =*/ 50).string(message.keywords[i]);
         if (message.maintainers != null && message.maintainers.length)
-          for (let i = 0; i < message.maintainers.length; ++i)
+          for (var i = 0; i < message.maintainers.length; ++i)
             $root.hapi.chart.Maintainer.encode(
               message.maintainers[i],
               writer.uint32(/* id 7, wireType 2 =*/ 58).fork(),
@@ -3352,7 +3354,7 @@ export const hapi = ($root.hapi = (() => {
         if (message.tillerVersion != null && message.hasOwnProperty("tillerVersion"))
           writer.uint32(/* id 15, wireType 2 =*/ 122).string(message.tillerVersion);
         if (message.annotations != null && message.hasOwnProperty("annotations"))
-          for (let keys = Object.keys(message.annotations), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(message.annotations), i = 0; i < keys.length; ++i)
             writer
               .uint32(/* id 16, wireType 2 =*/ 130)
               .fork()
@@ -3392,11 +3394,11 @@ export const hapi = ($root.hapi = (() => {
        */
       Metadata.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Metadata(),
           key;
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -3495,7 +3497,7 @@ export const hapi = ($root.hapi = (() => {
           if (!$util.isString(message.home)) return "home: string expected";
         if (message.sources != null && message.hasOwnProperty("sources")) {
           if (!Array.isArray(message.sources)) return "sources: array expected";
-          for (let i = 0; i < message.sources.length; ++i)
+          for (var i = 0; i < message.sources.length; ++i)
             if (!$util.isString(message.sources[i])) return "sources: string[] expected";
         }
         if (message.version != null && message.hasOwnProperty("version"))
@@ -3504,13 +3506,13 @@ export const hapi = ($root.hapi = (() => {
           if (!$util.isString(message.description)) return "description: string expected";
         if (message.keywords != null && message.hasOwnProperty("keywords")) {
           if (!Array.isArray(message.keywords)) return "keywords: array expected";
-          for (let i = 0; i < message.keywords.length; ++i)
+          for (var i = 0; i < message.keywords.length; ++i)
             if (!$util.isString(message.keywords[i])) return "keywords: string[] expected";
         }
         if (message.maintainers != null && message.hasOwnProperty("maintainers")) {
           if (!Array.isArray(message.maintainers)) return "maintainers: array expected";
-          for (let i = 0; i < message.maintainers.length; ++i) {
-            let error = $root.hapi.chart.Maintainer.verify(message.maintainers[i]);
+          for (var i = 0; i < message.maintainers.length; ++i) {
+            var error = $root.hapi.chart.Maintainer.verify(message.maintainers[i]);
             if (error) return "maintainers." + error;
           }
         }
@@ -3532,8 +3534,8 @@ export const hapi = ($root.hapi = (() => {
           if (!$util.isString(message.tillerVersion)) return "tillerVersion: string expected";
         if (message.annotations != null && message.hasOwnProperty("annotations")) {
           if (!$util.isObject(message.annotations)) return "annotations: object expected";
-          let key = Object.keys(message.annotations);
-          for (let i = 0; i < key.length; ++i)
+          var key = Object.keys(message.annotations);
+          for (var i = 0; i < key.length; ++i)
             if (!$util.isString(message.annotations[key[i]]))
               return "annotations: string{k:string} expected";
         }
@@ -3552,14 +3554,14 @@ export const hapi = ($root.hapi = (() => {
        */
       Metadata.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Metadata) return object;
-        let message = new $root.hapi.chart.Metadata();
+        var message = new $root.hapi.chart.Metadata();
         if (object.name != null) message.name = String(object.name);
         if (object.home != null) message.home = String(object.home);
         if (object.sources) {
           if (!Array.isArray(object.sources))
             throw TypeError(".hapi.chart.Metadata.sources: array expected");
           message.sources = [];
-          for (let i = 0; i < object.sources.length; ++i)
+          for (var i = 0; i < object.sources.length; ++i)
             message.sources[i] = String(object.sources[i]);
         }
         if (object.version != null) message.version = String(object.version);
@@ -3568,14 +3570,14 @@ export const hapi = ($root.hapi = (() => {
           if (!Array.isArray(object.keywords))
             throw TypeError(".hapi.chart.Metadata.keywords: array expected");
           message.keywords = [];
-          for (let i = 0; i < object.keywords.length; ++i)
+          for (var i = 0; i < object.keywords.length; ++i)
             message.keywords[i] = String(object.keywords[i]);
         }
         if (object.maintainers) {
           if (!Array.isArray(object.maintainers))
             throw TypeError(".hapi.chart.Metadata.maintainers: array expected");
           message.maintainers = [];
-          for (let i = 0; i < object.maintainers.length; ++i) {
+          for (var i = 0; i < object.maintainers.length; ++i) {
             if (typeof object.maintainers[i] !== "object")
               throw TypeError(".hapi.chart.Metadata.maintainers: object expected");
             message.maintainers[i] = $root.hapi.chart.Maintainer.fromObject(object.maintainers[i]);
@@ -3593,7 +3595,7 @@ export const hapi = ($root.hapi = (() => {
           if (typeof object.annotations !== "object")
             throw TypeError(".hapi.chart.Metadata.annotations: object expected");
           message.annotations = {};
-          for (let keys = Object.keys(object.annotations), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(object.annotations), i = 0; i < keys.length; ++i)
             message.annotations[keys[i]] = String(object.annotations[keys[i]]);
         }
         if (object.kubeVersion != null) message.kubeVersion = String(object.kubeVersion);
@@ -3611,7 +3613,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Metadata.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.arrays || options.defaults) {
           object.sources = [];
           object.keywords = [];
@@ -3637,7 +3639,7 @@ export const hapi = ($root.hapi = (() => {
         if (message.home != null && message.hasOwnProperty("home")) object.home = message.home;
         if (message.sources && message.sources.length) {
           object.sources = [];
-          for (let j = 0; j < message.sources.length; ++j) object.sources[j] = message.sources[j];
+          for (var j = 0; j < message.sources.length; ++j) object.sources[j] = message.sources[j];
         }
         if (message.version != null && message.hasOwnProperty("version"))
           object.version = message.version;
@@ -3645,12 +3647,12 @@ export const hapi = ($root.hapi = (() => {
           object.description = message.description;
         if (message.keywords && message.keywords.length) {
           object.keywords = [];
-          for (let j = 0; j < message.keywords.length; ++j)
+          for (var j = 0; j < message.keywords.length; ++j)
             object.keywords[j] = message.keywords[j];
         }
         if (message.maintainers && message.maintainers.length) {
           object.maintainers = [];
-          for (let j = 0; j < message.maintainers.length; ++j)
+          for (var j = 0; j < message.maintainers.length; ++j)
             object.maintainers[j] = $root.hapi.chart.Maintainer.toObject(
               message.maintainers[j],
               options,
@@ -3670,10 +3672,10 @@ export const hapi = ($root.hapi = (() => {
           object.deprecated = message.deprecated;
         if (message.tillerVersion != null && message.hasOwnProperty("tillerVersion"))
           object.tillerVersion = message.tillerVersion;
-        let keys2;
+        var keys2;
         if (message.annotations && (keys2 = Object.keys(message.annotations)).length) {
           object.annotations = {};
-          for (let j = 0; j < keys2.length; ++j)
+          for (var j = 0; j < keys2.length; ++j)
             object.annotations[keys2[j]] = message.annotations[keys2[j]];
         }
         if (message.kubeVersion != null && message.hasOwnProperty("kubeVersion"))
@@ -3700,7 +3702,7 @@ export const hapi = ($root.hapi = (() => {
        * @property {number} GOTPL=1 GOTPL value
        */
       Metadata.Engine = (function() {
-        const valuesById = {},
+        var valuesById = {},
           values = Object.create(valuesById);
         values[(valuesById[0] = "UNKNOWN")] = 0;
         values[(valuesById[1] = "GOTPL")] = 1;
@@ -3729,7 +3731,7 @@ export const hapi = ($root.hapi = (() => {
        */
       function Template(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -3805,10 +3807,10 @@ export const hapi = ($root.hapi = (() => {
        */
       Template.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.hapi.chart.Template();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.name = reader.string();
@@ -3872,7 +3874,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Template.fromObject = function fromObject(object) {
         if (object instanceof $root.hapi.chart.Template) return object;
-        let message = new $root.hapi.chart.Template();
+        var message = new $root.hapi.chart.Template();
         if (object.name != null) message.name = String(object.name);
         if (object.data != null)
           if (typeof object.data === "string")
@@ -3896,7 +3898,7 @@ export const hapi = ($root.hapi = (() => {
        */
       Template.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.name = "";
           object.data = options.bytes === String ? "" : [];
@@ -3928,15 +3930,15 @@ export const hapi = ($root.hapi = (() => {
   })();
 
   return hapi;
-})());
+})();
 
-export const google = ($root.google = (() => {
+$root.google = (function() {
   /**
    * Namespace google.
    * @exports google
    * @namespace
    */
-  const google = {};
+  var google = {};
 
   google.protobuf = (function() {
     /**
@@ -3944,7 +3946,7 @@ export const google = ($root.google = (() => {
      * @memberof google
      * @namespace
      */
-    const protobuf = {};
+    var protobuf = {};
 
     protobuf.Timestamp = (function() {
       /**
@@ -3965,7 +3967,7 @@ export const google = ($root.google = (() => {
        */
       function Timestamp(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -4041,10 +4043,10 @@ export const google = ($root.google = (() => {
        */
       Timestamp.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.google.protobuf.Timestamp();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.seconds = reader.int64();
@@ -4110,7 +4112,7 @@ export const google = ($root.google = (() => {
        */
       Timestamp.fromObject = function fromObject(object) {
         if (object instanceof $root.google.protobuf.Timestamp) return object;
-        let message = new $root.google.protobuf.Timestamp();
+        var message = new $root.google.protobuf.Timestamp();
         if (object.seconds != null)
           if ($util.Long) (message.seconds = $util.Long.fromValue(object.seconds)).unsigned = false;
           else if (typeof object.seconds === "string")
@@ -4136,10 +4138,10 @@ export const google = ($root.google = (() => {
        */
       Timestamp.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           if ($util.Long) {
-            let long = new $util.Long(0, 0, false);
+            var long = new $util.Long(0, 0, false);
             object.seconds =
               options.longs === String
                 ? long.toString()
@@ -4197,7 +4199,7 @@ export const google = ($root.google = (() => {
        */
       function Any(properties) {
         if (properties)
-          for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+          for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
             if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
       }
 
@@ -4273,10 +4275,10 @@ export const google = ($root.google = (() => {
        */
       Any.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
-        let end = length === undefined ? reader.len : reader.pos + length,
+        var end = length === undefined ? reader.len : reader.pos + length,
           message = new $root.google.protobuf.Any();
         while (reader.pos < end) {
-          let tag = reader.uint32();
+          var tag = reader.uint32();
           switch (tag >>> 3) {
             case 1:
               message.type_url = reader.string();
@@ -4340,7 +4342,7 @@ export const google = ($root.google = (() => {
        */
       Any.fromObject = function fromObject(object) {
         if (object instanceof $root.google.protobuf.Any) return object;
-        let message = new $root.google.protobuf.Any();
+        var message = new $root.google.protobuf.Any();
         if (object.type_url != null) message.type_url = String(object.type_url);
         if (object.value != null)
           if (typeof object.value === "string")
@@ -4364,7 +4366,7 @@ export const google = ($root.google = (() => {
        */
       Any.toObject = function toObject(message, options) {
         if (!options) options = {};
-        let object = {};
+        var object = {};
         if (options.defaults) {
           object.type_url = "";
           object.value = options.bytes === String ? "" : [];
@@ -4397,6 +4399,6 @@ export const google = ($root.google = (() => {
   })();
 
   return google;
-})());
+})();
 
-export { $root as default };
+module.exports = $root;
