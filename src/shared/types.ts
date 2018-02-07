@@ -1,3 +1,10 @@
+import { hapi } from "./hapi/release";
+
+export interface IRepo {
+  name: string;
+  url: string;
+}
+
 export interface IChartVersion {
   id: string;
   attributes: IChartVersionAttributes;
@@ -34,10 +41,7 @@ export interface IChartAttributes {
     name: string;
     email?: string;
   }>;
-  repo: {
-    name: string;
-    url: string;
-  };
+  repo: IRepo;
   sources: string[];
 }
 
@@ -52,6 +56,84 @@ export interface IChartState {
   items: IChart[];
 }
 
+export interface IDeployment {
+  metadata: {
+    name: string;
+    namespace: string;
+  };
+}
+
+export interface IPort {
+  name: string;
+  port: number;
+  protocl: string;
+  targetPort: string;
+}
+
+export interface IResource {
+  type: string;
+  resourceType: string;
+  spec: {
+    clusterIP: string;
+    type: string;
+    ports: IPort[];
+  };
+  metadata: {
+    name: string;
+    namespace: string;
+    selfLink: string;
+    uid: string;
+    resourceVersion: string;
+    creationTimestamp: string;
+    annotations: string;
+  };
+}
+
+export interface IResourceState {
+  items: IResource[];
+}
+
+export interface IApp {
+  type: string;
+  data: hapi.release.Release;
+  repo?: IRepo;
+}
+
+export interface IAppState {
+  isFetching: boolean;
+  // currently items are always Helm releases
+  items: IApp[];
+}
+
 export interface IStoreState {
+  apps: IAppState;
   charts: IChartState;
+  deployment: IDeployment;
+}
+
+// Representation of the HelmRelease CRD
+export interface IHelmRelease {
+  metadata: {
+    annotations: {
+      "apprepositories.kubeapps.com/repo-name"?: string;
+    };
+    name: string;
+    namespace: string;
+  };
+  spec: {
+    repoUrl: string;
+  };
+}
+
+// Representation of the ConfigMaps Helm uses to store releases
+export interface IHelmReleaseConfigMap {
+  metadata: {
+    labels: {
+      NAME: string;
+      VERSION: string;
+    };
+  };
+  data: {
+    release: string;
+  };
 }

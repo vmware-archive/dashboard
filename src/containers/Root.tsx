@@ -4,9 +4,10 @@ import { Provider } from "react-redux";
 import { Route } from "react-router";
 import { ConnectedRouter } from "react-router-redux";
 
-import Dashboard from "../components/Dashboard";
 import Layout from "../components/Layout";
 import configureStore from "../store";
+import AppList from "./AppListContainer";
+import AppView from "./AppViewContainer";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 
@@ -20,7 +21,8 @@ class Root extends React.Component {
         <ConnectedRouter history={history}>
           <Layout>
             <section className="routes">
-              <Route exact={true} path="/" component={Dashboard} />
+              <Route exact={true} path="/" component={AppList} />
+              <Route exact={true} path="/apps/:namespace/:releasename" component={AppView} />
               <Route exact={true} path="/charts" component={ChartList} />
               <Route exact={true} path="/charts/:repo" component={ChartList} />
               <Route exact={true} path="/charts/:repo/:id" component={ChartView} />
