@@ -13,13 +13,36 @@ export const receiveApps = createAction("RECEIVE_APPS", (apps: IApp[]) => {
     type: "RECEIVE_APPS",
   };
 });
+export const selectApp = createAction("SELECT_APP", (app: IApp) => {
+  return {
+    app,
+    type: "SELECT_APP",
+  };
+});
 
 const allActions = [requestApps, receiveApps].map(getReturnOfExpression);
 export type AppsAction = typeof allActions[number];
 
-export function getHelmReleaseInfo(releaseName: string) {
-  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
-    return Promise.resolve({});
+export function getApp(releaseName: string) {
+  return async (dispatch: Dispatch<IStoreState>): Promise<IApp> => {
+    const req = await fetch(url.api.helmreleases.listDetails([releaseName]));
+    const { items }: { items: IHelmReleaseConfigMap[] } = await req.json();
+    // Helm/Tiller will store details in a ConfigMap for each revision,
+    // so we need to filter these out to pick the latest version
+    const helmConfigMap: IHelmReleaseConfigMap = items.reduce((ret: IHelmReleaseConfigMap, cm) => {
+      // If the current accumulated version is higher, return it
+      const curVersion = parseInt(ret.metadata.labels.VERSION, 10);
+      const thisVersion = parseInt(cm.metadata.labels.VERSION, 10);
+      if (curVersion > thisVersion) {
+        return ret;
+      }
+      return cm;
+    }, items[0]);
+    const protoBytes = inflate(atob(helmConfigMap.data.release));
+    const rel = hapi.release.Release.decode(protoBytes);
+    const app: IApp = { data: rel, type: "helm" };
+    dispatch(selectApp(app));
+    return app;
   };
 }
 
@@ -37,7 +60,7 @@ export function fetchApps() {
         const releaseNames = json.items.map(hr => {
           return `${hr.metadata.namespace}-${hr.metadata.name}`;
         }, {});
-        fetch(url.api.helmreleases.listDetails(releaseNames))
+        return fetch(url.api.helmreleases.listDetails(releaseNames))
           .then(response => response.json())
           .then((details: { items: IHelmReleaseConfigMap[] }) => {
             // Helm/Tiller will store details in a ConfigMap for each revision,
@@ -75,9 +98,9 @@ export function fetchApps() {
               // }
               apps.push(app);
             }
-            return dispatch(receiveApps(apps));
+            dispatch(receiveApps(apps));
+            return apps;
           });
-        return json;
       });
   };
 }

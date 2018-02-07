@@ -65,34 +65,32 @@ export interface IDeployment {
   };
 }
 
+export interface IServiceSpec {
+  ports: IPort[];
+  clusterIP: string;
+  type: string;
+}
+
 export interface IPort {
   name: string;
   port: number;
-  protocl: string;
+  protocol: string;
   targetPort: string;
+  nodePort: string;
 }
 
 export interface IResource {
+  apiVersion: string;
+  kind: string;
   type: string;
-  resourceType: string;
-  spec: {
-    clusterIP: string;
-    type: string;
-    ports: IPort[];
-  };
+  spec: any;
+  status: any;
   metadata: {
     name: string;
     namespace: string;
-    selfLink: string;
-    uid: string;
-    resourceVersion: string;
-    creationTimestamp: string;
     annotations: string;
+    creationTimestamp: string;
   };
-}
-
-export interface IResourceState {
-  items: IResource[];
 }
 
 export interface IApp {

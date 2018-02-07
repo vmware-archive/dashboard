@@ -9,10 +9,8 @@ class AppHeader extends React.Component<IAppHeaderProps> {
     const { releasename } = this.props;
     return (
       <header>
-        <div className="AppView__heading margin-normal">
-          <div className="title margin-l-small">
-            <h5 className="subtitle margin-b-reset">{releasename}</h5>
-          </div>
+        <div className="AppView__heading">
+          <h1>{releasename}</h1>
         </div>
         <hr />
       </header>

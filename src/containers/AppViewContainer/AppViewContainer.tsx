@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
+import actions from "../../actions";
 import AppView from "../../components/AppView";
 import { IStoreState } from "../../shared/types";
 
@@ -8,7 +9,7 @@ interface IRouteProps {
   match: {
     params: {
       namespace: string;
-      releasename: string;
+      releaseName: string;
     };
   };
 }
@@ -16,12 +17,14 @@ interface IRouteProps {
 function mapStateToProps({ deployment }: IStoreState, { match: { params } }: IRouteProps) {
   return {
     namespace: params.namespace,
-    releasename: params.releasename,
+    releaseName: params.releaseName,
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
-  return {};
+  return {
+    getApp: (r: string) => dispatch(actions.apps.getApp(r)),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppView);

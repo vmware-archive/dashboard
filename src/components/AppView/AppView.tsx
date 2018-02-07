@@ -1,207 +1,180 @@
+import * as yaml from "js-yaml";
 import * as React from "react";
-import encoding from "text-encoding";
-import { IResource, IResourceState } from "../../shared/types";
+
+import { IApp, IResource, IServiceSpec } from "../../shared/types";
 import AppHeader from "./AppHeader";
 import "./AppView.css";
 
 interface IAppViewProps {
   namespace: string;
-  releasename: string;
+  releaseName: string;
+  app: IApp | undefined;
+  getApp: (releasename: string) => Promise<IApp>;
 }
 
-class AppView extends React.Component<IAppViewProps> {
-  public state = {
-    resourcebuffer: "",
-    resourceevents: {
-      items: [],
-    },
+interface IAppViewState {
+  deployments: Map<string, IResource>;
+  otherResources: Map<string, IResource>;
+  services: Map<string, IResource>;
+  sockets: WebSocket[];
+}
+
+class AppView extends React.Component<IAppViewProps, IAppViewState> {
+  public state: IAppViewState = {
+    deployments: new Map<string, IResource>(),
+    otherResources: new Map<string, IResource>(),
+    services: new Map<string, IResource>(),
+    sockets: [],
   };
 
-  public componentDidMount() {
-    const { namespace, releasename } = this.props;
+  public async componentDidMount() {
+    const { releaseName, getApp } = this.props;
+    const app = await getApp(releaseName);
+    const manifest: IResource[] = yaml.safeLoadAll(app.data.manifest);
+    const watchedKinds = ["Deployment", "Service"];
+    const otherResources = manifest
+      .filter(d => watchedKinds.indexOf(d.kind) < 0)
+      .reduce((acc, r) => {
+        acc[`${r.kind}/${r.metadata.name}`] = r;
+        return acc;
+      }, new Map<string, IResource>());
+    this.setState({ otherResources });
 
-    this.appendChunks = this.appendChunks.bind(this);
-    this.readChunk = this.readChunk.bind(this);
-
-    this.watchEvent(namespace, releasename);
-  }
-
-  public watchEvent(namespace: string, releasename: string) {
-    const host =
-      location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
-
-    const deploymentsUrl = `${host}/api/kube/apis/apps/v1beta1/namespaces/${namespace}/deployments?labelSelector=release=${releasename}&watch=true`;
-
-    fetch(deploymentsUrl).then(response => {
-      if (response != null && response.body != null) {
-        const reader = response.body.getReader();
-        this.readChunk(reader);
-      }
-    });
-
-    const podsUrl = `${host}/api/kube/api/v1/namespaces/${namespace}/pods?labelSelector=release=${releasename}&watch=true`;
-
-    fetch(podsUrl).then(response => {
-      if (response != null && response.body != null) {
-        const reader = response.body.getReader();
-        this.readChunk(reader);
-      }
-    });
-
-    const secretsUrl = `${host}/api/kube/api/v1/namespaces/${namespace}/secrets?labelSelector=release=${releasename}&watch=true`;
-
-    fetch(secretsUrl).then(response => {
-      if (response != null && response.body != null) {
-        const reader = response.body.getReader();
-        this.readChunk(reader);
-      }
-    });
-
-    const servicesUrl = `${host}/api/kube/api/v1/namespaces/${namespace}/services?labelSelector=release=${releasename}&watch=true`;
-
-    fetch(servicesUrl).then(response => {
-      if (response != null && response.body != null) {
-        const reader = response.body.getReader();
-        this.readChunk(reader);
-      }
-    });
-
-    const pvcsUrl = `${host}/api/kube/api/v1/namespaces/${namespace}/persistentvolumeclaims?labelSelector=release=${releasename}&watch=true`;
-
-    fetch(pvcsUrl).then(response => {
-      if (response != null && response.body != null) {
-        const reader = response.body.getReader();
-        this.readChunk(reader);
-      }
+    const deployments = manifest.filter(d => d.kind === "Deployment");
+    const services = manifest.filter(d => d.kind === "Service");
+    const apiBase = `ws://${window.location.host}/api/kube`;
+    const sockets: WebSocket[] = [];
+    for (const d of deployments) {
+      const s = new WebSocket(
+        `${apiBase}/apis/apps/v1/namespaces/${
+          app.data.namespace
+        }/deployments?watch=true&fieldSelector=metadata.name%3D${d.metadata.name}`,
+      );
+      s.addEventListener("message", e => this.handleEvent(e));
+      sockets.push(s);
+    }
+    for (const svc of services) {
+      const s = new WebSocket(
+        `${apiBase}/api/v1/namespaces/${
+          app.data.namespace
+        }/services?watch=true&fieldSelector=metadata.name%3D${svc.metadata.name}`,
+      );
+      s.addEventListener("message", e => this.handleEvent(e));
+      sockets.push(s);
+    }
+    this.setState({
+      sockets,
     });
   }
 
-  public readChunk(reader: any) {
-    return reader.read().then((text: any) => this.appendChunks(text, reader));
-  }
-
-  public appendChunks(result: any, reader: any) {
-    const decoder = new encoding.TextDecoder();
-    const chunk = decoder.decode(result.value, { stream: !result.done });
-    const text = chunk;
-    if (!result.done) {
-      try {
-        // console.log("raw");
-        // console.log(text);
-        const textJson = JSON.parse(text);
-        const resourceDetail = {
-          metadata: textJson.object.metadata,
-          resourceType: this.getResourceType(textJson.object.metadata.selfLink),
-          spec: textJson.object.spec,
-          type: textJson.type,
-        };
-        const stateText = this.state.resourceevents as IResourceState;
-        stateText.items.push(resourceDetail);
-        this.setState({ resourceevents: stateText });
-      } catch (exception) {
-        let bufferText = this.state.resourcebuffer;
-        if (bufferText === "") {
-          bufferText += text;
-          this.setState({ resourcebuffer: bufferText });
-        } else {
-          // concat and process all
-
-          bufferText += text;
-          // console.log("combined text");
-          // console.log(bufferText);
-          if (bufferText.includes('}\n{"type"')) {
-            let bufferTextArray = "[" + bufferText + "]";
-            bufferTextArray = bufferTextArray.replace('}\n{"type"', '},{"type"');
-            bufferTextArray = bufferTextArray.replace("\n", "");
-            // console.log("modified bufferTextArray")
-            // console.log(bufferTextArray);
-            try {
-              const bufferTextJson = JSON.parse(bufferTextArray);
-              this.setState({ resourcebuffer: "" });
-              // console.log(bufferTextJson.length);
-              bufferTextJson.map((r: any) => {
-                const resourceDetail = {
-                  metadata: r.object.metadata,
-                  resourceType: this.getResourceType(r.object.metadata.selfLink),
-                  spec: r.object.spec,
-                  type: r.type,
-                };
-
-                const stateText = this.state.resourceevents as IResourceState;
-                stateText.items.push(resourceDetail);
-                this.setState({ resourceevents: stateText });
-              });
-            } catch (exception) {
-              this.setState({ resourcebuffer: bufferText });
-            }
-          } else {
-            try {
-              const bufferTextJson = JSON.parse(bufferText);
-              this.setState({ resourcebuffer: "" });
-
-              const resourceDetail = {
-                metadata: bufferTextJson.object.metadata,
-                resourceType: this.getResourceType(bufferTextJson.object.metadata.selfLink),
-                spec: bufferTextJson.object.spec,
-                type: bufferTextJson.type,
-              };
-              const stateText = this.state.resourceevents as IResourceState;
-              stateText.items.push(resourceDetail);
-              this.setState({ resourceevents: stateText });
-            } catch (exception) {
-              this.setState({ resourcebuffer: bufferText });
-            }
-          }
-        }
-      }
-
-      return this.readChunk(reader);
+  public componentWillUnmount() {
+    const { sockets } = this.state;
+    for (const s of sockets) {
+      s.close();
     }
   }
 
-  public getResourceType(selflink: string) {
-    if (selflink.includes("/deployments/")) {
-      return "deployment";
-    } else if (selflink.includes("/pods/")) {
-      return "pod";
-    } else if (selflink.includes("/services/")) {
-      return "service";
-    } else if (selflink.includes("/deployments/")) {
-      return "deployment";
-    } else if (selflink.includes("/secrets/")) {
-      return "secret";
-    } else if (selflink.includes("/persistentvolumeclaims/")) {
-      return "persistentvolumeclaim";
-    } else {
-      return "other";
+  public handleEvent(e: MessageEvent) {
+    const msg = JSON.parse(e.data);
+    const resource: IResource = msg.object;
+    const key = `${resource.kind}/${resource.metadata.name}`;
+    switch (resource.kind) {
+      case "Deployment":
+        this.setState({ deployments: { ...this.state.deployments, [key]: resource } });
+        break;
+      case "Service":
+        this.setState({ services: { ...this.state.services, [key]: resource } });
+        break;
     }
   }
 
   public render() {
-    const { releasename } = this.props;
-    // console.log(this.state.resourceevents);
+    const { releaseName } = this.props;
 
-    if (!this.state.resourceevents) {
+    if (!this.state.otherResources) {
       return <div>Loading</div>;
     }
-    let index = 0;
     return (
       <section className="AppView padding-b-big">
-        <AppHeader releasename={releasename} />
+        <AppHeader releasename={releaseName} />
         <main>
           <div className="container container-fluid">
-            <h6>Resources</h6>
-            {this.state.resourceevents.items.length > 0 &&
-              this.state.resourceevents.items.map((r: IResource) => {
-                const key = `${index}_${r.metadata.name}`;
-                index++;
-                return (
-                  <div key={key}>
-                    Resource Type: {r.resourceType} | Resource Name: {r.metadata.name}| Event Type:{" "}
-                    {r.type} | CreationTimestamp: {r.metadata.creationTimestamp}{" "}
-                  </div>
-                );
-              })}
+            <h6>Deployments</h6>
+            <table>
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>DESIRED</th>
+                  <th>UP-TO-DATE</th>
+                  <th>AVAILABLE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.deployments &&
+                  Object.keys(this.state.deployments).map((k: string) => {
+                    const r: IResource = this.state.deployments[k];
+                    return (
+                      <tr key={k}>
+                        <td>{r.metadata.name}</td>
+                        <td>{r.status.replicas}</td>
+                        <td>{r.status.updatedReplicas}</td>
+                        <td>{r.status.availableReplicas || 0}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+            <h6>Services</h6>
+            <table>
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>TYPE</th>
+                  <th>CLUSTER-IP</th>
+                  <th>PORT(S)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.services &&
+                  Object.keys(this.state.services).map((k: string) => {
+                    const r: IResource = this.state.services[k];
+                    const spec: IServiceSpec = r.spec;
+                    // tslint:disable
+                    console.log(r);
+                    console.log(spec);
+                    return (
+                      <tr key={k}>
+                        <td>{r.metadata.name}</td>
+                        <td>{spec.type}</td>
+                        <td>{spec.clusterIP}</td>
+                        <td>
+                          {spec.ports
+                            .map(
+                              p => `${p.port}${p.nodePort ? `:${p.nodePort}` : ""}/${p.protocol}`,
+                            )
+                            .join(",")}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+            <h6>Other Resources</h6>
+            <table>
+              <tbody>
+                {this.state.otherResources &&
+                  Object.keys(this.state.otherResources).map((k: string) => {
+                    const r = this.state.otherResources[k];
+                    return (
+                      <tr key={k}>
+                        <td>{r.kind}</td>
+                        <td>{r.metadata.namespace}</td>
+                        <td>{r.metadata.name}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
           </div>
         </main>
       </section>
