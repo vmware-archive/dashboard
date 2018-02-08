@@ -139,9 +139,6 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
                   Object.keys(this.state.services).map((k: string) => {
                     const r: IResource = this.state.services[k];
                     const spec: IServiceSpec = r.spec;
-                    // tslint:disable
-                    console.log(r);
-                    console.log(spec);
                     return (
                       <tr key={k}>
                         <td>{r.metadata.name}</td>
