@@ -18,7 +18,7 @@ function mapStateToProps({ catalog }: IStoreState, { match: { params } }: IRoute
   const broker =
     catalog.brokers.find(
       potental => !!potental.metadata.name.match(new RegExp(params.brokerName, "i")),
-    ) || null;
+    ) || undefined;
   const plans = broker
     ? catalog.plans.filter(
         plan => !!plan.spec.clusterServiceBrokerName.match(new RegExp(broker.metadata.name, "i")),

@@ -7,15 +7,15 @@ interface ISyncButtonProps {
 }
 
 interface ISyncButtonState {
-  broker: IServiceBroker | null;
+  broker: IServiceBroker | undefined;
   isSyncing: boolean;
-  error: string | null;
+  error: string | undefined;
 }
 
 class SyncButton extends React.Component<ISyncButtonProps, ISyncButtonState> {
   public state: ISyncButtonState = {
     broker: this.props.broker,
-    error: null,
+    error: undefined,
     isSyncing: false,
   };
 

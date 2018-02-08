@@ -29,22 +29,22 @@ interface IProvisionButtonState {
   // deployment options
   releaseName: string;
   namespace: string;
-  selectedPlan: IServicePlan | null;
-  selectedClass: IServiceClass | null;
+  selectedPlan: IServicePlan | undefined;
+  selectedClass: IServiceClass | undefined;
   parameters: string;
-  error: string | null;
+  error?: string;
 }
 
 class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionButtonState> {
   public state: IProvisionButtonState = {
-    error: null,
+    error: undefined,
     isProvisioning: false,
     modalIsOpen: false,
     namespace: "default",
-    parameters: JSON.stringify({ resourceGroup: "default", location: "eastus" }, null, 2),
+    parameters: JSON.stringify({ resourceGroup: "default", location: "eastus" }, undefined, 2),
     releaseName: "",
-    selectedClass: this.props.selectedClass || null,
-    selectedPlan: this.props.selectedPlan || null,
+    selectedClass: this.props.selectedClass,
+    selectedPlan: this.props.selectedPlan,
   };
 
   public render() {
@@ -195,12 +195,13 @@ class ProvisionButton extends React.Component<IProvisionButtonProps, IProvisionB
   public onClassChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     this.setState({
       selectedClass:
-        this.props.classes.find(svcClass => svcClass.spec.externalName === e.target.value) || null,
+        this.props.classes.find(svcClass => svcClass.spec.externalName === e.target.value) ||
+        undefined,
     });
   public onPlanChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     this.setState({
       selectedPlan:
-        this.props.plans.find(plan => plan.spec.externalName === e.target.value) || null,
+        this.props.plans.find(plan => plan.spec.externalName === e.target.value) || undefined,
     });
 }
 

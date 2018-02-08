@@ -1,6 +1,8 @@
 import axios from "axios";
+
+import * as urls from "../shared/url";
 import { AppRepository } from "./AppRepository";
-import { IAppRepository, IK8sList } from "./types";
+import { IAppRepository, IK8sList, IStatus } from "./types";
 
 export class ServiceCatalog {
   public static async getCatalogRepo(): Promise<IAppRepository | undefined> {
@@ -35,6 +37,19 @@ export class ServiceCatalog {
 
   public static async getServiceBindings(): Promise<IServiceBinding[]> {
     const bindings = await ServiceCatalog.getItems<IServiceBinding>("/servicebindings");
+
+    // initiate with undefined secrets
+    for (const binding of bindings) {
+      binding.spec = {
+        ...binding.spec,
+        secretDatabase: undefined,
+        secretHost: undefined,
+        secretPassword: undefined,
+        secretPort: undefined,
+        secretUsername: undefined,
+      };
+    }
+
     return Promise.all(
       bindings.map(binding => {
         const { secretName } = binding.spec;
@@ -52,9 +67,67 @@ export class ServiceCatalog {
               secretUsername: atob(username),
             };
             return { ...binding, spec };
+          })
+          .catch(err => {
+            // return with undefined secrets
+            return { ...binding };
           });
       }),
     );
+  }
+
+  public static async provisionInstance(
+    releaseName: string,
+    namespace: string,
+    className: string,
+    planName: string,
+    parameters: {},
+  ) {
+    const { data } = await axios.post<IStatus>(
+      urls.api.serviceinstances.create(namespace),
+      {
+        apiVersion: "servicecatalog.k8s.io/v1beta1",
+        kind: "ServiceInstance",
+        metadata: {
+          name: releaseName,
+        },
+        spec: {
+          clusterServiceClassExternalName: className,
+          clusterServicePlanExternalName: planName,
+          parameters,
+        },
+      },
+      {
+        validateStatus: statusCode => true,
+      },
+    );
+
+    if (data.status === "Failure") {
+      throw new Error(data.message);
+    }
+
+    return data;
+  }
+
+  public static async syncBroker(broker: IServiceBroker) {
+    const { data } = await axios.patch<IStatus>(
+      urls.api.clusterservicebrokers.sync(broker),
+      {
+        spec: {
+          relistRequests: broker.spec.relistRequests + 1,
+        },
+      },
+      {
+        headers: { "Content-Type": "application/merge-patch+json" },
+        validateStatus: statusCode => true,
+      },
+    );
+
+    if (data.status === "Failure") {
+      throw new Error(data.message);
+    }
+
+    return data;
   }
 
   public static async getServiceInstances() {
@@ -239,11 +312,11 @@ export interface IServiceBinding {
     instanceRef: {
       name: string;
     };
-    secretName: string;
-    secretDatabase: string;
-    secretHost: string;
-    secretPassword: string;
-    secretPort: string;
-    secretUsername: string;
+    secretName: string | undefined;
+    secretDatabase: string | undefined;
+    secretHost: string | undefined;
+    secretPassword: string | undefined;
+    secretPort: string | undefined;
+    secretUsername: string | undefined;
   };
 }

@@ -16,7 +16,7 @@ export interface IAppRepositoryState {
     url: string;
     show: boolean;
   };
-  redirectTo?: string | null;
+  redirectTo?: string;
 }
 
 const initialState: IAppRepositoryState = {
@@ -45,7 +45,7 @@ export const reposReducer = (
       return { ...state, addingRepo: true };
     case getType(actions.repos.addedRepo):
       const { added } = action;
-      return { ...state, addingRepo: false, lastAdded: added };
+      return { ...state, addingRepo: false, lastAdded: added, repos: [...state.repos, added] };
     case getType(actions.repos.resetForm):
       return { ...state, form: { ...state.form, name: "", namespace: "", url: "" } };
     case getType(actions.repos.updateForm):
@@ -58,7 +58,7 @@ export const reposReducer = (
     case getType(actions.repos.redirect):
       return { ...state, redirectTo: action.path };
     case getType(actions.repos.redirected):
-      return { ...state, redirectTo: null };
+      return { ...state, redirectTo: undefined };
     default:
       return state;
   }

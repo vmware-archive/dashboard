@@ -11,9 +11,9 @@ import {
 import { Card, CardContainer } from "../Card";
 import SyncButton from "../SyncButton";
 
-interface IBrokerViewProps {
+export interface IBrokerViewProps {
   bindings: IServiceBinding[];
-  broker: IServiceBroker | null;
+  broker: IServiceBroker | undefined;
   classes: IServiceClass[];
   getCatalog: () => Promise<any>;
   instances: IServiceInstance[];
@@ -95,7 +95,7 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                     secretPort,
                     secretUsername,
                   } = binding.spec;
-                  const statuses: Array<[string, string]> = [
+                  const statuses: Array<[string, string | undefined]> = [
                     ["Instance", instanceRef.name],
                     ["Secret", secretName],
                     ["Database", secretDatabase],
@@ -113,7 +113,10 @@ export class BrokerView extends React.PureComponent<IBrokerViewProps> {
                             <strong key={key} style={{ flex: "0 0 5em" }}>
                               {key}:
                             </strong>
-                            <code key={value} style={{ flex: "1 1", wordBreak: "break-all" }}>
+                            <code
+                              key={value || "null"}
+                              style={{ flex: "1 1", wordBreak: "break-all" }}
+                            >
                               {value}
                             </code>
                           </div>

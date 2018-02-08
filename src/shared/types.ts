@@ -66,9 +66,7 @@ interface IK8sResource {
   kind: string;
 }
 
-/**
- * @see https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#objects
- */
+/** @see https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#objects */
 export interface IK8sObject<M, SP, ST> extends IK8sResource {
   metadata: {
     annotations?: { [key: string]: string };
@@ -86,9 +84,7 @@ export interface IK8sObject<M, SP, ST> extends IK8sResource {
   status?: ST;
 }
 
-/**
- * @see https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#lists-and-simple-kinds
- */
+/** @see https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#lists-and-simple-kinds */
 export interface IK8sList<I, M> extends IK8sResource {
   items: I[];
   metadata?: {
@@ -202,3 +198,33 @@ export interface IClusterServiceBroker
 
 export interface IClusterServiceBrokerList
   extends IK8sList<IClusterServiceBroker, { selfLink: string; resourceVersion: string }> {}
+
+/** @see https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#response-status-kind */
+export interface IStatus extends IK8sResource {
+  kind: "Status";
+  status: "Success" | "Failure";
+  message: string;
+  reason:
+    | "BadRequest"
+    | "Unauthorized"
+    | "Forbidden"
+    | "NotFound"
+    | "AlreadyExists"
+    | "Conflict"
+    | "Invalid"
+    | "Timeout"
+    | "ServerTimeout"
+    | "MethodNotAllowed"
+    | "InternalError";
+  details?: {
+    kind?: string;
+    name?: string;
+    causes?: IStatusCause[] | string;
+  };
+}
+
+interface IStatusCause {
+  field: string;
+  message: string;
+  reason: string;
+}

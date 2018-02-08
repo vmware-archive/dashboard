@@ -18,7 +18,7 @@ interface IClassViewProps {
     parameters: {},
   ) => Promise<any>;
   push: (location: string) => RouterAction;
-  svcClass: IServiceClass | null;
+  svcClass: IServiceClass | undefined;
 }
 
 export class ClassView extends React.Component<IClassViewProps> {
@@ -49,7 +49,7 @@ export class ClassView extends React.Component<IClassViewProps> {
                 externalMetadata && externalMetadata.bullets
                   ? externalMetadata.bullets
                   : [spec.description];
-              const free = plan.spec.free ? <span>Free ✓</span> : null;
+              const free = plan.spec.free ? <span>Free ✓</span> : undefined;
               const bullets = (
                 <div>
                   <ul>{description.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>

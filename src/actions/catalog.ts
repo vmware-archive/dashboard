@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
+
 import {
   IServiceBinding,
   IServiceBroker,
@@ -9,7 +10,6 @@ import {
   ServiceCatalog,
 } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
-import * as url from "../shared/url";
 
 export const checkCatalogInstall = createAction("CHECK_INSTALL");
 export const installed = createAction("INSTALLED");
@@ -63,53 +63,20 @@ export function provision(
   planName: string,
   parameters: {},
 ) {
-  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
-    return fetch(url.api.serviceinstances.create(namespace), {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-
-      body: JSON.stringify({
-        apiVersion: "servicecatalog.k8s.io/v1beta1",
-        kind: "ServiceInstance",
-        metadata: {
-          name: releaseName,
-        },
-        spec: {
-          clusterServiceClassExternalName: className,
-          clusterServicePlanExternalName: planName,
-          parameters,
-        },
-      }),
-    })
-      .then(response => response.json())
-      .then(json => {
-        if (json.status === "Failure") {
-          throw new Error(json.message);
-        }
-        return json;
-      });
+  return async (dispatch: Dispatch<IStoreState>) => {
+    return ServiceCatalog.provisionInstance(
+      releaseName,
+      namespace,
+      className,
+      planName,
+      parameters,
+    );
   };
 }
 
 export function sync(broker: IServiceBroker) {
-  return (dispatch: Dispatch<IStoreState>): Promise<{}> => {
-    return fetch(url.api.clusterservicebrokers.sync(broker), {
-      headers: { "Content-Type": "application/merge-patch+json" },
-      method: "PATCH",
-
-      body: JSON.stringify({
-        spec: {
-          relistRequests: broker.spec.relistRequests + 1,
-        },
-      }),
-    })
-      .then(response => response.json())
-      .then(json => {
-        if (json.status === "Failure") {
-          throw new Error(json.message);
-        }
-        return json;
-      });
+  return async (dispatch: Dispatch<IStoreState>) => {
+    return ServiceCatalog.syncBroker(broker);
   };
 }
 

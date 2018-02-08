@@ -1,12 +1,13 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 
 import { IAppRepository } from "../../shared/types";
+import { AppRepoAddButton } from "./AppRepoButton";
 
 export interface IAppRepoListProps {
   repos: IAppRepository[];
   fetchRepos: () => Promise<any>;
   deleteRepo: (name: string) => Promise<any>;
+  install: (name: string, url: string) => Promise<any>;
 }
 
 export class AppRepoList extends React.Component<IAppRepoListProps> {
@@ -15,7 +16,7 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
   }
 
   public render() {
-    const { repos } = this.props;
+    const { repos, install } = this.props;
     return (
       <div className="app-repo-list">
         <h1>App Repositories</h1>
@@ -46,9 +47,7 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
             })}
           </tbody>
         </table>
-        <Link to={"repos/add"}>
-          <button className="button button-primary">Add Repository</button>
-        </Link>
+        <AppRepoAddButton install={install} />
       </div>
     );
   }

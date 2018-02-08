@@ -1,6 +1,8 @@
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 
-import { IAppRepository } from "../shared/types";
+import { Dispatch } from "react-redux";
+import { AppRepository } from "../shared/AppRepository";
+import { IAppRepository, IStoreState } from "../shared/types";
 
 export const addRepo = createAction("ADD_REPO");
 export const addedRepo = createAction("ADDED_REPO", (added: IAppRepository) => ({
@@ -44,3 +46,31 @@ const allActions = [
   redirected,
 ].map(getReturnOfExpression);
 export type AppReposAction = typeof allActions[number];
+
+export const deleteRepo = (name: string, namespace: string = "kubeapps") => {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    await AppRepository.delete(name, namespace);
+    dispatch(requestRepos());
+    const repos = await AppRepository.list();
+    dispatch(receiveRepos(repos.items));
+    return repos;
+  };
+};
+
+export const fetchRepos = () => {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(requestRepos());
+    const repos = await AppRepository.list();
+    dispatch(receiveRepos(repos.items));
+    return repos;
+  };
+};
+
+export const installRepo = (name: string, url: string, namespace: string) => {
+  return async (dispatch: Dispatch<IStoreState>) => {
+    dispatch(addRepo());
+    const added = await AppRepository.create(name, url, namespace);
+    dispatch(addedRepo(added));
+    return added;
+  };
+};

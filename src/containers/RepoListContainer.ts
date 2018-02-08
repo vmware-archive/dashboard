@@ -3,18 +3,9 @@ import { Dispatch } from "redux";
 
 import actions from "../actions";
 import { AppRepoList } from "../components/AppRepoList";
-import { AppRepository } from "../shared/AppRepository";
 import { IStoreState } from "../shared/types";
 
-interface IRouteProps {
-  match: {
-    params: {
-      repo: string;
-    };
-  };
-}
-
-function mapStateToProps({ repos }: IStoreState, { match: { params } }: IRouteProps) {
+function mapStateToProps({ repos }: IStoreState) {
   return {
     repos: repos.repos,
   };
@@ -23,15 +14,13 @@ function mapStateToProps({ repos }: IStoreState, { match: { params } }: IRoutePr
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
   return {
     deleteRepo: async (name: string, namespace: string = "kubeapps") => {
-      await AppRepository.delete(name, namespace);
-      dispatch(actions.repos.requestRepos());
-      const repos = await AppRepository.list();
-      return dispatch(actions.repos.receiveRepos(repos.items));
+      return dispatch(actions.repos.deleteRepo(name, namespace));
     },
     fetchRepos: async () => {
-      dispatch(actions.repos.requestRepos());
-      const repos = await AppRepository.list();
-      return dispatch(actions.repos.receiveRepos(repos.items));
+      return dispatch(actions.repos.fetchRepos());
+    },
+    install: async (name: string, url: string, namespace: string = "kubeapps") => {
+      return dispatch(actions.repos.installRepo(name, url, namespace));
     },
   };
 }
