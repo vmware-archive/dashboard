@@ -9,7 +9,7 @@ interface IAppViewProps {
   namespace: string;
   releaseName: string;
   app: IApp | undefined;
-  getApp: (releasename: string) => Promise<IApp>;
+  getApp: (releaseName: string) => Promise<IApp>;
 }
 
 interface IAppViewState {
