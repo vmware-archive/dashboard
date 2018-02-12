@@ -103,6 +103,7 @@ export interface IAppState {
   isFetching: boolean;
   // currently items are always Helm releases
   items: IApp[];
+  selected?: IApp;
 }
 
 export interface IStoreState {

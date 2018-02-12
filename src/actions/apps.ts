@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { createAction, getReturnOfExpression } from "typesafe-actions";
 
 import { hapi } from "../shared/hapi/release";
+import { HelmRelease } from "../shared/HelmRelease";
 import { IApp, IHelmRelease, IHelmReleaseConfigMap, IStoreState } from "../shared/types";
 import * as url from "../shared/url";
 
@@ -20,29 +21,13 @@ export const selectApp = createAction("SELECT_APP", (app: IApp) => {
   };
 });
 
-const allActions = [requestApps, receiveApps].map(getReturnOfExpression);
+const allActions = [requestApps, receiveApps, selectApp].map(getReturnOfExpression);
 export type AppsAction = typeof allActions[number];
 
 export function getApp(releaseName: string) {
-  return async (dispatch: Dispatch<IStoreState>): Promise<IApp> => {
-    const req = await fetch(url.api.helmreleases.listDetails([releaseName]));
-    const { items }: { items: IHelmReleaseConfigMap[] } = await req.json();
-    // Helm/Tiller will store details in a ConfigMap for each revision,
-    // so we need to filter these out to pick the latest version
-    const helmConfigMap: IHelmReleaseConfigMap = items.reduce((ret: IHelmReleaseConfigMap, cm) => {
-      // If the current accumulated version is higher, return it
-      const curVersion = parseInt(ret.metadata.labels.VERSION, 10);
-      const thisVersion = parseInt(cm.metadata.labels.VERSION, 10);
-      if (curVersion > thisVersion) {
-        return ret;
-      }
-      return cm;
-    }, items[0]);
-    const protoBytes = inflate(atob(helmConfigMap.data.release));
-    const rel = hapi.release.Release.decode(protoBytes);
-    const app: IApp = { data: rel, type: "helm" };
+  return async (dispatch: Dispatch<IStoreState>): Promise<void> => {
+    const app = await HelmRelease.getDetails(releaseName);
     dispatch(selectApp(app));
-    return app;
   };
 }
 

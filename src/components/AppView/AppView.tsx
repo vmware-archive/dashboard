@@ -8,8 +8,8 @@ import "./AppView.css";
 interface IAppViewProps {
   namespace: string;
   releaseName: string;
-  app: IApp | undefined;
-  getApp: (releaseName: string) => Promise<IApp>;
+  app: IApp;
+  getApp: (releaseName: string) => Promise<void>;
 }
 
 interface IAppViewState {
@@ -29,8 +29,15 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
 
   public async componentDidMount() {
     const { releaseName, getApp } = this.props;
-    const app = await getApp(releaseName);
-    const manifest: IResource[] = yaml.safeLoadAll(app.data.manifest);
+    getApp(releaseName);
+  }
+
+  public componentWillReceiveProps(nextProps: IAppViewProps) {
+    const newApp = nextProps.app;
+    if (!newApp) {
+      return;
+    }
+    const manifest: IResource[] = yaml.safeLoadAll(newApp.data.manifest);
     const watchedKinds = ["Deployment", "Service"];
     const otherResources = manifest
       .filter(d => watchedKinds.indexOf(d.kind) < 0)
@@ -47,7 +54,7 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
     for (const d of deployments) {
       const s = new WebSocket(
         `${apiBase}/apis/apps/v1/namespaces/${
-          app.data.namespace
+          newApp.data.namespace
         }/deployments?watch=true&fieldSelector=metadata.name%3D${d.metadata.name}`,
       );
       s.addEventListener("message", e => this.handleEvent(e));
@@ -56,7 +63,7 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
     for (const svc of services) {
       const s = new WebSocket(
         `${apiBase}/api/v1/namespaces/${
-          app.data.namespace
+          newApp.data.namespace
         }/services?watch=true&fieldSelector=metadata.name%3D${svc.metadata.name}`,
       );
       s.addEventListener("message", e => this.handleEvent(e));

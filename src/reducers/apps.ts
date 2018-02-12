@@ -15,6 +15,8 @@ const appsReducer = (state: IAppState = initialState, action: AppsAction): IAppS
       return { ...state, isFetching: true };
     case getType(actions.apps.receiveApps):
       return { ...state, isFetching: false, items: action.apps };
+    case getType(actions.apps.selectApp):
+      return { ...state, isFetching: false, selected: action.app };
     default:
   }
   return state;

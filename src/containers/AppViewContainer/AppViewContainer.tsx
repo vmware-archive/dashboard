@@ -14,8 +14,9 @@ interface IRouteProps {
   };
 }
 
-function mapStateToProps({ deployment }: IStoreState, { match: { params } }: IRouteProps) {
+function mapStateToProps({ apps }: IStoreState, { match: { params } }: IRouteProps) {
   return {
+    app: apps.selected,
     namespace: params.namespace,
     releaseName: params.releaseName,
   };
