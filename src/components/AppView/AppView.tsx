@@ -1,9 +1,11 @@
 import * as yaml from "js-yaml";
 import * as React from "react";
 
-import { IApp, IResource, IServiceSpec } from "../../shared/types";
+import { IApp, IResource } from "../../shared/types";
 import AppHeader from "./AppHeader";
 import "./AppView.css";
+import DeploymentWatcher from "./DeploymentWatcher";
+import ServiceWatcher from "./ServiceWatcher";
 
 interface IAppViewProps {
   namespace: string;
@@ -106,63 +108,8 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
         <AppHeader releasename={releaseName} />
         <main>
           <div className="container container-fluid">
-            <h6>Deployments</h6>
-            <table>
-              <thead>
-                <tr>
-                  <th>NAME</th>
-                  <th>DESIRED</th>
-                  <th>UP-TO-DATE</th>
-                  <th>AVAILABLE</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.deployments &&
-                  Object.keys(this.state.deployments).map((k: string) => {
-                    const r: IResource = this.state.deployments[k];
-                    return (
-                      <tr key={k}>
-                        <td>{r.metadata.name}</td>
-                        <td>{r.status.replicas}</td>
-                        <td>{r.status.updatedReplicas}</td>
-                        <td>{r.status.availableReplicas || 0}</td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-            <h6>Services</h6>
-            <table>
-              <thead>
-                <tr>
-                  <th>NAME</th>
-                  <th>TYPE</th>
-                  <th>CLUSTER-IP</th>
-                  <th>PORT(S)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.services &&
-                  Object.keys(this.state.services).map((k: string) => {
-                    const r: IResource = this.state.services[k];
-                    const spec: IServiceSpec = r.spec;
-                    return (
-                      <tr key={k}>
-                        <td>{r.metadata.name}</td>
-                        <td>{spec.type}</td>
-                        <td>{spec.clusterIP}</td>
-                        <td>
-                          {spec.ports
-                            .map(
-                              p => `${p.port}${p.nodePort ? `:${p.nodePort}` : ""}/${p.protocol}`,
-                            )
-                            .join(",")}
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+            <DeploymentWatcher deployments={this.state.deployments} />
+            <ServiceWatcher services={this.state.services} />
             <h6>Other Resources</h6>
             <table>
               <tbody>
