@@ -109,6 +109,27 @@ export class ServiceCatalog {
     return data;
   }
 
+  public static async deprovisionInstance(instance: IServiceInstance) {
+    const { data } = await axios.delete(
+      urls.api.serviceinstances.delete(instance.metadata.namespace),
+      {
+        params: {
+          apiVersion: "servicecatalog.k8s.io/v1beta1",
+          kind: "ServiceInstance",
+          metadata: {
+            name: instance.metadata.name,
+          },
+        },
+      },
+    );
+
+    if (data.status === "Failure") {
+      throw new Error(data.message);
+    }
+
+    return data;
+  }
+
   public static async syncBroker(broker: IServiceBroker) {
     const { data } = await axios.patch<IStatus>(
       urls.api.clusterservicebrokers.sync(broker),
