@@ -55,7 +55,7 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
     const sockets: WebSocket[] = [];
     for (const d of deployments) {
       const s = new WebSocket(
-        `${apiBase}/apis/apps/v1/namespaces/${
+        `${apiBase}/apis/apps/v1beta1/namespaces/${
           newApp.data.namespace
         }/deployments?watch=true&fieldSelector=metadata.name%3D${d.metadata.name}`,
       );
