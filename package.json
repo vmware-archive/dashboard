@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
     "@types/js-yaml": "^3.10.1",
     "@types/pako": "^1.0.0",
+    "axios": "^0.17.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "js-yaml": "^3.10.0",
@@ -23,7 +23,6 @@
     "react-test-renderer": "^16.2.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "text-encoding": "^0.6.4",
     "ts-jest": "^22.0.1",
     "typesafe-actions": "^1.1.2"
   },
