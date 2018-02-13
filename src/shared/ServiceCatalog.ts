@@ -110,18 +110,7 @@ export class ServiceCatalog {
   }
 
   public static async deprovisionInstance(instance: IServiceInstance) {
-    const { data } = await axios.delete(
-      urls.api.serviceinstances.delete(instance.metadata.namespace),
-      {
-        params: {
-          apiVersion: "servicecatalog.k8s.io/v1beta1",
-          kind: "ServiceInstance",
-          metadata: {
-            name: instance.metadata.name,
-          },
-        },
-      },
-    );
+    const { data } = await axios.delete("/api/kube" + instance.metadata.selfLink);
 
     if (data.status === "Failure") {
       throw new Error(data.message);
