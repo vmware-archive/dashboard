@@ -11,13 +11,11 @@ interface IDeprovisionButtonState {
   error: string | undefined;
   instance: IServiceInstance | undefined;
   isDeprovisioning: boolean;
-  confirmDialog: ConfirmDialog | undefined;
   modalIsOpen: boolean;
 }
 
 class DeprovisionButton extends React.Component<IDeprovisionButtonProps, IDeprovisionButtonState> {
   public state: IDeprovisionButtonState = {
-    confirmDialog: undefined,
     error: undefined,
     instance: this.props.instance,
     isDeprovisioning: false,
