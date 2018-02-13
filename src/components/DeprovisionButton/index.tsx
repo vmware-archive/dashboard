@@ -24,7 +24,8 @@ class DeprovisionButton extends React.Component<IDeprovisionButtonProps, IDeprov
     this.setState({ isDeprovisioning: true });
 
     try {
-      await deprovision(instance).then(async () => this.setState({ isDeprovisioning: false }));
+      await deprovision(instance);
+      this.setState({ isDeprovisioning: false });
     } catch (err) {
       this.setState({ isDeprovisioning: false, error: err.toString() });
     }
