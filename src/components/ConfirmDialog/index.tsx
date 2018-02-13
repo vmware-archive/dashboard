@@ -44,7 +44,11 @@ class ConfirmDialog extends React.Component<IConfirmDialogProps, IConfirmDialogS
             <button className="button" onClick={this.props.closeModal}>
               Cancel
             </button>
-            <button className="button button-primary" type="submit" onClick={this.props.onConfirm}>
+            <button
+              className="button button-primary button-danger"
+              type="submit"
+              onClick={this.props.onConfirm}
+            >
               Delete
             </button>
           </div>
