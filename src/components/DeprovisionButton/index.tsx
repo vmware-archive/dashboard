@@ -32,7 +32,7 @@ class DeprovisionButton extends React.Component<IDeprovisionButtonProps, IDeprov
 
   public render() {
     return (
-      <div className="SyncButton">
+      <div className="DeprovisionButton">
         {this.state.isDeprovisioning && <div>Deprovisioning...</div>}
         <button
           className="button button-primary"
