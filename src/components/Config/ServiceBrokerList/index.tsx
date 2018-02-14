@@ -1,0 +1,34 @@
+import * as React from "react";
+
+import { IServiceBroker } from "../../../shared/ServiceCatalog";
+import { Card, CardContainer } from "../../Card";
+import SyncButton from "../../SyncButton";
+
+interface IServiceBrokerListProps {
+  brokers: IServiceBroker[];
+  sync: (broker: IServiceBroker) => Promise<any>;
+}
+
+export const ServiceBrokerList = (props: IServiceBrokerListProps) => {
+  const { brokers, sync } = props;
+  return (
+    <div className="service-broker-list">
+      <h3>Brokers</h3>
+      <CardContainer>
+        {brokers.map(broker => {
+          const card = (
+            <div>
+              <Card
+                key={broker.metadata.uid}
+                header={broker.metadata.name}
+                body={broker.spec.url}
+                button={<SyncButton sync={sync} broker={broker} />}
+              />
+            </div>
+          );
+          return card;
+        })}
+      </CardContainer>
+    </div>
+  );
+};
