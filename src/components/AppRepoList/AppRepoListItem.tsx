@@ -64,6 +64,9 @@ export class AppRepoListItem extends React.Component<IAppRepoListItemProps, IApp
     };
   }
 
-  private handleResyncClick = (repoName: string) => () => this.props.resyncRepo(repoName);
-
+  private handleResyncClick(repoName: string) {
+    return () => {
+      this.props.resyncRepo(repoName);
+    };
+  }
 }

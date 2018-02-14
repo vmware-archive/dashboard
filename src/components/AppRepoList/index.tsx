@@ -12,15 +12,7 @@ export interface IAppRepoListProps {
   install: (name: string, url: string) => Promise<any>;
 }
 
-export interface IAppRepoListState {
-  modalIsOpen: boolean;
-}
-
 export class AppRepoList extends React.Component<IAppRepoListProps> {
-  public state: IAppRepoListState = {
-    modalIsOpen: false,
-  };
-
   public componentDidMount() {
     this.props.fetchRepos();
   }
@@ -40,7 +32,12 @@ export class AppRepoList extends React.Component<IAppRepoListProps> {
           </thead>
           <tbody>
             {repos.map(repo => (
-              <AppRepoListItem key={repo.metadata.uid} deleteRepo={deleteRepo} resyncRepo={resyncRepo} repo={repo} />
+              <AppRepoListItem
+                key={repo.metadata.uid}
+                deleteRepo={deleteRepo}
+                resyncRepo={resyncRepo}
+                repo={repo}
+              />
             ))}
           </tbody>
         </table>
