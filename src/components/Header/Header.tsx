@@ -5,7 +5,7 @@ import logo from "../../logo.svg";
 import HeaderLink, { IHeaderLinkProps } from "./HeaderLink";
 
 // Icons
-import Cog from "!svg-react-loader?name=Cog!open-iconic/svg/cog.svg";
+import Cog from "!react-svg-loader!open-iconic/svg/cog.svg";
 
 import "./Header.css";
 
