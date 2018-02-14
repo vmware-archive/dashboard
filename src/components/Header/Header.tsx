@@ -33,14 +33,6 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
       children: "Charts",
       to: "/charts",
     },
-    {
-      children: "Service Catalog",
-      to: "/services",
-    },
-    {
-      children: "App Repositories",
-      to: "/repos",
-    },
   ];
 
   constructor(props: any) {
@@ -105,10 +97,10 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                   </a>
                   <ul role="menu" aria-label="Products" className={submenu}>
                     <li role="none">
-                      <NavLink to="/repos">Repositories</NavLink>
+                      <NavLink to="/config/repos">App Repositories</NavLink>
                     </li>
                     <li role="none">
-                      <NavLink to="/services">Service brokers</NavLink>
+                      <NavLink to="/config/brokers">Service Brokers</NavLink>
                     </li>
                   </ul>
                 </li>
