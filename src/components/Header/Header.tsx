@@ -51,7 +51,7 @@ class Header extends React.Component {
               </ul>
             </nav>
             <div className="header__nav__user">
-              <HeaderLink to="/configuration">
+              <HeaderLink to="/config">
                 <Cog className="icon icon-small margin-r-tiny" /> Configuration
               </HeaderLink>
             </div>

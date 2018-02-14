@@ -22,6 +22,7 @@ export const ServiceBrokerList = (props: IServiceBrokerListProps) => {
                 key={broker.metadata.uid}
                 header={broker.metadata.name}
                 body={broker.spec.url}
+                notes={broker.status.lastCatalogRetrievalTime}
                 button={<SyncButton sync={sync} broker={broker} />}
               />
             </div>
