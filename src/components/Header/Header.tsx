@@ -25,10 +25,6 @@ class Header extends React.Component {
       children: "Service Catalog",
       to: "/services",
     },
-    {
-      children: "App Repositories",
-      to: "/repos",
-    },
   ];
 
   public render() {
