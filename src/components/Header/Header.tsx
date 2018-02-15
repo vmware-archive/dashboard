@@ -33,6 +33,11 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
       children: "Charts",
       to: "/charts",
     },
+    {
+      children: "Functions",
+      external: true,
+      to: "/kubeless/",
+    },
   ];
 
   constructor(props: any) {
