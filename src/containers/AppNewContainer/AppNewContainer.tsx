@@ -26,12 +26,16 @@ function mapStateToProps({ apps, charts }: IStoreState, { match: { params } }: I
 
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
   return {
-    deployChart: (version: IChartVersion, releaseName: string, namespace: string, values?: string) =>
-      dispatch(actions.charts.deployChart(version, releaseName, namespace, values)),
+    deployChart: (
+      version: IChartVersion,
+      releaseName: string,
+      namespace: string,
+      values?: string,
+    ) => dispatch(actions.charts.deployChart(version, releaseName, namespace, values)),
     getChartValues: (id: string, version: string) =>
-    dispatch(actions.charts.getChartValues(id, version)),
+      dispatch(actions.charts.getChartValues(id, version)),
     getChartVersion: (id: string, version: string) =>
-    dispatch(actions.charts.getChartVersion(id, version)),
+      dispatch(actions.charts.getChartVersion(id, version)),
     push: (location: string) => dispatch(push(location)),
   };
 }

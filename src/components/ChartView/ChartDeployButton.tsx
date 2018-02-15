@@ -7,7 +7,7 @@ interface IChartDeployButtonProps {
 }
 
 interface IChartDeployButtonState {
-  clicked: boolean
+  clicked: boolean;
 }
 
 class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartDeployButtonState> {
@@ -23,22 +23,19 @@ class ChartDeployButton extends React.Component<IChartDeployButtonProps, IChartD
 
     return (
       <div className="ChartDeployButton">
-        <button
-          className="button button-primary"
-          onClick={this.handleClick}
-        >
+        <button className="button button-primary" onClick={this.handleClick}>
           Deploy using Helm
         </button>
-        {
-          this.state.clicked && (<Redirect to={`/apps/new/${repoName}/${chartName}/versions/${versionStr}`} />)
-        }
+        {this.state.clicked && (
+          <Redirect to={`/apps/new/${repoName}/${chartName}/versions/${versionStr}`} />
+        )}
       </div>
     );
   }
 
   private handleClick = () => {
-    this.setState({clicked: true});
-  }
+    this.setState({ clicked: true });
+  };
 }
 
 export default ChartDeployButton;

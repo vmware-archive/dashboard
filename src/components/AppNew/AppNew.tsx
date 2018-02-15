@@ -49,7 +49,7 @@ class AppNew extends React.Component<IAppNewProps, IAppNewState> {
   public componentWillReceiveProps(nextProps: IAppNewProps) {
     const { version, values } = nextProps.selected;
     if (version && values && !this.state.valuesModified) {
-      this.setState({appValues: values });
+      this.setState({ appValues: values });
     }
   }
 
@@ -59,45 +59,45 @@ class AppNew extends React.Component<IAppNewProps, IAppNewState> {
     }
     return (
       <div>
-          {this.state.error && (
-            <div className="container padding-v-bigger bg-action">{this.state.error}</div>
-          )}
-          <form onSubmit={this.handleDeploy}>
-            <div>
-              <label htmlFor="releaseName">Name</label>
-              <input
-                id="releaseName"
-                onChange={this.handleReleaseNameChange}
-                value={this.state.releaseName}
-                required={true}
-              />
-            </div>
-            <div>
-              <label htmlFor="namespace">Namespace</label>
-              <input
-                name="namespace"
-                onChange={this.handleNamespaceChange}
-                value={this.state.namespace}
-              />
-            </div>
-            <div style={{ marginBottom: "1em" }}>
-              <label htmlFor="values">Values (YAML)</label>
-              <AceEditor
-                mode="yaml"
-                theme="xcode"
-                name="values"
-                width="100%"
-                onChange={this.handleValuesChange}
-                setOptions={{ showPrintMargin: false }}
-                value={this.state.appValues}
-              />
-            </div>
-            <div>
-              <button className="button button-primary" type="submit">
-                Submit
-              </button>
-            </div>
-          </form>
+        {this.state.error && (
+          <div className="container padding-v-bigger bg-action">{this.state.error}</div>
+        )}
+        <form onSubmit={this.handleDeploy}>
+          <div>
+            <label htmlFor="releaseName">Name</label>
+            <input
+              id="releaseName"
+              onChange={this.handleReleaseNameChange}
+              value={this.state.releaseName}
+              required={true}
+            />
+          </div>
+          <div>
+            <label htmlFor="namespace">Namespace</label>
+            <input
+              name="namespace"
+              onChange={this.handleNamespaceChange}
+              value={this.state.namespace}
+            />
+          </div>
+          <div style={{ marginBottom: "1em" }}>
+            <label htmlFor="values">Values (YAML)</label>
+            <AceEditor
+              mode="yaml"
+              theme="xcode"
+              name="values"
+              width="100%"
+              onChange={this.handleValuesChange}
+              setOptions={{ showPrintMargin: false }}
+              value={this.state.appValues}
+            />
+          </div>
+          <div>
+            <button className="button button-primary" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     );
   }
