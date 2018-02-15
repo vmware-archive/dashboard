@@ -23,21 +23,20 @@ export class InstanceListView extends React.PureComponent<InstanceListViewProps>
     const { brokers, instances, classes } = this.props;
 
     return (
-      <div className="broker">
+      <div className="InstanceList">
         {brokers && (
           <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <Link to={`/services/classes`}>
-                <button className="button button-primary">Provision New Service</button>
-              </Link>
+            <div className="row">
+              <div className="col-8">
+                <h3>Service Instances</h3>
+                <p>Service instances from your brokers:</p>
+              </div>
+              <div className="col-2 margin-normal">
+                <Link to={`/services/classes`}>
+                  <button className="button button-primary">Provision New Service</button>
+                </Link>
+              </div>
             </div>
-            <h3>Service Instances</h3>
-            <p>Service instances from your brokers:</p>
             <table>
               <tbody>
                 <CardContainer>
