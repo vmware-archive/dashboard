@@ -1,5 +1,4 @@
 import * as React from "react";
-import { RouterAction } from "react-router-redux";
 
 import { IChartState, IChartVersion } from "../../shared/types";
 import ChartDeployButton from "./ChartDeployButton";
@@ -12,13 +11,6 @@ import "./ChartView.css";
 interface IChartViewProps {
   chartID: string;
   fetchChartVersionsAndSelectVersion: (id: string, version?: string) => Promise<{}>;
-  deployChart: (
-    version: IChartVersion,
-    releaseName: string,
-    namespace: string,
-    values: string,
-  ) => Promise<{}>;
-  push: (location: string) => RouterAction;
   isFetching: boolean;
   selected: IChartState["selected"];
   selectChartVersionAndGetFiles: (version: IChartVersion) => Promise<{}>;
@@ -45,8 +37,8 @@ class ChartView extends React.Component<IChartViewProps> {
   }
 
   public render() {
-    const { isFetching, deployChart, push } = this.props;
-    const { version, readme, versions, values } = this.props.selected;
+    const { isFetching } = this.props;
+    const { version, readme, versions } = this.props.selected;
     if (isFetching || !version) {
       return <div>Loading</div>;
     }
@@ -71,10 +63,7 @@ class ChartView extends React.Component<IChartViewProps> {
                   <div className="ChartViewSidebar__section">
                     <h2>Usage</h2>
                     <ChartDeployButton
-                      push={push}
                       version={version}
-                      deployChart={deployChart}
-                      values={values || ""}
                     />
                   </div>
                   <div className="ChartViewSidebar__section">
