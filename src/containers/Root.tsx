@@ -33,11 +33,10 @@ class Root extends React.Component {
     "/charts/:repo/:id/versions/:version": ChartView,
     "/config/brokers": ServiceCatalogContainer,
     "/config/repos": RepoListContainer,
-    "/services/brokers/:brokerName/classes": ClassListContainer,
     "/services/brokers/:brokerName/classes/:className": ClassViewContainer,
     "/services/brokers/:brokerName/instances/:namespace/:instanceName": InstanceView,
+    "/services/classes": ClassListContainer,
     "/services/instances": InstanceListView,
-
   };
 
   public render() {

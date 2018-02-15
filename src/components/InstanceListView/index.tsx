@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { Link } from "react-router-dom";
 import { IClusterServiceClass } from "../../shared/ClusterServiceClass";
 import { IServiceBroker, IServicePlan } from "../../shared/ServiceCatalog";
 import { IServiceInstance } from "../../shared/ServiceInstance";
@@ -19,12 +20,22 @@ export class InstanceListView extends React.PureComponent<InstanceListViewProps>
   }
 
   public render() {
-    const { brokers, instances } = this.props;
+    const { brokers, instances, classes } = this.props;
 
     return (
       <div className="broker">
         {brokers && (
           <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Link to={`/services/classes`}>
+                <button className="button button-primary">Provision New Service</button>
+              </Link>
+            </div>
             <h3>Service Instances</h3>
             <p>Service instances from your brokers:</p>
             <table>
@@ -35,6 +46,15 @@ export class InstanceListView extends React.PureComponent<InstanceListViewProps>
                       const conditions = [...instance.status.conditions];
                       const status = conditions.shift(); // first in list is most recent
                       const message = status ? status.message : "";
+                      const svcClass = classes.find(
+                        potential =>
+                          potential.metadata.name === instance.spec.clusterServiceClassRef.name,
+                      );
+                      const broker = svcClass && svcClass.spec.clusterServiceBrokerName;
+                      const icon =
+                        svcClass &&
+                        svcClass.spec.externalMetadata &&
+                        svcClass.spec.externalMetadata.imageUrl;
 
                       const card = (
                         <Card
@@ -44,10 +64,12 @@ export class InstanceListView extends React.PureComponent<InstanceListViewProps>
                               {instance.metadata.namespace}/{instance.metadata.name}
                             </span>
                           }
-                          // icon={instance}
+                          icon={icon}
                           body={message}
                           buttonText="Details"
-                          linkTo={`/`}
+                          linkTo={`/services/brokers/${broker}/instances/${
+                            instance.metadata.namespace
+                          }/${instance.metadata.name}/`}
                           notes={<span>{instance.spec.clusterServicePlanExternalName}</span>}
                         />
                       );
