@@ -3,17 +3,18 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { Route, RouteComponentProps } from "react-router";
 import { ConnectedRouter } from "react-router-redux";
+import { ClassViewContainer } from "./ClassView";
 
 import Layout from "../components/Layout";
 import configureStore from "../store";
 import AppList from "./AppListContainer";
 import AppView from "./AppViewContainer";
-import BrokerView from "./BrokerView";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 import ClassListContainer from "./ClassListContainer";
-import { ClassViewContainer } from "./ClassView";
+import InstanceListView from "./InstanceListView";
 import InstanceView from "./InstanceView";
+
 import RepoListContainer from "./RepoListContainer";
 import ServiceCatalogContainer from "./ServiceCatalogContainer";
 
@@ -35,7 +36,8 @@ class Root extends React.Component {
     "/services/brokers/:brokerName/classes": ClassListContainer,
     "/services/brokers/:brokerName/classes/:className": ClassViewContainer,
     "/services/brokers/:brokerName/instances/:namespace/:instanceName": InstanceView,
-    "/services/brokers/:name": BrokerView,
+    "/services/instances": InstanceListView,
+
   };
 
   public render() {
