@@ -12,7 +12,7 @@ import AppView from "./AppViewContainer";
 import ChartList from "./ChartListContainer";
 import ChartView from "./ChartViewContainer";
 import ClassListContainer from "./ClassListContainer";
-import InstanceListView from "./InstanceListView";
+import InstanceListViewContainer from "./InstanceListViewContainer";
 import InstanceView from "./InstanceView";
 
 import RepoListContainer from "./RepoListContainer";
@@ -36,7 +36,7 @@ class Root extends React.Component {
     "/services/brokers/:brokerName/classes/:className": ClassViewContainer,
     "/services/brokers/:brokerName/instances/:namespace/:instanceName": InstanceView,
     "/services/classes": ClassListContainer,
-    "/services/instances": InstanceListView,
+    "/services/instances": InstanceListViewContainer,
   };
 
   public render() {
