@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IClusterServiceClass } from "../../shared/ClusterServiceClass";
 import { IServiceBroker, IServicePlan } from "../../shared/ServiceCatalog";
 import { IServiceInstance } from "../../shared/ServiceInstance";
-import { InstanceTable } from "./InstanceTable";
+import { InstanceCardList } from "./InstanceCardList";
 
 export interface InstanceListViewProps {
   brokers: IServiceBroker[];
@@ -37,25 +37,28 @@ export class InstanceListView extends React.PureComponent<InstanceListViewProps>
                   <div className="col-8">
                     <p>Service instances from your brokers:</p>
                   </div>
-                  <div className="col-2 margin-normal">
+                  <div className="col-4 text-r">
                     <Link to={`/services/classes`}>
-                      <button className="button button-primary">Provision New Service</button>
+                      <button className="button button-accent">Provision New Service</button>
                     </Link>
                   </div>
                 </div>
                 {instances.length > 0 ? (
-                  <InstanceTable instances={instances} classes={classes} />
+                  <InstanceCardList instances={instances} classes={classes} />
                 ) : (
-                  <div>No service instances are found</div>
+                  <div>No service instances are found.</div>
                 )}
               </div>
             ) : (
-              <div>No service brokers are installed</div>
+              <div>
+                No service brokers are installed in your cluster. Please ask an administrator to
+                install it.
+              </div>
             )}
           </div>
         ) : (
           <div>
-            <div>No Service Catalog is installed</div>
+            <div>No Service Catalog is installed.</div>
             <Link className="button button-primary" to={`/charts/svc-cat/catalog`}>
               Install Catalog
             </Link>

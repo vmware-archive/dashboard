@@ -32,7 +32,10 @@ export const ServiceBrokerList = (props: IServiceBrokerListProps) => {
           })}
         </CardContainer>
       ) : (
-        <div>No service brokers are installed</div>
+        <div>
+          No service brokers are installed in your cluster. Please ask an administrator to install
+          it.
+        </div>
       )}
     </div>
   );
