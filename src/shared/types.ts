@@ -94,6 +94,7 @@ export interface IResource {
 }
 
 export interface IApp {
+  chart?: IChart;
   type: string;
   data: hapi.release.Release;
   repo?: IRepo;

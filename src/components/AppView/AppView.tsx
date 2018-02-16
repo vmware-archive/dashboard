@@ -11,7 +11,7 @@ interface IAppViewProps {
   namespace: string;
   releaseName: string;
   app: IApp;
-  getApp: (releaseName: string) => Promise<void>;
+  getApp: (releaseName: string, namespace: string) => Promise<void>;
 }
 
 interface IAppViewState {
@@ -30,8 +30,8 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
   };
 
   public async componentDidMount() {
-    const { releaseName, getApp } = this.props;
-    getApp(releaseName);
+    const { releaseName, getApp, namespace } = this.props;
+    getApp(releaseName, namespace);
   }
 
   public componentWillReceiveProps(nextProps: IAppViewProps) {

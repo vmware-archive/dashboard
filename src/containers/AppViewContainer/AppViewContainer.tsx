@@ -24,7 +24,7 @@ function mapStateToProps({ apps }: IStoreState, { match: { params } }: IRoutePro
 
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
   return {
-    getApp: (r: string) => dispatch(actions.apps.getApp(r)),
+    getApp: (r: string, ns: string) => dispatch(actions.apps.getApp(r, ns)),
   };
 }
 
