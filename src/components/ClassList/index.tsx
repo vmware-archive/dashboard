@@ -35,7 +35,9 @@ export class ClassList extends React.Component<IClassListProps> {
                 ? externalMetadata.longDescription
                 : spec.description;
               const imageUrl = externalMetadata && externalMetadata.imageUrl;
-              const link = `/services/brokers/${svcClass.spec.clusterServiceBrokerName}/classes/${svcClass.spec.externalName}`;
+              const link = `/services/brokers/${svcClass.spec.clusterServiceBrokerName}/classes/${
+                svcClass.spec.externalName
+              }`;
 
               const card = (
                 <Card key={svcClass.metadata.uid} responsive={true} responsiveColumns={3}>
