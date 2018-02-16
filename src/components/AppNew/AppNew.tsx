@@ -152,6 +152,10 @@ class AppNew extends React.Component<IAppNewProps, IAppNewState> {
                   <p>[Optional] Select a service binding for your new app</p>
                   <label htmlFor="bindings">Bindings</label>
                   <select onChange={this.onBindingChange}>
+                    <option key="none" value="none">
+                      {" "}
+                      -- Select one --
+                    </option>
                     {bindings.map(b => (
                       <option
                         key={b.metadata.name}
