@@ -10,7 +10,7 @@ export interface InstanceListViewProps {
   brokers: IServiceBroker[];
   classes: IClusterServiceClass[];
   getCatalog: () => Promise<any>;
-  checkCatalogInstalled: () => Promise<boolean>;
+  checkCatalogInstalled: () => Promise<any>;
   instances: IServiceInstance[];
   plans: IServicePlan[];
   isInstalled: boolean;

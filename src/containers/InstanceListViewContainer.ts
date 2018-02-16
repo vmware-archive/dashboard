@@ -3,7 +3,6 @@ import { Dispatch } from "redux";
 
 import actions from "../actions";
 import { InstanceListView } from "../components/InstanceListView";
-import { ServiceCatalog } from "../shared/ServiceCatalog";
 import { IStoreState } from "../shared/types";
 
 interface IRouteProps {
@@ -32,11 +31,7 @@ function mapStateToProps({ catalog }: IStoreState, { match: { params } }: IRoute
 function mapDispatchToProps(dispatch: Dispatch<IStoreState>) {
   return {
     checkCatalogInstalled: async () => {
-      const isInstalled = await ServiceCatalog.isCatalogInstalled();
-      isInstalled
-        ? dispatch(actions.catalog.installed())
-        : dispatch(actions.catalog.notInstalled());
-      return isInstalled;
+      dispatch(actions.catalog.checkCatalogInstalled());
     },
     getCatalog: async () => {
       dispatch(actions.catalog.getCatalog());
