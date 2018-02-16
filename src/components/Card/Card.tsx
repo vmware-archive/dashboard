@@ -3,16 +3,8 @@ import * as React from "react";
 import "./Card.css";
 
 export interface ICardProps {
-  header?: string | JSX.Element | JSX.Element[];
-  body?: string | JSX.Element | JSX.Element[];
-  button?: JSX.Element;
-  buttonText?: string | JSX.Element;
   className?: string;
   children?: React.ReactChildren | React.ReactNode | string;
-  onClick?: () => (...args: any[]) => Promise<any>;
-  linkTo?: string;
-  notes?: string | JSX.Element;
-  icon?: string;
   responsive?: boolean;
   responsiveColumns?: number;
 }
