@@ -21,13 +21,13 @@ class AppList extends React.Component<IAppListProps> {
     return (
       <section className="AppList">
         <header className="AppList__header">
-          <div className="row padding-t-big">
+          <div className="row padding-t-big collapse-b-phone-land">
             <div className="col-8">
               <h1 className="margin-v-reset">Applications</h1>
             </div>
-            <div className="col-4 text-r">
+            <div className="col-4 text-r align-center">
               <Link to={`/charts`}>
-                <button className="button button-accent margin-t-normal">Deploy New App</button>
+                <button className="button button-accent">Deploy New App</button>
               </Link>
             </div>
           </div>
