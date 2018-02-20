@@ -23,7 +23,7 @@ class AppControls extends React.Component<IAppControlsProps, IAppControlsState> 
   public render() {
     return (
       <div className="AppControls">
-        <button className="button button-warning" disabled={true}>
+        <button className="button" disabled={true}>
           Upgrade
         </button>
         <button className="button button-danger" onClick={this.openModel}>
