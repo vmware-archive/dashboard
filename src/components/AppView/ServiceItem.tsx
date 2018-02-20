@@ -22,7 +22,7 @@ class ServiceItem extends React.Component<IServiceItemProps> {
         <td>{service.metadata.name}</td>
         <td>
           {this.getPublicURLs().map(l => (
-            <a key={l} href={l}>
+            <a key={l} href={l} target="_blank">
               <span className="ServiceItem__url padding-tiny padding-h-normal type-small margin-r-small">
                 {l}
               </span>
