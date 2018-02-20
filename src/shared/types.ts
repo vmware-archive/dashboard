@@ -99,6 +99,12 @@ export interface IResource {
   };
 }
 
+export interface IDeploymentStatus {
+  replicas: number;
+  updatedReplicas: number;
+  availableReplicas: number;
+}
+
 export interface IApp {
   chart?: IChart;
   type: string;

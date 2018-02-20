@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Check from "../../icons/Check";
 import Compass from "../../icons/Compass";
-import { IResource } from "../../shared/types";
+import { IDeploymentStatus, IResource } from "../../shared/types";
 import "./AppStatus.css";
 
 interface IAppStatusProps {
@@ -19,8 +19,8 @@ class AppStatus extends React.Component<IAppStatusProps> {
     const { deployments } = this.props;
     if (Object.keys(deployments).length > 0) {
       const allPodsReady = Object.keys(deployments).every(k => {
-        const d = deployments[k];
-        return d.status.availableReplicas === d.status.replicas;
+        const dStatus: IDeploymentStatus = deployments[k].status;
+        return dStatus.availableReplicas === dStatus.replicas;
       });
       status = allPodsReady ? (
         status
