@@ -5,7 +5,7 @@ export interface ICardFooterProps {
   children?: React.ReactChildren | React.ReactNode | string;
 }
 
-class CardFooter extends React.PureComponent<ICardFooterProps> {
+class CardFooter extends React.Component<ICardFooterProps> {
   public render() {
     return (
       <div className={`Card__footer padding-h-normal ${this.props.className}`}>

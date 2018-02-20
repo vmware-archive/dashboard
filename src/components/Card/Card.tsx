@@ -9,20 +9,25 @@ export interface ICardProps {
   responsiveColumns?: number;
 }
 
-const Card = (props: ICardProps) => {
-  let cssClass = `Card ${props.className}`;
+class Card extends React.Component<ICardProps> {
+  public cssClass() {
+    let cssClass = `Card ${this.props.className}`;
 
-  if (props.responsive && props.responsiveColumns) {
-    cssClass = `${cssClass} Card-responsive-${props.responsiveColumns}`;
-  } else if (props.responsive) {
-    cssClass = `${cssClass} Card-responsive`;
+    if (this.props.responsive && this.props.responsiveColumns) {
+      cssClass = `${cssClass} Card-responsive-${this.props.responsiveColumns}`;
+    } else if (this.props.responsive) {
+      cssClass = `${cssClass} Card-responsive`;
+    }
+    return cssClass;
   }
 
-  return (
-    <article className={cssClass}>
-      <div className="Card__inner bg-white elevation-1">{props.children}</div>
-    </article>
-  );
-};
+  public render() {
+    return (
+      <article className={this.cssClass()}>
+        <div className="Card__inner bg-white elevation-1">{this.props.children}</div>
+      </article>
+    );
+  }
+}
 
 export default Card;

@@ -5,9 +5,13 @@ export interface ICardContentProps {
   children?: React.ReactChildren | React.ReactNode | string;
 }
 
-class CardContent extends React.PureComponent<ICardContentProps> {
+class CardContent extends React.Component<ICardContentProps> {
   public render() {
-    return <div className="Card__content padding-normal">{this.props.children}</div>;
+    return (
+      <div className={`Card__content padding-normal ${this.props.className}`}>
+        {this.props.children}
+      </div>
+    );
   }
 }
 
