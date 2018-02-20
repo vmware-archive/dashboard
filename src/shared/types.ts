@@ -71,6 +71,12 @@ export interface IServiceSpec {
   type: string;
 }
 
+export interface IServiceStatus {
+  loadBalancer: {
+    ingress?: Array<{ ip: string }>;
+  };
+}
+
 export interface IPort {
   name: string;
   port: number;

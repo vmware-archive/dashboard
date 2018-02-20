@@ -28,6 +28,12 @@ export function getApp(releaseName: string, namespace: string) {
   };
 }
 
+export function deleteApp(releaseName: string, namespace: string) {
+  return async (dispatch: Dispatch<IStoreState>): Promise<void> => {
+    return await HelmRelease.delete(releaseName, namespace);
+  };
+}
+
 export function fetchApps() {
   return async (dispatch: Dispatch<IStoreState>): Promise<void> => {
     dispatch(requestApps());

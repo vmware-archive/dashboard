@@ -26,8 +26,10 @@ export class HelmRelease {
     return data;
   }
 
-  public static async delete(selfLink: string) {
-    const { data } = await axios.delete(selfLink);
+  public static async delete(releaseName: string, namespace: string) {
+    // strip namespace from release name
+    const hrName = releaseName.replace(new RegExp(`^${namespace}-`), "");
+    const { data } = await axios.delete(this.getSelfLink(hrName, namespace));
     return data;
   }
 
@@ -61,18 +63,10 @@ export class HelmRelease {
     }, new Map<string, IHelmReleaseConfigMap>());
 
     // Go through all HelmReleaseConfigMaps and parse as IApp objects
-    return Promise.all<IApp>(
-      Object.keys(cms).map(async key => {
-        const app = this.parseRelease(helmReleaseMap[key], cms[key]);
-        if (app.repo && app.data.chart && app.data.chart.metadata) {
-          const res = await axios.get<{ data: IChart }>(
-            url.api.charts.get(`${app.repo.name}/${app.data.chart.metadata.name}`),
-          );
-          app.chart = res.data.data;
-        }
-        return app;
-      }),
-    );
+    const apps = Object.keys(cms).map(key => this.parseRelease(helmReleaseMap[key], cms[key]));
+
+    // Fetch charts for each app
+    return Promise.all<IApp>(apps.map(async app => this.getChart(app)));
   }
 
   public static async getDetails(releaseName: string, namespace: string) {
@@ -86,7 +80,8 @@ export class HelmRelease {
       return this.getNewest(ret, cm);
     }, items[0]);
 
-    return this.parseRelease(hr, helmConfigMap);
+    const app = this.parseRelease(hr, helmConfigMap);
+    return await this.getChart(app);
   }
 
   private static getDetailsWithRetry(releaseName: string) {
@@ -154,6 +149,16 @@ export class HelmRelease {
         name: repoName,
         url: hr.spec.repoUrl,
       };
+    }
+    return app;
+  }
+
+  private static async getChart(app: IApp) {
+    if (app.repo && app.data.chart && app.data.chart.metadata) {
+      const res = await axios.get<{ data: IChart }>(
+        url.api.charts.get(`${app.repo.name}/${app.data.chart.metadata.name}`),
+      );
+      app.chart = res.data.data;
     }
     return app;
   }
