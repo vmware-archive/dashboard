@@ -117,7 +117,7 @@ class AppView extends React.Component<IAppViewProps, IAppViewState> {
       <section className="AppView padding-b-big">
         <main>
           <div className="container container-fluid">
-            <div className="row">
+            <div className="row collapse-b-tablet">
               <div className="col-3">
                 <ChartInfo app={app} />
               </div>
