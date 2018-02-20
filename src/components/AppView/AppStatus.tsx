@@ -11,26 +11,38 @@ interface IAppStatusProps {
 
 class AppStatus extends React.Component<IAppStatusProps> {
   public render() {
-    let status = (
+    return this.isReady() ? this.renderSuccessStatus() : this.renderPendingStatus();
+  }
+
+  private renderSuccessStatus() {
+    return (
       <span className="AppStatus AppStatus--success">
         <Check className="icon padding-t-tiny" /> Deployed
       </span>
     );
+  }
+
+  private renderPendingStatus() {
+    return (
+      <span className="AppStatus AppStatus--pending">
+        <Compass className="icon padding-t-tiny" /> Deploying
+      </span>
+    );
+  }
+
+  private isReady() {
     const { deployments } = this.props;
     if (Object.keys(deployments).length > 0) {
-      const allPodsReady = Object.keys(deployments).every(k => {
+      return Object.keys(deployments).every(k => {
         const dStatus: IDeploymentStatus = deployments[k].status;
         return dStatus.availableReplicas === dStatus.replicas;
       });
-      status = allPodsReady ? (
-        status
-      ) : (
-        <span className="AppStatus AppStatus--pending">
-          <Compass className="icon padding-t-tiny" /> Deploying
-        </span>
-      );
+    } else {
+      // if there are no deployments, then the app is considered "ready"
+      // TODO: this currently does not distinguish between deployments not
+      // loaded yet and no deployments
+      return true;
     }
-    return status;
   }
 }
 
